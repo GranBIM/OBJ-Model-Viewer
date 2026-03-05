@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
+<html lang="en"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>OBJ Viewer</title>
@@ -460,10 +460,10 @@ body.ec-active #eyecomfort-overlay{ pointer-events:none; }
 <body>
 <!-- File inputs at body level — must never be inside any element with CSS filter applied,
      as filter:... on an ancestor blocks programmatic .click() in Chrome/Safari -->
-<input type="file" id="file-input" multiple accept=".obj,.mtl,.png,.jpg,.jpeg,.webp,.bmp,.gif,.tga" style="display:none">
-<input type="file" id="tex-input"  multiple accept=".mtl,.png,.jpg,.jpeg,.webp,.bmp,.gif,.tga" style="display:none">
+<input type="file" id="file-input" multiple="" accept=".obj,.mtl,.png,.jpg,.jpeg,.webp,.bmp,.gif,.tga" style="display:none">
+<input type="file" id="tex-input" multiple="" accept=".mtl,.png,.jpg,.jpeg,.webp,.bmp,.gif,.tga" style="display:none">
 
-<div id="eyecomfort-overlay"></div>
+<div id="eyecomfort-overlay" style="background: transparent;"></div>
 
 <!-- ══════════════ TOOLBAR ══════════════ -->
 <div class="toolbar">
@@ -502,9 +502,9 @@ body.ec-active #eyecomfort-overlay{ pointer-events:none; }
 
 <!-- ══════════════ VIEWPORT ══════════════ -->
 <div id="viewport" class="m-nav">
-  <canvas id="three-canvas"></canvas>
+  <canvas id="three-canvas" width="1972" height="1099"></canvas>
   <svg id="measure-svg" xmlns="http://www.w3.org/2000/svg"></svg>
-  <canvas id="measure-canvas"></canvas>
+  <canvas id="measure-canvas" width="1644" height="916"></canvas>
   <div id="pivot-dot"></div>
   <div id="measure-hint"></div>
   <div id="vol-height-label"></div>
@@ -513,8 +513,8 @@ body.ec-active #eyecomfort-overlay{ pointer-events:none; }
   <div id="drop-zone" onclick="document.getElementById('file-input').click()">
     <div class="drop-icon-wrap">
       <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-        <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
-        <polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/>
+        <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+        <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line>
       </svg>
     </div>
     <div class="drop-text">
@@ -575,7 +575,7 @@ body.ec-active #eyecomfort-overlay{ pointer-events:none; }
       <div class="ap-sep"></div>
       <div class="ap-actions">
         <button class="ap-btn" onclick="alignReset()">↺ Reset</button>
-        <button class="ap-btn primary" id="ap-apply-btn" onclick="alignApplyAndClose()" disabled>✓ Align</button>
+        <button class="ap-btn primary" id="ap-apply-btn" onclick="alignApplyAndClose()" disabled="disabled">✓ Align</button>
       </div>
     </div>
   </div>
@@ -629,8 +629,8 @@ body.ec-active #eyecomfort-overlay{ pointer-events:none; }
 
   <div class="tb-hdrop" id="drop-shading">
     <button class="tb-hdrop-btn active" id="btn-solid" onclick="setShading('solid')">Solid / Textured</button>
-    <button class="tb-hdrop-btn" id="btn-wire"  onclick="setShading('wire')">Wireframe</button>
-    <button class="tb-hdrop-btn" id="btn-flat"  onclick="setShading('flat')">Flat</button>
+    <button class="tb-hdrop-btn" id="btn-wire" onclick="setShading('wire')">Wireframe</button>
+    <button class="tb-hdrop-btn" id="btn-flat" onclick="setShading('flat')">Flat</button>
   </div>
 
   <div class="tb-hdrop" id="drop-nav">
@@ -639,20 +639,17 @@ body.ec-active #eyecomfort-overlay{ pointer-events:none; }
     <button class="tb-hdrop-btn" id="btn-autorot" onclick="toggleAutoRotate()">↻ Auto-rotate</button>
     <div class="tb-hdrop-slider">
       <label><span>Rotation speed</span><span id="rs-val">1.0×</span></label>
-      <input type="range" id="rs-slider" min="0.1" max="5" step="0.1" value="1"
-        oninput="rotSpeed=+this.value;document.getElementById('rs-val').textContent=rotSpeed.toFixed(1)+'×'">
+      <input type="range" id="rs-slider" min="0.1" max="5" step="0.1" value="1" oninput="rotSpeed=+this.value;document.getElementById('rs-val').textContent=rotSpeed.toFixed(1)+'×'">
     </div>
     <div class="tb-hdrop-sep"></div>
   </div>
 
-  <div class="tb-hdrop" id="drop-measure">
+  <div class="tb-hdrop" id="drop-measure" style="top: 44.4px; left: 504.833px;">
     <button class="tb-hdrop-btn" id="btn-m-length" onclick="setMode('length')">📏 Length</button>
-    <button class="tb-hdrop-btn" id="btn-m-area"   onclick="setMode('area')">⬡ Area</button>
+    <button class="tb-hdrop-btn" id="btn-m-area" onclick="setMode('area')">⬡ Area</button>
     <div style="display:flex;align-items:center;gap:4px">
       <button class="tb-hdrop-btn" id="btn-m-volume" onclick="setMode('volume')" style="flex:1">⬛ Volume</button>
-      <button class="tb-hdrop-btn" id="btn-vol-angle" onclick="toggleVolAngle(event)"
-        title="Surface angle: volume follows surface tilt"
-        style="padding:0.32rem 0.5rem;font-size:0.72rem;border-radius:0.35rem;flex-shrink:0">
+      <button class="tb-hdrop-btn" id="btn-vol-angle" onclick="toggleVolAngle(event)" title="Surface angle: volume follows surface tilt" style="padding:0.32rem 0.5rem;font-size:0.72rem;border-radius:0.35rem;flex-shrink:0">
         <span id="vol-angle-icon">⊻</span>
       </button>
     </div>
@@ -680,14 +677,14 @@ body.ec-active #eyecomfort-overlay{ pointer-events:none; }
     <div class="tb-hdrop-sep" style="margin:0"></div>
     <div style="display:flex;gap:5px;flex-wrap:wrap">
       <button class="ec-preset active" id="ec-pre-neutral" onclick="ecPreset('neutral',this)">Neutral</button>
-      <button class="ec-preset" id="ec-pre-warm"    onclick="ecPreset('warm',this)">Warm</button>
-      <button class="ec-preset" id="ec-pre-cool"    onclick="ecPreset('cool',this)">Cool</button>
-      <button class="ec-preset" id="ec-pre-night"   onclick="ecPreset('night',this)">Night</button>
+      <button class="ec-preset" id="ec-pre-warm" onclick="ecPreset('warm',this)">Warm</button>
+      <button class="ec-preset" id="ec-pre-cool" onclick="ecPreset('cool',this)">Cool</button>
+      <button class="ec-preset" id="ec-pre-night" onclick="ecPreset('night',this)">Night</button>
     </div>
     <div style="display:flex;gap:5px">
-      <button class="ec-preset" id="ec-pre-light"  onclick="ecPreset('light',this)">☀ Light</button>
-      <button class="ec-preset" id="ec-pre-dark"   onclick="ecPreset('dark',this)">☾ Dark</button>
-      <button class="ec-preset" id="ec-pre-black"  onclick="ecPreset('black',this)">◼ Black</button>
+      <button class="ec-preset" id="ec-pre-light" onclick="ecPreset('light',this)">☀ Light</button>
+      <button class="ec-preset" id="ec-pre-dark" onclick="ecPreset('dark',this)">☾ Dark</button>
+      <button class="ec-preset" id="ec-pre-black" onclick="ecPreset('black',this)">◼ Black</button>
     </div>
     </div><!-- end inner flex wrapper -->
   </div>
@@ -699,7 +696,7 @@ body.ec-active #eyecomfort-overlay{ pointer-events:none; }
       <div class="dd-tex-list" id="dd-tex-list"></div>
       <div class="dd-divider"></div>
       <div class="dd-row" onclick="document.getElementById('tex-input').click()">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
         Load textures / .mtl…
       </div>
     </div>
@@ -708,7 +705,7 @@ body.ec-active #eyecomfort-overlay{ pointer-events:none; }
 </div>
 
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="index_files/three.min.js"></script>
 <script>
 // ═══════════════════════════════ PORTAL DROPDOWNS ═════════════════════════════
 // Dropdown panels live in #drop-portal (fixed, body-level) so they always
@@ -2608,5 +2605,6 @@ document.addEventListener('keydown',e=>{
 })();
 </script>
 
-</body>
-</html>
+
+
+</body></html>
