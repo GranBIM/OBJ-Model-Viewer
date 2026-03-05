@@ -644,7 +644,7 @@ body.ec-active #eyecomfort-overlay{ pointer-events:none; }
     <div class="tb-hdrop-sep"></div>
   </div>
 
-  <div class="tb-hdrop" id="drop-measure" style="top: 44.4px; left: 504.833px;">
+  <div class="tb-hdrop" id="drop-measure">
     <button class="tb-hdrop-btn" id="btn-m-length" onclick="setMode('length')">📏 Length</button>
     <button class="tb-hdrop-btn" id="btn-m-area" onclick="setMode('area')">⬡ Area</button>
     <div style="display:flex;align-items:center;gap:4px">
@@ -766,6 +766,16 @@ body.ec-active #eyecomfort-overlay{ pointer-events:none; }
    OBJ VIEWER — clean script
    ════════════════════════════════════════════════════════════════════════════ */
 'use strict';
+
+// ═══════════════════════════════ GITHUB CONFIG ════════════════════════════════
+const GH = {
+  user:   'GranBIM',
+  repo:   'OBJ-Model-Viewer',
+  folder: 'Tamburparken',
+  raw:    (path) => `https://raw.githubusercontent.com/GranBIM/OBJ-Model-Viewer/main/${path}`,
+  api:    'https://api.github.com/repos/GranBIM/OBJ-Model-Viewer/contents/Tamburparken',
+};
+
 // ═══════════════════════════════ THEME / EYECOMFORT ═══════════════════════════
 // ── Eyecomfort: CSS filter on <html> + colour overlay for canvas ─────────────
 const EC_DEFAULTS = {hue:0,sat:0,bri:100};
