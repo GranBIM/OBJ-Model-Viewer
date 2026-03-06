@@ -13,6 +13,11 @@
   --dot-blue:#2563eb;--dot-orange:#f97316;--dot-green:#16a34a;
   --toolbar-h:52px;
 }
+body.theme-sunset{
+  --bg:#1a0f00;--toolbar-bg:#2d1a00;--text:#f5deb3;--muted:#b8926a;
+  --border:#5c3a1e;--hover:rgba(255,160,50,0.12);--dot-blue:#f97316;
+}
+body.theme-sunset #loader{background:rgba(26,15,0,0.9);}
 body.theme-dark{
   --bg:#0b1220;--text:#fff;--muted:#94a3b8;--card:#0f172a;
   --border:#334155;--border-soft:#1f2937;--hover:rgba(148,163,184,0.10);
@@ -434,6 +439,7 @@ body.ec-active #eyecomfort-overlay{ pointer-events:none; }
   height:4px;
 }
 .ec-preset{
+  filter:brightness(1) !important;
   flex:1;padding:0.28rem 0.4rem;border-radius:0.35rem;
   border:1px solid var(--border);background:var(--btn-bg);
   color:var(--text);font-size:0.72rem;cursor:pointer;font-family:inherit;
@@ -442,6 +448,12 @@ body.ec-active #eyecomfort-overlay{ pointer-events:none; }
 .ec-preset:hover{ background:var(--hover); }
 .ec-preset.active{ border-color:var(--dot-blue);color:var(--dot-blue);background:rgba(37,99,235,0.08); }
 
+#watermark{
+  position:absolute;bottom:2.2rem;right:0.8rem;
+  font-size:0.62rem;color:rgba(130,130,130,0.5);
+  text-align:right;line-height:1.5;pointer-events:none;
+  z-index:5;user-select:none;
+}
 /* ── GitHub model list ── */
 .gh-row{
   display:flex;align-items:center;gap:6px;
@@ -464,6 +476,7 @@ body.ec-active #eyecomfort-overlay{ pointer-events:none; }
 <input type="file" id="tex-input" multiple="" accept=".mtl,.png,.jpg,.jpeg,.webp,.bmp,.gif,.tga" style="display:none">
 
 <div id="eyecomfort-overlay" style="background: transparent;"></div>
+  <div id="watermark">Utviklet og vedlikeholdt av<br>Mathias Gran</div>
 
 <!-- ══════════════ TOOLBAR ══════════════ -->
 <div class="toolbar">
@@ -525,17 +538,17 @@ body.ec-active #eyecomfort-overlay{ pointer-events:none; }
 
   <div id="loader" class="">
     <div class="spinner"></div>
-    <div class="loader-label" id="loader-label">Building meshes…</div>
+    <div class="loader-label" id="loader-label">Textures… material_11</div>
   </div>
 
   <!-- Compare split view -->
   <div id="compare-overlay">
     <div id="cmp-div" style="left: 870px;"></div>
     <div class="cmp-picker" id="cmp-picker-L" style="left: 12px; right: auto;">
-      <select id="cmp-sel-L" onchange="cmpSelectModel(0,this.value)"><option value="mdl_1772760611246_kqqj" selected="selected">Tamburparken.obj</option></select>
+      <select id="cmp-sel-L" onchange="cmpSelectModel(0,this.value)"><option value="mdl_1772811045984_4w0t" selected="selected">uke24_2025-06-13</option></select>
     </div>
     <div class="cmp-picker" id="cmp-picker-R" style="right: 12px; left: auto;">
-      <select id="cmp-sel-R" onchange="cmpSelectModel(1,this.value)"><option value="mdl_1772760611246_kqqj" selected="selected">Tamburparken.obj</option></select>
+      <select id="cmp-sel-R" onchange="cmpSelectModel(1,this.value)"><option value="mdl_1772811045984_4w0t" selected="selected">uke24_2025-06-13</option></select>
     </div>
   </div>
 
@@ -589,13 +602,13 @@ body.ec-active #eyecomfort-overlay{ pointer-events:none; }
 <div class="info-bar" id="info-bar" style="display: flex;">
   <span class="info-chip" id="ic-file" style="display:none"><strong id="i-fname">Tamburparken.obj</strong></span>
   <span class="ib-sep" id="ib-s1" style="display:none"></span>
-  <span class="info-chip">V <strong id="i-verts">0</strong></span>
+  <span class="info-chip">V <strong id="i-verts">108,735</strong></span>
   <span class="ib-sep"></span>
-  <span class="info-chip">F <strong id="i-faces">0</strong></span>
+  <span class="info-chip">F <strong id="i-faces">199,998</strong></span>
   <span class="ib-sep"></span>
-  <span class="info-chip">Mat <strong id="i-mats">—</strong></span>
+  <span class="info-chip">Mat <strong id="i-mats">12</strong></span>
   <span class="ib-sep"></span>
-  <span class="info-chip">Tex <strong id="i-texs">none</strong></span>
+  <span class="info-chip">Tex <strong id="i-texs">12</strong></span>
   <span style="flex:1"></span>
   <span class="info-chip" style="color:var(--muted)">Left-click: set pivot · Drag: rotate · Right-drag: pan · Scroll: zoom</span>
 </div>
@@ -610,23 +623,23 @@ body.ec-active #eyecomfort-overlay{ pointer-events:none; }
       <span>📡 Tamburparken</span>
       <button id="gh-refresh-btn" onclick="ghFetchModels()" title="Refresh list" style="border:none;background:none;color:var(--muted);cursor:pointer;font-size:0.85rem;padding:0 2px">⟳</button>
     </div>
-    <div id="gh-model-list" style="max-height:260px;overflow-y:auto"><div class="gh-row gh-active" title="Tamburparken.obj  (133B) · 13 relaterte filer"><span class="gh-dot" style="background:#3b82f6;"></span><span class="gh-name">uke24 2025 06 13</span><span class="gh-loaded">✓ lastet</span></div></div>
+    <div id="gh-model-list" style="max-height:260px;overflow-y:auto"><div class="gh-row gh-active" title="Tamburparken.obj  (23.3MB) · 13 relaterte filer"><span class="gh-dot" style="background:#3b82f6;"></span><span class="gh-name">uke24 2025 06 13</span><span class="gh-loaded">✓ lastet</span></div></div>
 
     <div class="tb-hdrop-sep"></div>
     <button class="tb-hdrop-btn" onclick="document.getElementById('file-input').click()">📂 Add local .obj…</button>
     <div class="tb-hdrop-sep" id="model-list-sep" style=""></div>
     <div id="dd-model-rows">
     <div style="display:flex;align-items:center;justify-content:space-between;padding:0.22rem 0.6rem;font-size:0.78rem;gap:6px;">
-      <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;color:var(--dot-blue);cursor:pointer" onclick="setActiveModel('mdl_1772760611246_kqqj');refreshModelList()">Tamburparken.obj</span>
+      <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;color:var(--dot-blue);cursor:pointer" onclick="setActiveModel('mdl_1772811045984_4w0t');refreshModelList()">Tamburparken.obj</span>
       <label style="display:flex;align-items:center;gap:3px;cursor:pointer;color:var(--muted);font-size:0.72rem">
-        <input type="checkbox" checked="checked" onchange="toggleModelVis('mdl_1772760611246_kqqj',this.checked)" style="cursor:pointer">vis
+        <input type="checkbox" checked="checked" onchange="toggleModelVis('mdl_1772811045984_4w0t',this.checked)" style="cursor:pointer">vis
       </label>
-      <button onclick="removeModel('mdl_1772760611246_kqqj')" style="border:none;background:none;color:var(--muted);cursor:pointer;font-size:0.8rem;padding:0 2px">✕</button>
+      <button onclick="removeModel('mdl_1772811045984_4w0t')" style="border:none;background:none;color:var(--muted);cursor:pointer;font-size:0.8rem;padding:0 2px">✕</button>
     </div></div>
     <div class="tb-hdrop-sep"></div>
     <button class="tb-hdrop-btn" id="btn-align" onclick="openAlignModal()" style="display:none">⊹ Align models…</button>
-    <div id="tex-wrap-inner" style="display:none">
-      <button class="tb-hdrop-btn" id="btn-tex-dd2" onclick="toggleTexDropdown(event)">🖼 Textures <span id="tex-badge"></span></button>
+    <div id="tex-wrap-inner" style="">
+      <button class="tb-hdrop-btn" id="btn-tex-dd2" onclick="toggleTexDropdown(event)">🖼 Textures <span id="tex-badge"><span style="color:var(--dot-green);margin-left:3px;">✓</span></span></button>
     </div>
   </div>
 
@@ -644,7 +657,7 @@ body.ec-active #eyecomfort-overlay{ pointer-events:none; }
   </div>
 
   <div class="tb-hdrop" id="drop-shading">
-    <button class="tb-hdrop-btn active" id="btn-solid" onclick="setShading('solid')">Solid</button>
+    <button class="tb-hdrop-btn active" id="btn-solid" onclick="setShading('solid')">Textured</button>
     <button class="tb-hdrop-btn" id="btn-wire" onclick="setShading('wire')">Wireframe</button>
     <button class="tb-hdrop-btn" id="btn-flat" onclick="setShading('flat')">Flat</button>
   </div>
@@ -654,13 +667,13 @@ body.ec-active #eyecomfort-overlay{ pointer-events:none; }
     <div class="tb-hdrop-sep"></div>
     <button class="tb-hdrop-btn" id="btn-autorot" onclick="toggleAutoRotate()">↻ Auto-rotate</button>
     <div class="tb-hdrop-slider">
-      <label><span>Rotation speed</span><span id="rs-val">1.0×</span></label>
-      <input type="range" id="rs-slider" min="0.1" max="5" step="0.1" value="1" oninput="rotSpeed=+this.value;document.getElementById('rs-val').textContent=rotSpeed.toFixed(1)+'×'">
+      <label><span>Rotation speed</span><span id="rs-val">0.1×</span></label>
+      <input type="range" id="rs-slider" min="0.1" max="5" step="0.1" value="0.1" oninput="rotSpeed=+this.value;document.getElementById('rs-val').textContent=rotSpeed.toFixed(1)+'×'">
     </div>
     <div class="tb-hdrop-sep"></div>
   </div>
 
-  <div class="tb-hdrop" id="drop-measure" style="top: 44.4px; left: 504.833px;">
+  <div class="tb-hdrop" id="drop-measure">
     <button class="tb-hdrop-btn" id="btn-m-length" onclick="setMode('length')">📏 Length</button>
     <button class="tb-hdrop-btn" id="btn-m-area" onclick="setMode('area')">⬡ Area</button>
     <div style="display:flex;align-items:center;gap:4px">
@@ -679,24 +692,10 @@ body.ec-active #eyecomfort-overlay{ pointer-events:none; }
     <div style="display:flex;flex-direction:column;gap:0.65rem;padding:0.2rem 0.35rem 0.35rem">
     <div style="font-size:0.7rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em">Eyecomfort</div>
     <div class="ec-row">
-      <label class="ec-lbl">Hue <span id="ec-hue-val">0°</span></label>
-      <input type="range" id="ec-hue" min="0" max="360" step="1" value="0" oninput="applyEyecomfort()">
-    </div>
-    <div class="ec-row">
-      <label class="ec-lbl">Saturation <span id="ec-sat-val">0%</span></label>
-      <input type="range" id="ec-sat" min="0" max="100" step="1" value="0" oninput="applyEyecomfort()">
-    </div>
-    <div class="ec-row">
       <label class="ec-lbl">Brightness <span id="ec-bri-val">100%</span></label>
       <input type="range" id="ec-bri" min="20" max="100" step="1" value="100" oninput="applyEyecomfort()">
     </div>
     <div class="tb-hdrop-sep" style="margin:0"></div>
-    <div style="display:flex;gap:5px;flex-wrap:wrap">
-      <button class="ec-preset active" id="ec-pre-neutral" onclick="ecPreset('neutral',this)">Neutral</button>
-      <button class="ec-preset" id="ec-pre-warm" onclick="ecPreset('warm',this)">Warm</button>
-      <button class="ec-preset" id="ec-pre-cool" onclick="ecPreset('cool',this)">Cool</button>
-      <button class="ec-preset" id="ec-pre-night" onclick="ecPreset('night',this)">Night</button>
-    </div>
     <div style="display:flex;gap:5px">
       <button class="ec-preset" id="ec-pre-light" onclick="ecPreset('light',this)">☀ Light</button>
       <button class="ec-preset" id="ec-pre-dark" onclick="ecPreset('dark',this)">☾ Dark</button>
@@ -709,7 +708,7 @@ body.ec-active #eyecomfort-overlay{ pointer-events:none; }
   <div id="tex-wrap">
     <div class="tb-hdrop" id="tex-dropdown" style="min-width:260px;max-width:340px;">
       <div class="dd-section">Texture files</div>
-      <div class="dd-tex-list" id="dd-tex-list"></div>
+      <div class="dd-tex-list" id="dd-tex-list"><div class="tex-tag loaded">✓&nbsp;texture_1001.png</div><div class="tex-tag loaded">✓&nbsp;texture_1002.png</div><div class="tex-tag loaded">✓&nbsp;texture_1003.png</div><div class="tex-tag loaded">✓&nbsp;texture_1004.png</div><div class="tex-tag loaded">✓&nbsp;texture_1005.png</div><div class="tex-tag loaded">✓&nbsp;texture_1006.png</div><div class="tex-tag loaded">✓&nbsp;texture_1007.png</div><div class="tex-tag loaded">✓&nbsp;texture_1008.png</div><div class="tex-tag loaded">✓&nbsp;texture_1009.png</div><div class="tex-tag loaded">✓&nbsp;texture_1010.png</div><div class="tex-tag loaded">✓&nbsp;texture_1011.png</div><div class="tex-tag loaded">✓&nbsp;texture_1012.png</div></div>
       <div class="dd-divider"></div>
       <div class="dd-row" onclick="document.getElementById('tex-input').click()">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
@@ -803,8 +802,9 @@ const EC_PRESETS = {
   cool:    {hue:200, sat:20, bri:95},
   night:   {hue:20,  sat:40, bri:40},
   light:   {hue:0,   sat:0,  bri:100, theme:''},
-  dark:    {hue:0,   sat:0,  bri:60,  theme:'theme-dark'},
-  black:   {hue:0,   sat:0,  bri:30,  theme:'theme-black'},
+  dark:    {hue:0,   sat:0,  bri:100, theme:'theme-dark'},
+  black:   {hue:0,   sat:0,  bri:100, theme:'theme-black'},
+  sunset:  {hue:28,  sat:55, bri:82,  theme:'theme-sunset'},
 };
 
 function toggleEyecomfortPanel(e){
@@ -851,22 +851,17 @@ document.addEventListener('mousedown', function ecOutside(e){
 }, true); // capture=true so it fires before stopPropagation from children
 
 function applyEyecomfort(){
-  const hue = +document.getElementById('ec-hue').value;
-  const sat = +document.getElementById('ec-sat').value;
+  const hue=0,sat=0;
   const bri = +document.getElementById('ec-bri').value;
   ecState = {hue,sat,bri};
 
   // Update readouts
-  document.getElementById('ec-hue-val').textContent = hue + '°';
-  document.getElementById('ec-sat-val').textContent = sat + '%';
   document.getElementById('ec-bri-val').textContent = bri + '%';
 
   // Apply filter only to visual elements — NOT body or html, as that
   // breaks position:fixed, file inputs, and WebGL compositing.
   // Only apply filter string when something is actually adjusted.
-  const filterStr = (hue === 0 && bri === 100)
-    ? ''
-    : `hue-rotate(${hue}deg) brightness(${(bri/100).toFixed(2)})`;
+  const filterStr = bri===100 ? '' : `brightness(${(bri/100).toFixed(2)})`;
 
   // Apply only to UI chrome — never to #viewport (would tint 3D model colours)
   ['.toolbar', '.info-bar', '#drop-portal'].forEach(sel => {
@@ -879,20 +874,14 @@ function applyEyecomfort(){
   document.body.style.filter = '';
 
   // Tint overlay for warm/cool colour wash
-  const overlay = document.getElementById('eyecomfort-overlay');
-  if(sat > 0){
-    const alpha = (sat/100 * 0.18).toFixed(3);
-    overlay.style.background = `hsla(${hue},100%,50%,${alpha})`;
-  } else {
-    overlay.style.background = 'transparent';
-  }
+  document.getElementById('eyecomfort-overlay').style.background='transparent';
 
   updateRendererBg();
 }
 
 function updateRendererBg(){
   if(!window.renderer) return; // guard: renderer may not exist yet
-  const bases = {'':0xf3f4f6, 'theme-dark':0x0b1220, 'theme-black':0x000000};
+  const bases = {'':0xf3f4f6, 'theme-dark':0x0b1220, 'theme-black':0x000000, 'theme-sunset':0x1a0f00};
   const baseHex = bases[document.body.className.match(/theme-[a-z]+/)?.[0]||''] ?? 0xf3f4f6;
   // Extract RGB
   const r = ((baseHex>>16)&0xff)/255;
@@ -910,8 +899,6 @@ function ecPreset(name, el){
   // Apply theme if preset includes one
   if(p.theme !== undefined) document.body.className = p.theme||'';
   // Set sliders
-  document.getElementById('ec-hue').value = p.hue;
-  document.getElementById('ec-sat').value = p.sat;
   document.getElementById('ec-bri').value = p.bri;
   applyEyecomfort();
 }
@@ -956,8 +943,10 @@ function ndcFromEvent(ex,ey){
   return new THREE.Vector2(((ex-r.left)/vp.clientWidth)*2-1,-((ey-r.top)/vp.clientHeight)*2+1);
 }
 function worldToScreen(v3){
-  const v=v3.clone().project(activeCamera||camera);
-  return{x:(v.x+1)/2*vp.clientWidth,y:(-v.y+1)/2*vp.clientHeight};
+  const cam=activeCamera||camera;
+  const v=v3.clone().project(cam);
+  // v.z > 1 means behind the camera — mark as invalid
+  return{x:(v.x+1)/2*vp.clientWidth,y:(-v.y+1)/2*vp.clientHeight,behind:v.z>1};
 }
 
 // ═══════════════════════════════ ORBIT ════════════════════════════════════════
@@ -1006,7 +995,7 @@ function hitModel(ex,ey){
   return hits.length?hits[0]:null;
 }
 
-let rotSpeed=1.0;
+let rotSpeed=0.1;
 
 // Pan in world XZ plane (camera's horizontal plane) based on mouse delta
 function doPan(dx,dy){
@@ -1031,6 +1020,7 @@ function doPan(dx,dy){
 tc.addEventListener('mousedown',e=>{
   if(e.button===0)orb.drag=true;
   if(e.button===1||e.button===2)orb.pan=true;
+  // Reset lx/ly fresh so first drag after autorotate is not jumpy
   orb.lx=e.clientX;orb.ly=e.clientY;orb.dnx=e.clientX;orb.dny=e.clientY;
   e.preventDefault();
 });
@@ -1041,7 +1031,7 @@ window.addEventListener('mousemove',e=>{
   orb.lx=e.clientX; orb.ly=e.clientY;
   if(orb.drag){
     vp.classList.add('dragging');
-    const speed=0.005*rotSpeed;
+    const speed=0.005; // fixed nav speed — independent of autorotate speed
     orb.sph.theta-=dx*speed;
     orb.sph.phi=Math.max(0.05,Math.min(Math.PI-0.05,orb.sph.phi-dy*speed));
     camera.position.copy(new THREE.Vector3().setFromSpherical(orb.sph).add(orb.tgt));
@@ -1066,7 +1056,7 @@ tc.addEventListener('touchmove',e=>{
   if(e.touches.length===1&&orb.drag){
     const dx=e.touches[0].clientX-orb.lx,dy=e.touches[0].clientY-orb.ly;
     orb.lx=e.touches[0].clientX;orb.ly=e.touches[0].clientY;
-    orb.sph.theta-=dx*0.005*rotSpeed;orb.sph.phi=Math.max(0.05,Math.min(Math.PI-0.05,orb.sph.phi-dy*0.005*rotSpeed));applyOrb();
+    orb.sph.theta-=dx*0.005;orb.sph.phi=Math.max(0.05,Math.min(Math.PI-0.05,orb.sph.phi-dy*0.005));applyOrb();
   }
   if(e.touches.length===2){
     const d=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);
@@ -1098,8 +1088,8 @@ const volHtLbl=document.getElementById('vol-height-label');
 
 const modeHints={
   navigate:'',
-  length:'Click first point on model. ESC to cancel.',
-  'length-2':'Click second point on model. ESC to cancel.',
+  length:'Klikk første punkt. Enter fullfør. Backspace angre. ESC avbryt.',
+  'length-2':'Klikk flere noder eller trykk Enter for å fullføre.',
   area:'Click points on model. Press Enter to close polygon. Backspace to undo last. ESC to cancel.',
   'vol-base':'Click base points on model. Press Enter to finish base. Backspace to undo last. ESC to cancel.',
   'vol-height':'Move mouse up/down to set height. Click or Enter to confirm. ESC to cancel.',
@@ -1146,7 +1136,9 @@ function keyHandler(e){
   }
   if(e.key==='Enter'){
     e.preventDefault();
-    if(interactMode==='area'&&measurePts.length>=3){
+    if(interactMode==='length-2'&&measurePts.length>=2){
+      finalize('length',[...measurePts]);cancelMeasure();
+    } else if(interactMode==='area'&&measurePts.length>=3){
       finalize('area',[...measurePts]);cancelMeasure();
     } else if(interactMode==='vol-base'&&measurePts.length>=3){
       finishVolBase();
@@ -1159,12 +1151,16 @@ function keyHandler(e){
   }
   if(e.key==='Backspace'){
     e.preventDefault();
-    if((interactMode==='area'||interactMode==='vol-base')&&measurePts.length>0){
+    if((interactMode==='length-2'||interactMode==='area'||interactMode==='vol-base')&&measurePts.length>0){
       measurePts.pop();
-      const mode=interactMode==='area'?'area':'vol-base';
       const pts=measurePts.length;
-      if(pts===0) setHint(mode);
-      else hintEl.textContent=`${pts} point${pts!==1?'s':''} — ${mode==='area'?'Enter to close':'Enter to finish base'}. Backspace to undo. ESC to cancel.`;
+      if(interactMode==='length-2'){
+        hintEl.textContent=pts===0?'Klikk første punkt.':`${pts} noder — Enter fullfør. Backspace angre. ESC avbryt.`;
+      } else {
+        const mode=interactMode==='area'?'area':'vol-base';
+        if(pts===0) setHint(mode);
+        else hintEl.textContent=`${pts} point${pts!==1?'s':''} — ${mode==='area'?'Enter to close':'Enter to finish base'}. Backspace to undo. ESC to cancel.`;
+      }
     }
     return;
   }
@@ -1315,9 +1311,14 @@ vp.addEventListener('click',e=>{
   if(interactMode==='length'||interactMode==='length-2'){
     const pt=getPoint();if(!pt)return;
     if(interactMode==='length'){
-      measurePts=[pt];interactMode='length-2';setHint('length-2');
+      measurePts=[pt];interactMode='length-2';
+      hintEl.textContent='1 punkt. Klikk for flere noder. Enter fullfør. Backspace angre. ESC avbryt.';
+      hintEl.classList.add('visible');
     } else {
-      measurePts.push(pt);finalize('length',[...measurePts]);cancelMeasure();
+      measurePts.push(pt);
+      const n=measurePts.length;
+      hintEl.textContent=`${n} noder — Enter for å fullføre. Backspace angre. ESC avbryt.`;
+      hintEl.classList.add('visible');
     }
   } else if(interactMode==='area'){
     const pt=getPoint();if(!pt)return;
@@ -1635,7 +1636,11 @@ function fmtVol(v){return v.toFixed(3)+' m³';}
 
 function finalize(type,pts,heightM,volM3,topY,taper,extrudeAxis){
   let label;
-  if(type==='length') label=fmtLen(dist3(pts[0],pts[1]));
+  if(type==='length'){
+    let totalDist=0;
+    for(let i=1;i<pts.length;i++) totalDist+=dist3(pts[i-1],pts[i]);
+    label=fmtLen(totalDist)+(pts.length>2?' ('+pts.length+' noder)':'');
+  }
   else if(type==='area') label=fmtArea(computePolyArea(pts));
   else label=fmtVol(volM3);
   const id=++measId;
@@ -1710,17 +1715,31 @@ function redrawSVG(){
   for(const m of measurements){
     const p2=m.pts.map(p=>worldToScreen(p));
     if(m.type==='length'){
-      const[a,b]=p2;
-      svg.appendChild(mkSVG('line',{x1:a.x,y1:a.y,x2:b.x,y2:b.y,stroke:'#2563eb','stroke-width':'2',fill:'none'}));
-      for(const p of p2)svg.appendChild(mkSVG('circle',{cx:p.x,cy:p.y,r:4,fill:'#fff',stroke:'#2563eb','stroke-width':'2'}));
-      drawSVGLabel((a.x+b.x)/2,(a.y+b.y)/2-14,m.label,'#60a5fa');
+      if(p2.length>=2){
+        // Draw segment by segment, skip any segment where either endpoint is behind camera
+        for(let i=1;i<p2.length;i++){
+          const a=p2[i-1],b=p2[i];
+          if(a.behind||b.behind) continue;
+          svg.appendChild(mkSVG('line',{x1:a.x,y1:a.y,x2:b.x,y2:b.y,stroke:'#2563eb','stroke-width':'2'}));
+        }
+        for(const p of p2) if(!p.behind) svg.appendChild(mkSVG('circle',{cx:p.x,cy:p.y,r:4,fill:'#fff',stroke:'#2563eb','stroke-width':'2'}));
+        // Label at first visible midpoint
+        const vis=p2.filter(p=>!p.behind);
+        if(vis.length>=2){
+          const mid=vis[Math.floor((vis.length-1)/2)];
+          drawSVGLabel(mid.x,mid.y-14,m.label,'#60a5fa');
+        }
+      }
     } else if(m.type==='area'){
       if(p2.length>=2){
-        const pts=p2.map(p=>p.x+','+p.y).join(' ');
-        svg.appendChild(mkSVG('polygon',{points:pts,stroke:'#16a34a','stroke-width':'1.5',fill:'rgba(22,163,74,0.08)'}));
-        for(const p of p2)svg.appendChild(mkSVG('circle',{cx:p.x,cy:p.y,r:4,fill:'#fff',stroke:'#16a34a','stroke-width':'2'}));
-        const cx=p2.reduce((s,p)=>s+p.x,0)/p2.length,cy=p2.reduce((s,p)=>s+p.y,0)/p2.length;
-        drawSVGLabel(cx,cy,m.label,'#4ade80');
+        const vis=p2.filter(p=>!p.behind);
+        if(vis.length>=2){
+          const pts=vis.map(p=>p.x+','+p.y).join(' ');
+          svg.appendChild(mkSVG('polygon',{points:pts,stroke:'#16a34a','stroke-width':'1.5',fill:'rgba(22,163,74,0.08)'}));
+          for(const p of vis)svg.appendChild(mkSVG('circle',{cx:p.x,cy:p.y,r:4,fill:'#fff',stroke:'#16a34a','stroke-width':'2'}));
+          const cx=vis.reduce((s,p)=>s+p.x,0)/vis.length,cy=vis.reduce((s,p)=>s+p.y,0)/vis.length;
+          drawSVGLabel(cx,cy,m.label,'#4ade80');
+        }
       }
     } else if(m.type==='volume'){
       // 3D mesh handles the fill; just draw a label at the centroid of the base
@@ -1810,9 +1829,9 @@ let shading='solid';
 const origMats=new Map(); // kept for compatibility with existing shading code — mirrors active model
 let pendingMtllibs=[],allTexNames=[];
 
-function registerModel(group, name, omats, pmtl, atex){
+function registerModel(group, name, omats, pmtl, atex, folderName){
   const id = 'mdl_'+Date.now()+'_'+Math.random().toString(36).slice(2,6);
-  const m = {id,name,group,origMats:omats,pendingMtllibs:pmtl,allTexNames:atex,visible:true};
+  const m = {id,name,folderName:folderName||name,group,origMats:omats,pendingMtllibs:pmtl,allTexNames:atex,visible:true};
   models.push(m);
   setActiveModel(id);
   refreshModelList();
@@ -1928,7 +1947,8 @@ async function loadOBJ(txt,fname){
     }
     // Build a local copy for registry
     const _omats=new Map(origMats);
-    registerModel(curObj,fname,_omats,[...pendingMtllibs],[...allTexNames]);
+    registerModel(curObj,fname,_omats,[...pendingMtllibs],[...allTexNames], ghCurrentFolder||fname);
+    ghCurrentFolder=null;
     scene.add(curObj);
     orb.tgt.set(0,0,0);orb.sph.set(6,Math.PI/4,Math.PI/4);applyOrb();
 
@@ -2039,9 +2059,9 @@ let autoRotLine = null;
 
 function buildAutoRotLine(){
   if(autoRotLine){ scene.remove(autoRotLine); autoRotLine.geometry.dispose(); autoRotLine.material.dispose(); autoRotLine=null; }
-  const pts = [new THREE.Vector3(0,0,0), new THREE.Vector3(0,10,0)];
+  const pts = [new THREE.Vector3(0,-10,0), new THREE.Vector3(0,10,0)];
   const geo = new THREE.BufferGeometry().setFromPoints(pts);
-  const mat = new THREE.LineBasicMaterial({color:0x22c55e, linewidth:1, transparent:true, opacity:0.55});
+  const mat = new THREE.LineBasicMaterial({color:0xff69b4, linewidth:1, transparent:true, opacity:0.7});
   autoRotLine = new THREE.Line(geo, mat);
   autoRotLine.renderOrder = 999;
   autoRotLine.visible = false;
@@ -2126,7 +2146,12 @@ function toggleCompare(){
   const btn=document.getElementById('btn-compare');
   if(compareActive){
     btn.classList.add('active');
-    cmpModelIds=[models[0]?.id||null, models[1]?.id||null];
+    if(models.length>=2){
+      const sorted=[...models].sort((a,b)=>(a.folderName||a.name).localeCompare(b.folderName||b.name));
+      cmpModelIds=[sorted[0].id, sorted[sorted.length-1].id];
+    } else {
+      cmpModelIds=[models[0]?.id||null, models[0]?.id||null];
+    }
     refreshCompareSelectors();
     cmpOverlay.classList.add('active');
     renderCompare();
@@ -2144,7 +2169,7 @@ function refreshCompareSelectors(){
     const sel=document.getElementById('cmp-sel-'+side);
     if(!sel) return;
     const cur=cmpModelIds[idx];
-    sel.innerHTML=models.map(m=>`<option value="${m.id}" ${m.id===cur?'selected':''}>${m.name}</option>`).join('');
+    sel.innerHTML=models.map(m=>`<option value="${m.id}" ${m.id===cur?'selected':''}>${m.folderName||m.name}</option>`).join('');
   });
   // update pickers position based on divider
   layoutCmpPickers();
@@ -2215,6 +2240,7 @@ const MODEL_COLOURS = ['#3b82f6','#f97316','#a855f7','#ec4899','#14b8a6','#eab30
 
 let ghModels = [];
 let ghLoadedPaths = new Set();
+let ghCurrentFolder = null;
 
 async function ghFetchModels(){
   const listEl = document.getElementById('gh-model-list');
@@ -2318,6 +2344,7 @@ async function ghLoadModel(m){
     const txt = await objResp.text();
 
     setLoader(true, 'Bygger 3D-modell…'); await tick();
+    ghCurrentFolder = m.folder || m.display;
     await loadOBJ(txt, m.name);
 
     const mdl = models[models.length-1];
@@ -2631,7 +2658,7 @@ document.addEventListener('keydown',e=>{
 });const clk=new THREE.Clock();
 (function loop(){
   requestAnimationFrame(loop);
-  const dt=clk.getDelta();
+  const dt=Math.min(clk.getDelta(),0.05);
   if(orb.ar&&curObj){orb.sph.theta+=dt*0.5*rotSpeed;applyOrb();}
   if(autoRotLine&&autoRotLine.visible) autoRotLine.position.copy(orb.tgt);
   syncActiveCamera();
