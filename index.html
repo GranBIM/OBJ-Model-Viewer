@@ -523,9 +523,9 @@ body.ec-active #eyecomfort-overlay{ pointer-events:none; }
     </div>
   </div>
 
-  <div id="loader">
+  <div id="loader" class="visible">
     <div class="spinner"></div>
-    <div class="loader-label" id="loader-label">Loading…</div>
+    <div class="loader-label" id="loader-label">Henter uke10 2026 03 06…</div>
   </div>
 
   <!-- Compare split view -->
@@ -603,8 +603,17 @@ body.ec-active #eyecomfort-overlay{ pointer-events:none; }
 <!-- ══════════════ DROPDOWN PORTAL — fixed to body, above every stacking context ══════════════ -->
 <div id="drop-portal">
 
-  <div class="tb-hdrop" id="drop-file" style="min-width:210px">
-    <button class="tb-hdrop-btn" onclick="document.getElementById('file-input').click()">📂 Add model (.obj)…</button>
+  <div class="tb-hdrop" id="drop-file" style="min-width: 240px; top: 44.4px; left: 70.3167px;">
+
+    <!-- GitHub model browser -->
+    <div class="dd-section" style="padding:0.3rem 0.6rem 0.1rem;font-size:0.68rem;font-weight:700;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;display:flex;align-items:center;justify-content:space-between">
+      <span>📡 Tamburparken</span>
+      <button id="gh-refresh-btn" onclick="ghFetchModels()" title="Refresh list" style="border:none;background:none;color:var(--muted);cursor:pointer;font-size:0.85rem;padding:0 2px">⟳</button>
+    </div>
+    <div id="gh-model-list" style="max-height:260px;overflow-y:auto"><div class="gh-row" title="texturedMesh.obj  (134B) · 144 relaterte filer"><span class="gh-dot" style="background:#3b82f6;opacity:0.3"></span><span class="gh-name">uke10 2026 03 06</span><span class="gh-size">134B</span></div></div>
+
+    <div class="tb-hdrop-sep"></div>
+    <button class="tb-hdrop-btn" onclick="document.getElementById('file-input').click()">📂 Add local .obj…</button>
     <div class="tb-hdrop-sep" id="model-list-sep" style="display:none"></div>
     <div id="dd-model-rows"></div>
     <div class="tb-hdrop-sep"></div>
