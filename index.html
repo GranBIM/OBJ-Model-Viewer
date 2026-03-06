@@ -502,15 +502,15 @@ body.ec-active #eyecomfort-overlay{ pointer-events:none; }
 
 <!-- ══════════════ VIEWPORT ══════════════ -->
 <div id="viewport" class="m-nav">
-  <canvas id="three-canvas" width="1972" height="1099"></canvas>
+  <canvas id="three-canvas" width="2088" height="1099"></canvas>
   <svg id="measure-svg" xmlns="http://www.w3.org/2000/svg"></svg>
-  <canvas id="measure-canvas" width="1644" height="916"></canvas>
+  <canvas id="measure-canvas" width="1740" height="916"></canvas>
   <div id="pivot-dot"></div>
   <div id="measure-hint"></div>
   <div id="vol-height-label"></div>
 
 
-  <div id="drop-zone" onclick="document.getElementById('file-input').click()">
+  <div id="drop-zone" onclick="document.getElementById('file-input').click()" class="hidden">
     <div class="drop-icon-wrap">
       <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
         <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
@@ -523,19 +523,19 @@ body.ec-active #eyecomfort-overlay{ pointer-events:none; }
     </div>
   </div>
 
-  <div id="loader" class="visible">
+  <div id="loader" class="">
     <div class="spinner"></div>
-    <div class="loader-label" id="loader-label">Henter uke10 2026 03 06…</div>
+    <div class="loader-label" id="loader-label">Building meshes…</div>
   </div>
 
   <!-- Compare split view -->
   <div id="compare-overlay">
-    <div id="cmp-div"></div>
-    <div class="cmp-picker" id="cmp-picker-L">
-      <select id="cmp-sel-L" onchange="cmpSelectModel(0,this.value)"></select>
+    <div id="cmp-div" style="left: 870px;"></div>
+    <div class="cmp-picker" id="cmp-picker-L" style="left: 12px; right: auto;">
+      <select id="cmp-sel-L" onchange="cmpSelectModel(0,this.value)"><option value="mdl_1772760611246_kqqj" selected="selected">Tamburparken.obj</option></select>
     </div>
-    <div class="cmp-picker" id="cmp-picker-R">
-      <select id="cmp-sel-R" onchange="cmpSelectModel(1,this.value)"></select>
+    <div class="cmp-picker" id="cmp-picker-R" style="right: 12px; left: auto;">
+      <select id="cmp-sel-R" onchange="cmpSelectModel(1,this.value)"><option value="mdl_1772760611246_kqqj" selected="selected">Tamburparken.obj</option></select>
     </div>
   </div>
 
@@ -586,16 +586,16 @@ body.ec-active #eyecomfort-overlay{ pointer-events:none; }
 </div>
 
 <!-- ══════════════ INFO BAR ══════════════ -->
-<div class="info-bar" id="info-bar" style="display:none">
-  <span class="info-chip" id="ic-file" style="display:none"><strong id="i-fname">—</strong></span>
+<div class="info-bar" id="info-bar" style="display: flex;">
+  <span class="info-chip" id="ic-file" style="display:none"><strong id="i-fname">Tamburparken.obj</strong></span>
   <span class="ib-sep" id="ib-s1" style="display:none"></span>
-  <span class="info-chip">V <strong id="i-verts">—</strong></span>
+  <span class="info-chip">V <strong id="i-verts">0</strong></span>
   <span class="ib-sep"></span>
-  <span class="info-chip">F <strong id="i-faces">—</strong></span>
+  <span class="info-chip">F <strong id="i-faces">0</strong></span>
   <span class="ib-sep"></span>
   <span class="info-chip">Mat <strong id="i-mats">—</strong></span>
   <span class="ib-sep"></span>
-  <span class="info-chip">Tex <strong id="i-texs">—</strong></span>
+  <span class="info-chip">Tex <strong id="i-texs">none</strong></span>
   <span style="flex:1"></span>
   <span class="info-chip" style="color:var(--muted)">Left-click: set pivot · Drag: rotate · Right-drag: pan · Scroll: zoom</span>
 </div>
@@ -603,19 +603,26 @@ body.ec-active #eyecomfort-overlay{ pointer-events:none; }
 <!-- ══════════════ DROPDOWN PORTAL — fixed to body, above every stacking context ══════════════ -->
 <div id="drop-portal">
 
-  <div class="tb-hdrop" id="drop-file" style="min-width: 240px; top: 44.4px; left: 70.3167px;">
+  <div class="tb-hdrop" id="drop-file" style="min-width:240px">
 
     <!-- GitHub model browser -->
     <div class="dd-section" style="padding:0.3rem 0.6rem 0.1rem;font-size:0.68rem;font-weight:700;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;display:flex;align-items:center;justify-content:space-between">
       <span>📡 Tamburparken</span>
       <button id="gh-refresh-btn" onclick="ghFetchModels()" title="Refresh list" style="border:none;background:none;color:var(--muted);cursor:pointer;font-size:0.85rem;padding:0 2px">⟳</button>
     </div>
-    <div id="gh-model-list" style="max-height:260px;overflow-y:auto"><div class="gh-row" title="texturedMesh.obj  (134B) · 144 relaterte filer"><span class="gh-dot" style="background:#3b82f6;opacity:0.3"></span><span class="gh-name">uke10 2026 03 06</span><span class="gh-size">134B</span></div></div>
+    <div id="gh-model-list" style="max-height:260px;overflow-y:auto"><div class="gh-row gh-active" title="Tamburparken.obj  (133B) · 13 relaterte filer"><span class="gh-dot" style="background:#3b82f6;"></span><span class="gh-name">uke24 2025 06 13</span><span class="gh-loaded">✓ lastet</span></div></div>
 
     <div class="tb-hdrop-sep"></div>
     <button class="tb-hdrop-btn" onclick="document.getElementById('file-input').click()">📂 Add local .obj…</button>
-    <div class="tb-hdrop-sep" id="model-list-sep" style="display:none"></div>
-    <div id="dd-model-rows"></div>
+    <div class="tb-hdrop-sep" id="model-list-sep" style=""></div>
+    <div id="dd-model-rows">
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:0.22rem 0.6rem;font-size:0.78rem;gap:6px;">
+      <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;color:var(--dot-blue);cursor:pointer" onclick="setActiveModel('mdl_1772760611246_kqqj');refreshModelList()">Tamburparken.obj</span>
+      <label style="display:flex;align-items:center;gap:3px;cursor:pointer;color:var(--muted);font-size:0.72rem">
+        <input type="checkbox" checked="checked" onchange="toggleModelVis('mdl_1772760611246_kqqj',this.checked)" style="cursor:pointer">vis
+      </label>
+      <button onclick="removeModel('mdl_1772760611246_kqqj')" style="border:none;background:none;color:var(--muted);cursor:pointer;font-size:0.8rem;padding:0 2px">✕</button>
+    </div></div>
     <div class="tb-hdrop-sep"></div>
     <button class="tb-hdrop-btn" id="btn-align" onclick="openAlignModal()" style="display:none">⊹ Align models…</button>
     <div id="tex-wrap-inner" style="display:none">
@@ -637,7 +644,7 @@ body.ec-active #eyecomfort-overlay{ pointer-events:none; }
   </div>
 
   <div class="tb-hdrop" id="drop-shading">
-    <button class="tb-hdrop-btn active" id="btn-solid" onclick="setShading('solid')">Solid / Textured</button>
+    <button class="tb-hdrop-btn active" id="btn-solid" onclick="setShading('solid')">Solid</button>
     <button class="tb-hdrop-btn" id="btn-wire" onclick="setShading('wire')">Wireframe</button>
     <button class="tb-hdrop-btn" id="btn-flat" onclick="setShading('flat')">Flat</button>
   </div>
@@ -653,7 +660,7 @@ body.ec-active #eyecomfort-overlay{ pointer-events:none; }
     <div class="tb-hdrop-sep"></div>
   </div>
 
-  <div class="tb-hdrop" id="drop-measure">
+  <div class="tb-hdrop" id="drop-measure" style="top: 44.4px; left: 504.833px;">
     <button class="tb-hdrop-btn" id="btn-m-length" onclick="setMode('length')">📏 Length</button>
     <button class="tb-hdrop-btn" id="btn-m-area" onclick="setMode('area')">⬡ Area</button>
     <div style="display:flex;align-items:center;gap:4px">
@@ -2286,18 +2293,33 @@ function ghFmtSize(b){
 async function ghLoadModel(m){
   setLoader(true,'Henter '+m.display+'…'); await tick();
   try{
-    for(const rel of m.related){
-      const resp = await fetch(GH.raw(rel.path));
-      if(!resp.ok) continue;
-      const blob = await resp.blob();
-      const pf = new File([blob], rel.name, {type:blob.type});
-      fileReg.set(rel.name.toLowerCase(), pf);
-      fileReg.set(rel.name.toLowerCase().replace(/\.[^.]+$/,''), pf);
+    // Last ned relaterte filer én etter én med fremdriftsvisning
+    const total = m.related.length;
+    for(let i=0; i<total; i++){
+      const rel = m.related[i];
+      const ext = rel.name.split('.').pop().toLowerCase();
+      setLoader(true, `Henter filer… (${i+1}/${total}) ${rel.name}`); await tick();
+      try{
+        const resp = await fetch(GH.raw(rel.path));
+        if(!resp.ok){ console.warn('Kunne ikke laste', rel.name, resp.status); continue; }
+        const blob = await resp.blob();
+        const pf = new File([blob], rel.name, {type: blob.type});
+        fileReg.set(rel.name.toLowerCase(), pf);
+        fileReg.set(rel.name.toLowerCase().replace(/\.[^.]+$/,''), pf);
+      } catch(e){
+        console.warn('Feil ved lasting av', rel.name, e);
+      }
     }
+
+    // Last ned OBJ-filen
+    setLoader(true, 'Henter modell…'); await tick();
     const objResp = await fetch(GH.raw(m.obj_path));
     if(!objResp.ok) throw new Error('Kunne ikke laste '+m.name+': '+objResp.status);
     const txt = await objResp.text();
+
+    setLoader(true, 'Bygger 3D-modell…'); await tick();
     await loadOBJ(txt, m.name);
+
     const mdl = models[models.length-1];
     if(mdl){
       const col = MODEL_COLOURS[ghModels.indexOf(m) % MODEL_COLOURS.length];
