@@ -6,8 +6,7 @@ All rights reserved.
 
 Permission is granted to use this software, including the GitHub Pages
 website and its underlying code, for personal and internal work-related
-use only, solely for the purpose of simplifying one’s own time tracking
-and productivity.
+use only, solely for the purpose of simplifying one’s own productivity.
 
 This permission does NOT grant the right to:
 - sell, license, or otherwise commercially exploit the software,
