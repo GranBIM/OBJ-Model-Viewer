@@ -212,6 +212,23 @@ body.theme-black #loader{background:rgba(0,0,0,0.9);}
 .info-chip strong{color:var(--text);font-weight:600;}
 .ib-sep{width:1px;height:16px;background:var(--border-soft);}
 
+/* ── CLIPCUBE HINT OVERLAY ── */
+#cc-hint{
+  position:absolute;top:0.6rem;left:50%;transform:translateX(-50%);
+  display:none;z-index:50;pointer-events:none;
+  font-family:monospace;font-size:0.72rem;letter-spacing:0.03em;
+  color:rgba(255,255,255,0.85);text-align:center;
+  text-shadow:0 1px 4px rgba(0,0,0,0.8);
+  line-height:1.7;white-space:nowrap;
+}
+#cc-hint kbd{
+  display:inline-block;
+  background:rgba(255,255,255,0.12);
+  border:1px solid rgba(255,255,255,0.25);
+  border-radius:3px;padding:0 0.35em;
+  font-family:monospace;font-size:0.68rem;
+}
+
 /* ── MEASURE RESULTS PANEL (bottom overlay) ── */
 #measure-panel{
   position:absolute;bottom:44px;right:12px;
@@ -279,6 +296,29 @@ body.theme-black #loader{background:rgba(0,0,0,0.9);}
 
 
 /* ── Compare overlay ── */
+#cmp-wait-fog{
+  position:fixed;inset:0;z-index:10000;pointer-events:none;
+  background:rgba(10,10,20,0.55);
+  backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;transition:opacity 0.35s;
+}
+#cmp-wait-fog.visible{ opacity:1; }
+#cmp-wait-fog.fade-out{ opacity:0; }
+#cmp-wait-box{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:0.8rem;padding:1.4rem 2.2rem;
+  box-shadow:0 8px 32px rgba(0,0,0,0.4);
+  text-align:center;
+}
+#cmp-wait-box p{
+  margin:0;font-size:1rem;font-weight:600;color:var(--text);
+  letter-spacing:0.01em;
+}
+#cmp-wait-box span{
+  display:block;margin-top:0.5rem;font-size:0.8rem;color:var(--muted);
+}
+
 #compare-overlay{
   position:absolute;inset:0;display:none;pointer-events:none;z-index:9;
 }
@@ -421,6 +461,17 @@ body.theme-black #loader{background:rgba(0,0,0,0.9);}
 }
 #align-hint.show{ display:block; }
 
+/* ── Toggle switch ── */
+.tog-row{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:0.35rem 0.5rem;border-radius:0.4rem;transition:background 0.12s;cursor:pointer;}
+.tog-row:hover{background:var(--hover);}
+.tog-label{font-size:0.82rem;color:var(--text);user-select:none;}
+.tog-switch{position:relative;width:38px;height:22px;flex-shrink:0;}
+.tog-switch input{opacity:0;width:0;height:0;position:absolute;}
+.tog-track{position:absolute;inset:0;border-radius:11px;background:#6b7280;transition:background 0.2s;cursor:pointer;}
+.tog-switch input:checked + .tog-track{background:#16a34a;}
+.tog-thumb{position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,0.3);transition:transform 0.2s;pointer-events:none;}
+.tog-switch input:checked ~ .tog-thumb{transform:translateX(16px);}
+
 /* ── Eyecomfort ── */
 #eyecomfort-overlay{
   position:fixed;inset:0;pointer-events:none;z-index:99998;
@@ -448,9 +499,32 @@ body.ec-active #eyecomfort-overlay{ pointer-events:none; }
 .ec-preset:hover{ background:var(--hover); }
 .ec-preset.active{ border-color:var(--dot-blue);color:var(--dot-blue);background:rgba(37,99,235,0.08); }
 
+/* ── Snitt line ── */
+/* ── No-model overlay ── */
+#no-model-msg{
+  position:absolute;inset:0;display:none;
+  align-items:center;justify-content:center;
+  font-size:1rem;color:var(--muted);pointer-events:none;z-index:4;
+  letter-spacing:0.02em;
+}
+#no-model-msg.visible{display:flex;}
+/* ── Camera position (inside info-bar) ── */
+#cam-pos-copy:hover{background:var(--hover);color:var(--text);}
+#cam-pos-copy.copied{background:rgba(34,197,94,0.15);color:#22c55e;border-color:#22c55e;}
+#toolbar-title{
+  font-size:1.6rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;
+  color:var(--dot-green);pointer-events:none;user-select:none;line-height:1;
+  position:relative;
+}
+#site-title{
+  position:absolute;top:0.75rem;left:50%;transform:translateX(-50%);
+  font-size:0.8rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;
+  color:rgba(200,200,200,0.55);pointer-events:none;user-select:none;z-index:5;
+  white-space:nowrap;
+}
 #watermark{
-  position:absolute;bottom:2.2rem;right:0.8rem;
-  font-size:0.62rem;color:rgba(130,130,130,0.5);
+  position:absolute;bottom:2.8rem;right:1rem;
+  font-size:0.62rem;color:rgba(255,255,255,0.92);
   text-align:right;line-height:1.5;pointer-events:none;
   z-index:5;user-select:none;
 }
@@ -469,14 +543,14 @@ body.ec-active #eyecomfort-overlay{ pointer-events:none; }
 .gh-row.gh-active .gh-name{color:var(--dot-blue);font-weight:600;}
 </style>
 </head>
-<body>
+<body class="theme-dark">
 <!-- File inputs at body level — must never be inside any element with CSS filter applied,
      as filter:... on an ancestor blocks programmatic .click() in Chrome/Safari -->
 <input type="file" id="file-input" multiple="" accept=".obj,.mtl,.png,.jpg,.jpeg,.webp,.bmp,.gif,.tga" style="display:none">
 <input type="file" id="tex-input" multiple="" accept=".mtl,.png,.jpg,.jpeg,.webp,.bmp,.gif,.tga" style="display:none">
 
 <div id="eyecomfort-overlay" style="background: transparent;"></div>
-  <div id="watermark">Utviklet og vedlikeholdt av<br>Mathias Gran</div>
+  <div id="watermark">Utviklet og vedlikeholdt av<br>Mathias Weiseth Gran<br>Beboer i Hagen Johansens vei 2</div>
 
 <!-- ══════════════ TOOLBAR ══════════════ -->
 <div class="toolbar">
@@ -484,46 +558,52 @@ body.ec-active #eyecomfort-overlay{ pointer-events:none; }
   <div class="tb-sep"></div>
 
   <div class="tb-hgroup">
-    <div class="tb-hgroup-trigger" data-drop="drop-file">📂 File <span class="tb-caret">▾</span></div>
+    <div class="tb-hgroup-trigger" data-drop="drop-file" style="transition: color 0.4s, background 0.4s, border-color 0.4s;">📂 Modeller <span class="tb-caret">▾</span></div>
   </div>
 
   <div class="tb-sep"></div>
   <div class="tb-hgroup">
-    <div class="tb-hgroup-trigger" data-drop="drop-camera">Camera <span class="tb-caret">▾</span></div>
+    <div class="tb-hgroup-trigger" data-drop="drop-camera">Kamera <span class="tb-caret">▾</span></div>
   </div>
   <div class="tb-sep"></div>
   <div class="tb-hgroup">
-    <div class="tb-hgroup-trigger" id="shading-trigger" data-drop="drop-shading">Shading <span class="tb-caret">▾</span></div>
-  </div>
-
-  <div class="tb-sep"></div>
-  <div class="tb-hgroup">
-    <div class="tb-hgroup-trigger" data-drop="drop-nav">Navigation <span class="tb-caret">▾</span></div>
+    <div class="tb-hgroup-trigger" id="shading-trigger" data-drop="drop-shading">Solid <span class="tb-caret">▾</span></div>
   </div>
 
   <div class="tb-sep"></div>
   <div class="tb-hgroup">
-    <div class="tb-hgroup-trigger" id="measure-trigger" data-drop="drop-measure">Measure <span class="tb-caret">▾</span></div>
+    <div class="tb-hgroup-trigger" data-drop="drop-nav">Navigasjon <span class="tb-caret">▾</span></div>
   </div>
 
   <div class="tb-sep"></div>
-  <div style="flex:1"></div>
   <div class="tb-hgroup">
-    <div class="tb-hgroup-trigger" id="eyecomfort-trigger" onclick="toggleEyecomfortPanel(event)">Eyecomfort <span class="tb-caret" id="ec-caret">▾</span></div>
+    <div class="tb-hgroup-trigger" id="measure-trigger" data-drop="drop-measure" style="transition: color 0.25s, background 0.25s, border-color 0.25s;">Measure <span class="tb-caret">▾</span></div>
+  </div>
+
+  <div class="tb-sep"></div>
+  <span id="toolbar-title" style="position:absolute;left:50%;transform:translateX(-50%);pointer-events:none">Tamburparken - byggeprosjekt<a href="https://docs.google.com/document/d/1tPO3OWbDURfltkx1HpdPPMc2vRHSRyuOXk0wX9kkiWk/edit?usp=sharing" target="_blank" rel="noopener" style="position:absolute;inset:0;display:block;pointer-events:all;cursor:pointer;opacity:0;"></a></span>
+  <div style="margin-left:auto;display:flex;align-items:stretch">
+    <div class="tb-hgroup">
+      <div class="tb-hgroup-trigger" id="eyecomfort-trigger" onclick="toggleEyecomfortPanel(event)">Tema <span class="tb-caret" id="ec-caret">▾</span></div>
+    </div>
+    <div class="tb-sep"></div>
+    <div class="tb-hgroup">
+      <div class="tb-hgroup-trigger" id="devtools-trigger" data-drop="drop-devtools">Utviklerverktøy <span class="tb-caret">▾</span></div>
+    </div>
   </div>
 </div>
 
 <!-- ══════════════ VIEWPORT ══════════════ -->
-<div id="viewport" class="m-nav">
-  <canvas id="three-canvas" width="2088" height="1099"></canvas>
+<div id="viewport" class="m-nav dragging" style="">
+  <canvas id="three-canvas" width="2301" height="1108"></canvas>
   <svg id="measure-svg" xmlns="http://www.w3.org/2000/svg"></svg>
-  <canvas id="measure-canvas" width="1740" height="916"></canvas>
-  <div id="pivot-dot"></div>
-  <div id="measure-hint"></div>
-  <div id="vol-height-label"></div>
+  <canvas id="measure-canvas" width="1918" height="924"></canvas>
+  <div id="pivot-dot" style="left: 959px; top: 443px; display: none; opacity: 0;"></div>
+  <div id="measure-hint" class="">Move mouse closer/further from shape to taper the top. Click or Enter to finish. ESC to cancel.</div>
+  <div id="vol-height-label" style="background: rgba(249, 115, 22, 0.9); top: 614.859px; left: 784.442px; transform: translateX(-50%);" class="">↕ 2.985 m  ·  taper 0%</div>
 
 
-  <div id="drop-zone" onclick="document.getElementById('file-input').click()" class="hidden">
+  <div id="drop-zone" onclick="document.getElementById('file-input').click()" style="display:none" class="hidden">
     <div class="drop-icon-wrap">
       <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
         <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
@@ -536,26 +616,49 @@ body.ec-active #eyecomfort-overlay{ pointer-events:none; }
     </div>
   </div>
 
+  <div id="no-model-msg" class="">Ingen modell valgt for visning</div>
+
   <div id="loader" class="">
+    <div id="loader-wait-msg" style="font-size: 0.8rem; color: var(--muted); margin-bottom: 0.5rem; display: none;">Laster inn den siste modellen, vennligst vent</div>
     <div class="spinner"></div>
-    <div class="loader-label" id="loader-label">Textures… material_11</div>
+    <div class="loader-label" id="loader-label">Ferdig</div>
+    <div id="loader-progress" style="display: none; width: 220px; margin-top: 0.6rem;">
+      <div style="height:4px;background:var(--border);border-radius:2px;overflow:hidden">
+        <div id="loader-progress-bar" style="height: 100%; width: 0%; background: var(--dot-green); transition: width 0.2s; border-radius: 2px;"></div>
+      </div>
+      <div id="loader-progress-pct" style="text-align:center;font-size:0.75rem;color:var(--dot-green);margin-top:0.25rem">100%</div>
+    </div>
+  </div>
+
+  <!-- Background load progress (top-left) -->
+  <div id="bg-progress" style="display: none; position: absolute; top: 0.6rem; left: 0.6rem; z-index: 120; background: rgba(0, 0, 0, 0.55); color: rgb(255, 255, 255); border-radius: 0.4rem; padding: 0.3rem 0.6rem; font-size: 0.75rem; pointer-events: none; backdrop-filter: blur(4px);">
+    <span id="bg-progress-label">Ferdig</span>
+    <span id="bg-progress-pct" style="margin-left:0.4rem;color:var(--dot-green);font-weight:600">100%</span>
+  </div>
+
+  <!-- Compare wait fog -->
+  <div id="cmp-wait-fog" class="">
+    <div id="cmp-wait-box">
+      <p>Dette kan ta noen få sekunder</p>
+      <span>Laster sammenligningsvisning…</span>
+    </div>
   </div>
 
   <!-- Compare split view -->
-  <div id="compare-overlay">
-    <div id="cmp-div" style="left: 870px;"></div>
+  <div id="compare-overlay" class="">
+    <div id="cmp-div" style="left: 959px;"></div>
     <div class="cmp-picker" id="cmp-picker-L" style="left: 12px; right: auto;">
-      <select id="cmp-sel-L" onchange="cmpSelectModel(0,this.value)"><option value="mdl_1772811045984_4w0t" selected="selected">uke24_2025-06-13</option></select>
+      <select id="cmp-sel-L" onchange="cmpSelectModel(0,this.value)"><option value="mdl_1772925092436_ucej">Uke 10 · 2026 · Torsdag</option><option value="mdl_1772925121830_96qk" selected="selected">Uke 37 · 2025 · Mandag</option></select>
     </div>
     <div class="cmp-picker" id="cmp-picker-R" style="right: 12px; left: auto;">
-      <select id="cmp-sel-R" onchange="cmpSelectModel(1,this.value)"><option value="mdl_1772811045984_4w0t" selected="selected">uke24_2025-06-13</option></select>
+      <select id="cmp-sel-R" onchange="cmpSelectModel(1,this.value)"><option value="mdl_1772925092436_ucej" selected="selected">Uke 10 · 2026 · Torsdag</option><option value="mdl_1772925121830_96qk">Uke 37 · 2025 · Mandag</option></select>
     </div>
   </div>
 
-  <div id="measure-panel">
+  <div id="measure-panel" class="">
     <div class="mp-header">
-      <span>Measurements</span>
-      <button class="btn btn-icon btn-danger" onclick="clearMeasurements()" style="font-size:0.72rem;padding:0.1rem 0.4rem;">Clear all</button>
+      <span>Målinger</span>
+      <button class="btn btn-icon btn-danger" onclick="clearMeasurements()" style="font-size:0.72rem;padding:0.1rem 0.4rem;">Fjern alle</button>
     </div>
     <div class="mp-list" id="measure-list"></div>
   </div>
@@ -563,8 +666,8 @@ body.ec-active #eyecomfort-overlay{ pointer-events:none; }
   <!-- Align models side panel (inside viewport so position:absolute works) -->
   <div id="align-panel">
     <div id="align-ph">
-      <h2>⊹ Align Models</h2>
-      <button onclick="closeAlignModal()" title="Cancel">✕</button>
+      <h2>⊹ Juster modeller</h2>
+      <button onclick="closeAlignModal()" title="Avbryt">✕</button>
     </div>
     <div id="align-pb">
       <div class="ap-section">
@@ -587,8 +690,8 @@ body.ec-active #eyecomfort-overlay{ pointer-events:none; }
       </div>
       <div class="ap-sep"></div>
       <div class="ap-actions">
-        <button class="ap-btn" onclick="alignReset()">↺ Reset</button>
-        <button class="ap-btn primary" id="ap-apply-btn" onclick="alignApplyAndClose()" disabled="disabled">✓ Align</button>
+        <button class="ap-btn" onclick="alignReset()">↺ Tilbakestill</button>
+        <button class="ap-btn primary" id="ap-apply-btn" onclick="alignApplyAndClose()" disabled="disabled">✓ Juster</button>
       </div>
     </div>
   </div>
@@ -596,110 +699,157 @@ body.ec-active #eyecomfort-overlay{ pointer-events:none; }
   <!-- Bottom hint banner -->
   <div id="align-hint"></div>
 
+  <!-- Clipcube keyboard hint -->
+  <div id="cc-hint" style="display: none;">
+    <div id="cc-hint-place" style="display: none;">
+      Klikk for å plassere &nbsp;|&nbsp;
+      Etter plassering: flytt mus for å rotere, klikk igjen for å bekrefte &nbsp;|&nbsp;
+      <kbd>ESC</kbd><kbd>ESC</kbd> Avslutt
+    </div>
+    <div id="cc-hint-edit" style="display: block;">
+      <kbd>CTRL</kbd> Vis · Klikk face for å endre størrelse &nbsp;|&nbsp;
+      <kbd>CTRL</kbd>+<kbd>ALT</kbd> Flytt &nbsp;|&nbsp;
+      <kbd>CTRL</kbd>+<kbd>ALT</kbd>+<kbd>SHIFT</kbd> Roter &nbsp;|&nbsp;
+      <kbd>ESC</kbd><kbd>ESC</kbd> Avslutt
+    </div>
+  </div>
+
 </div>
 
+<!-- ══════════════ KAMERA POSISJON BAR ══════════════ -->
 <!-- ══════════════ INFO BAR ══════════════ -->
 <div class="info-bar" id="info-bar" style="display: flex;">
-  <span class="info-chip" id="ic-file" style="display:none"><strong id="i-fname">Tamburparken.obj</strong></span>
+  <span class="info-chip" id="ic-file" style="display:none"><strong id="i-fname">texturedMesh.obj</strong></span>
   <span class="ib-sep" id="ib-s1" style="display:none"></span>
-  <span class="info-chip">V <strong id="i-verts">108,735</strong></span>
-  <span class="ib-sep"></span>
-  <span class="info-chip">F <strong id="i-faces">199,998</strong></span>
-  <span class="ib-sep"></span>
-  <span class="info-chip">Mat <strong id="i-mats">12</strong></span>
-  <span class="ib-sep"></span>
-  <span class="info-chip">Tex <strong id="i-texs">12</strong></span>
+  <span id="dev-poly-group" style="display: none; align-items: center; gap: 0.75rem;">
+    <span class="info-chip">V <strong id="i-verts">107,540</strong></span>
+    <span class="ib-sep"></span>
+    <span class="info-chip">F <strong id="i-faces">139,463</strong></span>
+    <span class="ib-sep"></span>
+    <span class="info-chip">Mat <strong id="i-mats">11</strong></span>
+    <span class="ib-sep"></span>
+    <span class="info-chip">Tex <strong id="i-texs">11</strong></span>
+  </span>
   <span style="flex:1"></span>
-  <span class="info-chip" style="color:var(--muted)">Left-click: set pivot · Drag: rotate · Right-drag: pan · Scroll: zoom</span>
+  <span id="dev-cam-group" style="display: none; align-items: center; gap: 0.5rem;">
+    <span class="info-chip" id="cam-pos-text" style="font-family:monospace;letter-spacing:0.02em">X: <b>-0.43</b> &nbsp; Y: <b>3.28</b> &nbsp; Z: <b>0.39</b> &nbsp;&nbsp; Retning: <b>323.6°</b> &nbsp; Helning: <b>+84.0°</b> &nbsp;&nbsp; Avstand: <b>3.30</b></span>
+    <span class="ib-sep"></span>
+    <button id="cam-pos-copy" onclick="copyCamPos()" title="Kopier posisjonsdata" style="border:1px solid var(--border-soft);background:var(--btn-bg);color:var(--muted);font-size:0.72rem;padding:0.1rem 0.4rem;border-radius:0.3rem;cursor:pointer;font-family:inherit;transition:background 0.15s,color 0.15s">⎘ Kopier</button>
+  </span>
 </div>
 
 <!-- ══════════════ DROPDOWN PORTAL — fixed to body, above every stacking context ══════════════ -->
 <div id="drop-portal">
 
-  <div class="tb-hdrop" id="drop-file" style="min-width:240px">
+  <div class="tb-hdrop" id="drop-file" style="min-width: 240px; left: 70.3167px; top: 44.4px;">
 
     <!-- GitHub model browser -->
     <div class="dd-section" style="padding:0.3rem 0.6rem 0.1rem;font-size:0.68rem;font-weight:700;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;display:flex;align-items:center;justify-content:space-between">
       <span>📡 Tamburparken</span>
-      <button id="gh-refresh-btn" onclick="ghFetchModels()" title="Refresh list" style="border:none;background:none;color:var(--muted);cursor:pointer;font-size:0.85rem;padding:0 2px">⟳</button>
+      <button id="gh-refresh-btn" onclick="ghFetchModels()" title="Oppdater liste" style="border:none;background:none;color:var(--muted);cursor:pointer;font-size:0.85rem;padding:0 2px">⟳</button>
     </div>
-    <div id="gh-model-list" style="max-height:260px;overflow-y:auto"><div class="gh-row gh-active" title="Tamburparken.obj  (23.3MB) · 13 relaterte filer"><span class="gh-dot" style="background:#3b82f6;"></span><span class="gh-name">uke24 2025 06 13</span><span class="gh-loaded">✓ lastet</span></div></div>
+    <div id="gh-model-list" style="max-height:260px;overflow-y:auto"><div class="gh-row gh-active" title="texturedMesh.obj  (18.1MB) · 12 relaterte filer"><span class="gh-dot" style="background:#3b82f6;"></span><span class="gh-name">Uke 10 · 2026 <span style="color:#38bdf8;font-weight:600">Torsdag</span></span><label style="display:flex;align-items:center;gap:3px;cursor:pointer;color:var(--muted);font-size:0.72rem;flex-shrink:0"><input type="checkbox" checked="checked" data-objpath="Tamburparken/Uke10_2026-03-05/texturedMesh.obj" onchange="ghToggleVis(this.dataset.objpath,this.checked)" style="cursor:pointer"> vis</label></div><div class="gh-row gh-active" title="texturedMesh.obj  (18.3MB) · 23 relaterte filer"><span class="gh-dot" style="background:#f97316;"></span><span class="gh-name">Uke 37 · 2025 <span style="color:#fb923c;font-weight:600">Mandag</span></span><label style="display:flex;align-items:center;gap:3px;cursor:pointer;color:var(--muted);font-size:0.72rem;flex-shrink:0"><input type="checkbox" data-objpath="Tamburparken/Uke37_2025-09-08/texturedMesh.obj" onchange="ghToggleVis(this.dataset.objpath,this.checked)" style="cursor:pointer"> vis</label></div></div>
 
     <div class="tb-hdrop-sep"></div>
-    <button class="tb-hdrop-btn" onclick="document.getElementById('file-input').click()">📂 Add local .obj…</button>
-    <div class="tb-hdrop-sep" id="model-list-sep" style=""></div>
-    <div id="dd-model-rows">
-    <div style="display:flex;align-items:center;justify-content:space-between;padding:0.22rem 0.6rem;font-size:0.78rem;gap:6px;">
-      <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;color:var(--dot-blue);cursor:pointer" onclick="setActiveModel('mdl_1772811045984_4w0t');refreshModelList()">Tamburparken.obj</span>
-      <label style="display:flex;align-items:center;gap:3px;cursor:pointer;color:var(--muted);font-size:0.72rem">
-        <input type="checkbox" checked="checked" onchange="toggleModelVis('mdl_1772811045984_4w0t',this.checked)" style="cursor:pointer">vis
-      </label>
-      <button onclick="removeModel('mdl_1772811045984_4w0t')" style="border:none;background:none;color:var(--muted);cursor:pointer;font-size:0.8rem;padding:0 2px">✕</button>
-    </div></div>
-    <div class="tb-hdrop-sep"></div>
-    <button class="tb-hdrop-btn" id="btn-align" onclick="openAlignModal()" style="display:none">⊹ Align models…</button>
-    <div id="tex-wrap-inner" style="">
-      <button class="tb-hdrop-btn" id="btn-tex-dd2" onclick="toggleTexDropdown(event)">🖼 Textures <span id="tex-badge"><span style="color:var(--dot-green);margin-left:3px;">✓</span></span></button>
-    </div>
+    <button class="tb-hdrop-btn" onclick="document.getElementById('file-input').click()">📂 Legg til lokal .obj…</button>
+    <div id="tex-wrap-inner" style="display:none"></div>
   </div>
 
-  <div class="tb-hdrop" id="drop-camera">
-    <button class="tb-hdrop-btn active" id="btn-cam-persp" onclick="setCameraMode('perspective')">⊙ Perspective</button>
-    <button class="tb-hdrop-btn" id="btn-cam-ortho" onclick="setCameraMode('orthographic')">⊞ Orthographic</button>
+  <div class="tb-hdrop" id="drop-camera" style="left: 203.517px; top: 44.4px;">
+    <button class="tb-hdrop-btn active" id="btn-cam-persp" onclick="setCameraMode('perspective')">⊙ Perspektiv</button>
+    <button class="tb-hdrop-btn" id="btn-cam-ortho" onclick="setCameraMode('orthographic')">⊞ Ortografisk</button>
     <div class="tb-hdrop-sep"></div>
-    <div class="dd-section" style="padding:0.2rem 0.6rem 0.1rem;font-size:0.68rem;font-weight:700;color:var(--muted);letter-spacing:.06em;text-transform:uppercase">Standard views</div>
-    <button class="tb-hdrop-btn" onclick="setStdView('top')">⬆ Top</button>
-    <button class="tb-hdrop-btn" onclick="setStdView('bottom')">⬇ Bottom</button>
-    <button class="tb-hdrop-btn" onclick="setStdView('front')">▣ Front</button>
-    <button class="tb-hdrop-btn" onclick="setStdView('back')">◫ Back</button>
-    <button class="tb-hdrop-btn" onclick="setStdView('left')">◁ Left</button>
-    <button class="tb-hdrop-btn" onclick="setStdView('right')">▷ Right</button>
+    <div class="dd-section" style="padding:0.2rem 0.6rem 0.1rem;font-size:0.68rem;font-weight:700;color:var(--muted);letter-spacing:.06em;text-transform:uppercase">Standardvisninger</div>
+    <button class="tb-hdrop-btn" onclick="setStdView('top')">⬆ Ovenfra</button>
   </div>
 
-  <div class="tb-hdrop" id="drop-shading">
+  <div class="tb-hdrop" id="drop-shading" style="left: 306.933px; top: 44.4px;">
     <button class="tb-hdrop-btn active" id="btn-solid" onclick="setShading('solid')">Textured</button>
-    <button class="tb-hdrop-btn" id="btn-wire" onclick="setShading('wire')">Wireframe</button>
+    <button class="tb-hdrop-btn" id="btn-wire" onclick="setShading('wire')">Trådramme</button>
     <button class="tb-hdrop-btn" id="btn-flat" onclick="setShading('flat')">Flat</button>
   </div>
 
-  <div class="tb-hdrop" id="drop-nav">
-    <button class="tb-hdrop-btn" onclick="resetCamera()">⌂ Reset view</button>
+  <div class="tb-hdrop" id="drop-nav" style="left: 393.533px; top: 44.4px;">
+    <button class="tb-hdrop-btn" onclick="resetCamera()">⌂ Tilbakestill visning</button>
     <div class="tb-hdrop-sep"></div>
-    <button class="tb-hdrop-btn" id="btn-autorot" onclick="toggleAutoRotate()">↻ Auto-rotate</button>
+    <button class="tb-hdrop-btn" id="btn-autorot" onclick="toggleAutoRotate()">↻ Autoroter</button>
     <div class="tb-hdrop-slider">
-      <label><span>Rotation speed</span><span id="rs-val">0.1×</span></label>
-      <input type="range" id="rs-slider" min="0.1" max="5" step="0.1" value="0.1" oninput="rotSpeed=+this.value;document.getElementById('rs-val').textContent=rotSpeed.toFixed(1)+'×'">
+      <label><span>Rotasjonshastighet</span><span id="rs-val">0.5×</span></label>
+      <input type="range" id="rs-slider" min="0.1" max="5" step="0.1" value="0.5" oninput="rotSpeed=+this.value;document.getElementById('rs-val').textContent=rotSpeed.toFixed(1)+'×'">
     </div>
     <div class="tb-hdrop-sep"></div>
   </div>
 
-  <div class="tb-hdrop" id="drop-measure">
-    <button class="tb-hdrop-btn" id="btn-m-length" onclick="setMode('length')">📏 Length</button>
-    <button class="tb-hdrop-btn" id="btn-m-area" onclick="setMode('area')">⬡ Area</button>
+  <div class="tb-hdrop" id="drop-measure" style="left: 517.45px; top: 44.4px;">
+    <button class="tb-hdrop-btn" id="btn-m-length" onclick="setMode('length')">📏 Lengde</button>
+    <button class="tb-hdrop-btn" id="btn-m-area" onclick="setMode('area')">⬡ Areal</button>
     <div style="display:flex;align-items:center;gap:4px">
-      <button class="tb-hdrop-btn" id="btn-m-volume" onclick="setMode('volume')" style="flex:1">⬛ Volume</button>
-      <button class="tb-hdrop-btn" id="btn-vol-angle" onclick="toggleVolAngle(event)" title="Surface angle: volume follows surface tilt" style="padding:0.32rem 0.5rem;font-size:0.72rem;border-radius:0.35rem;flex-shrink:0">
+      <button class="tb-hdrop-btn" id="btn-m-volume" onclick="setMode('volume')" style="flex:1">⬛ Volum</button>
+      <button class="tb-hdrop-btn" id="btn-vol-angle" onclick="toggleVolAngle(event)" title="Overflatevinkel: volum følger overflatehelning" style="padding:0.32rem 0.5rem;font-size:0.72rem;border-radius:0.35rem;flex-shrink:0">
         <span id="vol-angle-icon">⊻</span>
       </button>
     </div>
     <div class="tb-hdrop-sep"></div>
-    <button class="tb-hdrop-btn" id="btn-compare" onclick="toggleCompare()">⧉ Compare models</button>
+    <button class="tb-hdrop-btn" id="btn-m-clipcube" onclick="toggleClipcube()">⬡ Clipcube</button>
     <div class="tb-hdrop-sep"></div>
-    <button class="tb-hdrop-btn danger" id="btn-m-clear" onclick="clearMeasurements()" style="display:none">✕ Clear all</button>
+    <button class="tb-hdrop-btn" id="btn-compare" onclick="toggleCompare()">⧉ Sammenlign modeller</button>
+    <div class="tb-hdrop-sep"></div>
+    <button class="tb-hdrop-btn danger" id="btn-m-clear" onclick="clearMeasurements()" style="display: none;">✕ Fjern alle</button>
+  </div>
+
+  <div class="tb-hdrop" id="drop-devtools" style="min-width: 240px; padding: 0.5rem 0.4rem; left: 1670px; top: 44.4px;">
+    <div style="font-size:0.7rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;padding:0 0.3rem 0.4rem">Utviklerverktøy</div>
+    <div class="tb-hdrop-sep"></div>
+    <div style="height:0.3rem"></div>
+
+    <!-- Polygoninformasjon -->
+    <div class="tog-row" onclick="toggleDevPoly(event)">
+      <span class="tog-label">Polygoninformasjon</span>
+      <div class="tog-switch">
+        <input type="checkbox" id="tog-poly" onclick="event.stopPropagation()">
+        <div class="tog-track"></div>
+        <div class="tog-thumb"></div>
+      </div>
+    </div>
+
+    <!-- Kameraposisjon -->
+    <div class="tog-row" onclick="toggleDevCam(event)">
+      <span class="tog-label">Kameraposisjon</span>
+      <div class="tog-switch">
+        <input type="checkbox" id="tog-cam" onclick="event.stopPropagation()">
+        <div class="tog-track"></div>
+        <div class="tog-thumb"></div>
+      </div>
+    </div>
+
+    <div class="tb-hdrop-sep" style="margin:0.3rem 0"></div>
+
+    <!-- 1m³ Målekube + slett-knapp -->
+    <div style="display:flex;align-items:center;gap:0.3rem;padding-left:0.2rem">
+      <button onclick="mcClearAll(event)" title="Slett alle kuber" style="border:1px solid var(--border-soft);background:var(--btn-bg);color:var(--muted);font-size:0.78rem;padding:0.15rem 0.5rem;border-radius:0.3rem;cursor:pointer;font-family:inherit;transition:background 0.15s,color 0.15s;flex-shrink:0" onmouseenter="this.style.color='#dc2626';this.style.borderColor='#dc2626'" onmouseleave="this.style.color='var(--muted)';this.style.borderColor='var(--border-soft)'">✕</button>
+      <div class="tog-row" style="flex:1;margin:0" onclick="toggleMeterCube(event)">
+        <span class="tog-label">1m³ Målekube</span>
+        <div class="tog-switch">
+          <input type="checkbox" id="tog-mcube" onclick="event.stopPropagation()">
+          <div class="tog-track"></div>
+          <div class="tog-thumb"></div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <div class="tb-hdrop" id="drop-eyecomfort">
     <div style="display:flex;flex-direction:column;gap:0.65rem;padding:0.2rem 0.35rem 0.35rem">
-    <div style="font-size:0.7rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em">Eyecomfort</div>
+    <div style="font-size:0.7rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em">Tema</div>
     <div class="ec-row">
-      <label class="ec-lbl">Brightness <span id="ec-bri-val">100%</span></label>
+      <label class="ec-lbl">Lysstyrke <span id="ec-bri-val">100%</span></label>
       <input type="range" id="ec-bri" min="20" max="100" step="1" value="100" oninput="applyEyecomfort()">
     </div>
     <div class="tb-hdrop-sep" style="margin:0"></div>
     <div style="display:flex;gap:5px">
-      <button class="ec-preset" id="ec-pre-light" onclick="ecPreset('light',this)">☀ Light</button>
-      <button class="ec-preset" id="ec-pre-dark" onclick="ecPreset('dark',this)">☾ Dark</button>
-      <button class="ec-preset" id="ec-pre-black" onclick="ecPreset('black',this)">◼ Black</button>
+      <button class="ec-preset" id="ec-pre-light" onclick="ecPreset('light',this)">☀ Lys</button>
+      <button class="ec-preset active" id="ec-pre-dark" onclick="ecPreset('dark',this)">☾ Mørk</button>
+      <button class="ec-preset" id="ec-pre-black" onclick="ecPreset('black',this)">◼ Svart</button>
     </div>
     </div><!-- end inner flex wrapper -->
   </div>
@@ -708,7 +858,7 @@ body.ec-active #eyecomfort-overlay{ pointer-events:none; }
   <div id="tex-wrap">
     <div class="tb-hdrop" id="tex-dropdown" style="min-width:260px;max-width:340px;">
       <div class="dd-section">Texture files</div>
-      <div class="dd-tex-list" id="dd-tex-list"><div class="tex-tag loaded">✓&nbsp;texture_1001.png</div><div class="tex-tag loaded">✓&nbsp;texture_1002.png</div><div class="tex-tag loaded">✓&nbsp;texture_1003.png</div><div class="tex-tag loaded">✓&nbsp;texture_1004.png</div><div class="tex-tag loaded">✓&nbsp;texture_1005.png</div><div class="tex-tag loaded">✓&nbsp;texture_1006.png</div><div class="tex-tag loaded">✓&nbsp;texture_1007.png</div><div class="tex-tag loaded">✓&nbsp;texture_1008.png</div><div class="tex-tag loaded">✓&nbsp;texture_1009.png</div><div class="tex-tag loaded">✓&nbsp;texture_1010.png</div><div class="tex-tag loaded">✓&nbsp;texture_1011.png</div><div class="tex-tag loaded">✓&nbsp;texture_1012.png</div></div>
+      <div class="dd-tex-list" id="dd-tex-list"></div>
       <div class="dd-divider"></div>
       <div class="dd-row" onclick="document.getElementById('tex-input').click()">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
@@ -737,10 +887,16 @@ body.ec-active #eyecomfort-overlay{ pointer-events:none; }
     const panel = document.getElementById(panelId);
     if(!panel) return;
     const r = trigger.getBoundingClientRect();
-    // Align left edge unless it would overflow right side
+    // Briefly show off-screen to measure real width
+    panel.style.visibility = 'hidden';
+    panel.style.left = '-9999px';
+    panel.classList.add('open');
+    const panelW = panel.offsetWidth || 220;
+    panel.classList.remove('open');
+    panel.style.visibility = '';
+    // Align left edge of panel to left edge of trigger, but clamp to viewport
     let left = r.left;
-    const panelW = panel.offsetWidth || 160;
-    if(left + panelW > window.innerWidth - 8) left = r.right - panelW;
+    if(left + panelW > window.innerWidth - 8) left = Math.max(8, window.innerWidth - 8 - panelW);
     panel.style.top  = (r.bottom + 4) + 'px';
     panel.style.left = left + 'px';
     panel.classList.add('open');
@@ -916,7 +1072,8 @@ window.renderer=renderer; // expose for updateRendererBg guard
 renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
 renderer.setClearColor(0xf3f4f6);
 renderer.outputEncoding=THREE.sRGBEncoding;
-applyEyecomfort(); // safe to call now that renderer exists
+renderer.localClippingEnabled=true;
+ecPreset('dark', document.getElementById('ec-pre-dark')); // default theme: Dark
 
 const scene=new THREE.Scene();
 const camera=new THREE.PerspectiveCamera(45,1,0.001,100000);
@@ -951,9 +1108,12 @@ function worldToScreen(v3){
 
 // ═══════════════════════════════ ORBIT ════════════════════════════════════════
 const orb={
-  tgt:new THREE.Vector3(),sph:new THREE.Spherical(10,Math.PI/4,Math.PI/4),
+  tgt:new THREE.Vector3(-0.2275,0.0,0.112),sph:new THREE.Spherical(3.2978,1.2054,-2.2846),
   drag:false,pan:false,ar:false,lx:0,ly:0,dnx:0,dny:0
 };
+let _userHasNavigated = false; // set true when user first drags/pans/zooms
+let _navLocked = false;           // true during auto camera+compare sequence
+
 function applyOrb(){
   camera.position.copy(new THREE.Vector3().setFromSpherical(orb.sph).add(orb.tgt));
   camera.lookAt(orb.tgt);
@@ -965,6 +1125,42 @@ const pivotDot=document.getElementById('pivot-dot');
 let pivotDotTimer=null;
 
 // ── Volume drag state — REMOVED (volumes are fixed after creation) ──
+
+let pivotMarker3D = null;
+let pivotMarkerTimer = null;
+
+function showPivotMarker3D(worldPt){
+  // Remove old marker
+  if(pivotMarker3D){ scene.remove(pivotMarker3D); pivotMarker3D.geometry.dispose(); pivotMarker3D = null; }
+  if(pivotMarkerTimer){ clearTimeout(pivotMarkerTimer); pivotMarkerTimer = null; }
+
+  const s = unitsPerMeter || 1;
+  const h = 4 * s;   // 4 metres in scene units
+  const bot = new THREE.Vector3(worldPt.x, worldPt.y,     worldPt.z);
+  const top = new THREE.Vector3(worldPt.x, worldPt.y + h, worldPt.z);
+  const geo = new THREE.BufferGeometry().setFromPoints([bot, top]);
+  const mat = new THREE.LineBasicMaterial({ color: 0xf97316, linewidth: 2, transparent: true, opacity: 0.7 });
+  pivotMarker3D = new THREE.Line(geo, mat);
+  pivotMarker3D.renderOrder = 999;
+  scene.add(pivotMarker3D);
+
+}
+
+// Snap hit point to nearest vertex in visible meshes
+function snapToNearestVertex(hitPoint, hitObject){
+  const pos = hitObject.geometry.attributes.position;
+  if(!pos) return hitPoint;
+  const mat = hitObject.matrixWorld;
+  let bestDist = Infinity;
+  const bestVtx = hitPoint.clone();
+  const tmp = new THREE.Vector3();
+  for(let i = 0; i < pos.count; i++){
+    tmp.fromBufferAttribute(pos, i).applyMatrix4(mat);
+    const d = tmp.distanceTo(hitPoint);
+    if(d < bestDist){ bestDist = d; bestVtx.copy(tmp); }
+  }
+  return bestVtx;
+}
 
 function showPivotDot(sx,sy){
   pivotDot.style.left=sx+'px'; pivotDot.style.top=sy+'px';
@@ -978,21 +1174,54 @@ function showPivotDot(sx,sy){
   },3000);
 }
 
-// hitModel: return all hits sorted by distance, so we can pick the bottom-most face
+// hitModel helpers — raycast ALL visible models
 function hitModelAll(ex,ey){
-  if(!curObj)return[];
+  const allMeshes=[];
+  models.forEach(m=>{ if(m.visible) m.group.traverse(ch=>{ if(ch.isMesh) allMeshes.push(ch); }); });
+  if(!allMeshes.length) return[];
   raycaster.setFromCamera(ndcFromEvent(ex,ey),activeCamera||camera);
-  return raycaster.intersectObjects(curObj.children,true);
+  return raycaster.intersectObjects(allMeshes,false).sort((a,b)=>a.distance-b.distance);
 }
-// Return the farthest hit (bottom surface closest to pointer)
-function hitModelBottom(ex,ey){
-  const hits=hitModelAll(ex,ey);
-  return hits.length?hits[hits.length-1]:null;
-}
-// Return nearest hit (for measuring — snap to visible surface)
+
+// Return nearest hit whose face normal points TOWARD the camera (visible surface).
+// Falls back to nearest hit if none qualify (avoids floating on backfaces).
 function hitModel(ex,ey){
   const hits=hitModelAll(ex,ey);
-  return hits.length?hits[0]:null;
+  if(!hits.length) return null;
+  const camDir=camera.getWorldDirection(new THREE.Vector3());
+  // Face normal in world space
+  const worldNormal=new THREE.Vector3();
+  for(const h of hits){
+    if(h.face){
+      worldNormal.copy(h.face.normal)
+        .applyQuaternion(h.object.getWorldQuaternion(new THREE.Quaternion()))
+        .normalize();
+      // Normal dot camDir < 0 means face is pointing toward camera
+      if(worldNormal.dot(camDir)<0) return h;
+    } else {
+      return h;
+    }
+  }
+  // All faces point away — return nearest anyway
+  return hits[0];
+}
+
+// Return farthest front-facing hit (for pivot / bottom surface)
+function hitModelBottom(ex,ey){
+  const hits=hitModelAll(ex,ey);
+  if(!hits.length) return null;
+  const camDir=camera.getWorldDirection(new THREE.Vector3());
+  const worldNormal=new THREE.Vector3();
+  let last=null;
+  for(const h of hits){
+    if(h.face){
+      worldNormal.copy(h.face.normal)
+        .applyQuaternion(h.object.getWorldQuaternion(new THREE.Quaternion()))
+        .normalize();
+      if(worldNormal.dot(camDir)<0) last=h;
+    }
+  }
+  return last||hits[hits.length-1];
 }
 
 let rotSpeed=0.1;
@@ -1018,6 +1247,7 @@ function doPan(dx,dy){
 
 // Mousedown: orbit/pan only
 tc.addEventListener('mousedown',e=>{
+  if(_navLocked) return;
   if(e.button===0)orb.drag=true;
   if(e.button===1||e.button===2)orb.pan=true;
   // Reset lx/ly fresh so first drag after autorotate is not jumpy
@@ -1031,18 +1261,22 @@ window.addEventListener('mousemove',e=>{
   orb.lx=e.clientX; orb.ly=e.clientY;
   if(orb.drag){
     vp.classList.add('dragging');
-    const speed=0.005; // fixed nav speed — independent of autorotate speed
+    _userHasNavigated=true;
+    const speed=0.005;
     orb.sph.theta-=dx*speed;
     orb.sph.phi=Math.max(0.05,Math.min(Math.PI-0.05,orb.sph.phi-dy*speed));
+    camera.up.set(0,1,0);
     camera.position.copy(new THREE.Vector3().setFromSpherical(orb.sph).add(orb.tgt));
     camera.lookAt(orb.tgt);
   }
-  if(orb.pan){doPan(dx,dy);}
+  if(orb.pan){_userHasNavigated=true;doPan(dx,dy);}
   if(interactMode!=='navigate'&&!orb.drag&&!orb.pan) handleMeasureMouseMove(e);
 });
 
 // Scroll: zoom. CTRL+scroll: cycle clip face.
 tc.addEventListener('wheel',e=>{
+  if(_navLocked){ e.preventDefault(); return; }
+  _userHasNavigated=true;
   orb.sph.radius=Math.max(0.001,orb.sph.radius*(1+e.deltaY*0.001));applyOrb();
   e.preventDefault();
 },{passive:false});
@@ -1050,6 +1284,7 @@ tc.addEventListener('wheel',e=>{
 // Touch — always active
 let lp=null;
 tc.addEventListener('touchstart',e=>{
+  if(_navLocked) return;
   if(e.touches.length===1){orb.drag=true;orb.lx=e.touches[0].clientX;orb.ly=e.touches[0].clientY;orb.dnx=orb.lx;orb.dny=orb.ly;}
 },{passive:true});
 tc.addEventListener('touchmove',e=>{
@@ -1177,7 +1412,7 @@ function toggleVolAngle(e){
   const btn=document.getElementById('btn-vol-angle');
   if(icon) icon.textContent=volFollowSurface?'⟂':'⊻';
   if(btn){
-    btn.title=volFollowSurface?'Surface angle: ON — volume follows surface tilt':'Surface angle: OFF — volume extrudes straight up';
+    btn.title=volFollowSurface?'Overflatevinkel: PÅ — volum følger overflatehelning':'Overflatevinkel: AV — volum ekstruderes rett opp';
     btn.classList.toggle('active-orange',volFollowSurface);
   }
 }
@@ -1276,6 +1511,7 @@ function cancelMeasure(){
 
 // ═══════════════════════════════ MEASURE CLICK ════════════════════════════════
 vp.addEventListener('click',e=>{
+  if(clipcubeActive){ if(ccHandleClick(e)) return; }
   if(interactMode==='navigate'){
     // Solibri-style: click on model sets pivot to nearest surface point.
     // Camera position & orientation are preserved — only target changes.
@@ -1284,7 +1520,8 @@ vp.addEventListener('click',e=>{
     if(!curObj)return;
     const hit=hitModel(e.clientX,e.clientY);
     if(!hit)return;
-    const newTgt=hit.point.clone();
+    const snapped = snapToNearestVertex(hit.point, hit.object);
+    const newTgt=snapped.clone();
     const camPos=camera.position.clone();
     // Recompute spherical from current camera pos relative to new target
     // (camera does NOT move — only the pivot/target shifts)
@@ -1292,8 +1529,7 @@ vp.addEventListener('click',e=>{
     orb.sph.setFromVector3(camPos.clone().sub(newTgt));
     // No applyOrb() call -> camera stays exactly where it is
     // Show green dot at screen-space hit position
-    const sp=worldToScreen(newTgt);
-    showPivotDot(sp.x,sp.y);
+    showPivotMarker3D(newTgt);
     // Update autorotate axis line if visible
     updateAutoRotLine();
     return;
@@ -1487,9 +1723,13 @@ function handleMeasureMouseMove(e){
     lastSnapWorld=null;
     return;
   }
-  // All other modes: raycast onto model
+  // All other modes: raycast onto model, snap to nearest vertex
   const hit=hitModel(e.clientX,e.clientY);
-  lastSnapWorld=hit?hit.point.clone():null;
+  if(hit){
+    lastSnapWorld = snapToNearestVertex(hit.point, hit.object);
+  } else {
+    lastSnapWorld = null;
+  }
 }
 
 function clearRubberBand(){mctx.clearRect(0,0,mc.width,mc.height);}
@@ -1689,7 +1929,7 @@ function renderMeasureList(){
   document.getElementById('measure-list').innerHTML=measurements.map(m=>`
     <div class="measure-item">
       <div class="measure-item-left">
-        <span class="measure-badge badge-${m.type}">${m.type.toUpperCase()}</span>
+        <span class="measure-badge badge-${m.type}">${({'length':'LENGDE','area':'AREAL','volume':'VOLUM'}[m.type]||m.type.toUpperCase())}</span>
         <span class="measure-val">${m.label}</span>
       </div>
       <button class="measure-del" onclick="deleteMeasurement(${m.id})">✕</button>
@@ -1708,6 +1948,52 @@ function drawSVGLabel(x,y,txt,color){
   svg.appendChild(mkSVG('rect',{x:x-W/2,y:y-H/2,width:W,height:H,rx:4,fill:'rgba(15,23,42,0.88)',stroke:color,'stroke-width':'1'}));
   const t=mkSVG('text',{x,y,fill:color,'text-anchor':'middle','dominant-baseline':'central','font-size':'11','font-family':'system-ui,sans-serif','font-weight':'600'});
   t.textContent=txt;svg.appendChild(t);
+}
+
+function updateCamPosBar(){
+  const pos = camera.position;
+  const tgt = orb.tgt;
+  // Direction: theta in degrees (0=North, clockwise), pitch from horizontal
+  const dx = pos.x - tgt.x, dy = pos.y - tgt.y, dz = pos.z - tgt.z;
+  const horizDist = Math.sqrt(dx*dx + dz*dz);
+  const thetaDeg = ((Math.atan2(dx, dz) * 180 / Math.PI) + 360) % 360;
+  const pitchDeg = Math.atan2(dy, horizDist) * 180 / Math.PI;
+  const el = document.getElementById('cam-pos-text');
+  if(el){
+    el.innerHTML =
+      'X: <b>'+pos.x.toFixed(2)+'</b> &nbsp; '+
+      'Y: <b>'+pos.y.toFixed(2)+'</b> &nbsp; '+
+      'Z: <b>'+pos.z.toFixed(2)+'</b> &nbsp;&nbsp; '+
+      'Retning: <b>'+thetaDeg.toFixed(1)+'°</b> &nbsp; '+
+      'Helning: <b>'+(pitchDeg>=0?'+':'')+pitchDeg.toFixed(1)+'°</b> &nbsp;&nbsp; '+
+      'Avstand: <b>'+orb.sph.radius.toFixed(2)+'</b>';
+  }
+}
+
+function copyCamPos(){
+  const pos = camera.position;
+  const tgt = orb.tgt;
+  const dx = pos.x-tgt.x, dy = pos.y-tgt.y, dz = pos.z-tgt.z;
+  const horizDist = Math.sqrt(dx*dx+dz*dz);
+  const thetaDeg = ((Math.atan2(dx,dz)*180/Math.PI)+360)%360;
+  const pitchDeg = Math.atan2(dy,horizDist)*180/Math.PI;
+  const text =
+    'Kamera posisjon:\n'+
+    '  X: '+pos.x.toFixed(4)+'\n'+
+    '  Y: '+pos.y.toFixed(4)+'\n'+
+    '  Z: '+pos.z.toFixed(4)+'\n'+
+    'Pivot / mål:\n'+
+    '  X: '+tgt.x.toFixed(4)+'\n'+
+    '  Y: '+tgt.y.toFixed(4)+'\n'+
+    '  Z: '+tgt.z.toFixed(4)+'\n'+
+    'Retning: '+thetaDeg.toFixed(2)+'°\n'+
+    'Helning:  '+(pitchDeg>=0?'+':'')+pitchDeg.toFixed(2)+'°\n'+
+    'Avstand:  '+orb.sph.radius.toFixed(4);
+  navigator.clipboard.writeText(text).then(()=>{
+    const btn=document.getElementById('cam-pos-copy');
+    btn.textContent='✓ Kopiert';btn.classList.add('copied');
+    setTimeout(()=>{btn.textContent='⎘ Kopier';btn.classList.remove('copied');},2000);
+  }).catch(()=>{ prompt('Kopier manuelt:',text); });
 }
 
 function redrawSVG(){
@@ -1831,7 +2117,7 @@ let pendingMtllibs=[],allTexNames=[];
 
 function registerModel(group, name, omats, pmtl, atex, folderName){
   const id = 'mdl_'+Date.now()+'_'+Math.random().toString(36).slice(2,6);
-  const m = {id,name,folderName:folderName||name,group,origMats:omats,pendingMtllibs:pmtl,allTexNames:atex,visible:true};
+  const m = {id,name,folderName:folderName||name,objPath:null,group,origMats:omats,pendingMtllibs:pmtl,allTexNames:atex,visible:true};
   models.push(m);
   setActiveModel(id);
   refreshModelList();
@@ -1865,21 +2151,20 @@ function removeModel(id){
 }
 
 function refreshModelList(){
-  const rows=document.getElementById('dd-model-rows');
-  const sep=document.getElementById('model-list-sep');
-  if(!rows) return;
-  if(!models.length){ rows.innerHTML=''; if(sep)sep.style.display='none'; return; }
-  if(sep)sep.style.display='';
-  rows.innerHTML=models.map(m=>`
-    <div style="display:flex;align-items:center;justify-content:space-between;padding:0.22rem 0.6rem;font-size:0.78rem;gap:6px;">
-      <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;color:${m.id===activeModelId?'var(--dot-blue)':'var(--text)'};cursor:pointer"
-        onclick="setActiveModel('${m.id}');refreshModelList()">${m.name}</span>
-      <label style="display:flex;align-items:center;gap:3px;cursor:pointer;color:var(--muted);font-size:0.72rem">
-        <input type="checkbox" ${m.visible?'checked':''} onchange="toggleModelVis('${m.id}',this.checked)" style="cursor:pointer">vis
-      </label>
-      <button onclick="removeModel('${m.id}')"
-        style="border:none;background:none;color:var(--muted);cursor:pointer;font-size:0.8rem;padding:0 2px">✕</button>
-    </div>`).join('');
+  // Model rows now shown in GitHub list — nothing to render here
+}
+
+function updateInfoBar(){
+  const vis = models.filter(m=>m.visible && m.stats);
+  if(!vis.length) return;
+  const totV = vis.reduce((s,m)=>s+m.stats.verts,0);
+  const totF = vis.reduce((s,m)=>s+m.stats.faces,0);
+  const totM = vis.reduce((s,m)=>s+m.stats.mats,0);
+  const totT = vis.reduce((s,m)=>s+m.stats.texs,0);
+  document.getElementById('i-verts').textContent = totV.toLocaleString();
+  document.getElementById('i-faces').textContent = totF.toLocaleString();
+  document.getElementById('i-mats').textContent  = totM||'—';
+  document.getElementById('i-texs').textContent  = totT||'—';
 }
 
 function toggleModelVis(id,v){
@@ -1890,13 +2175,14 @@ function toggleModelVis(id,v){
 }
 
 function setLoader(v,lbl){
+  if(window._bgLoading && v) return; // suppress loader during background model load
   document.getElementById('loader').classList.toggle('visible',v);
   if(lbl)document.getElementById('loader-label').textContent=lbl;
 }
 
 // ═══════════════════════════════ LOAD OBJ ═════════════════════════════════════
 async function loadOBJ(txt,fname){
-  setLoader(true,'Parsing OBJ…');await tick();
+  setLoader(true,'Leser OBJ…');await tick();
   try{
     // Keep existing models; just add the new one
     origMats.clear();pendingMtllibs=[];allTexNames=[];
@@ -1905,7 +2191,7 @@ async function loadOBJ(txt,fname){
     const mtlMap=new Map();
     for(const mlib of parsed.mtllibs){
       const f=findFile(mlib);if(!f)continue;
-      setLoader(true,'Loading materials…');await tick();
+      setLoader(true,'Laster materialer…');await tick();
       parseMTL(await readText(f)).forEach((v,k)=>mtlMap.set(k,v));
       mtlMap.forEach(v=>[v.map_Kd,v.map_bump,v.map_d].forEach(n=>{if(n)allTexNames.push(n);}));
     }
@@ -1920,7 +2206,7 @@ async function loadOBJ(txt,fname){
     const sc=4/maxDim;
     unitsPerMeter=sc;
 
-    setLoader(true,'Building meshes…');await tick();
+    setLoader(true,'Bygger 3D-modell…');await tick();
     curObj=new THREE.Group();
     let totalFaces=0,texLoaded=0;
 
@@ -1950,13 +2236,20 @@ async function loadOBJ(txt,fname){
     registerModel(curObj,fname,_omats,[...pendingMtllibs],[...allTexNames], ghCurrentFolder||fname);
     ghCurrentFolder=null;
     scene.add(curObj);
-    orb.tgt.set(0,0,0);orb.sph.set(6,Math.PI/4,Math.PI/4);applyOrb();
+    // Camera stays at default/user position — models use their saved world coords
 
     document.getElementById('i-fname').textContent=fname;
-    document.getElementById('i-verts').textContent=(parsed.pos.length/3|0).toLocaleString();
-    document.getElementById('i-faces').textContent=totalFaces.toLocaleString();
-    document.getElementById('i-mats').textContent=mtlMap.size||'—';
-    document.getElementById('i-texs').textContent=texLoaded||'none';
+    // Store stats on the last registered model
+    const _lastMdl = models[models.length-1];
+    if(_lastMdl){
+      _lastMdl.stats = {
+        verts: (parsed.pos.length/3)|0,
+        faces: totalFaces,
+        mats:  mtlMap.size||0,
+        texs:  texLoaded||0
+      };
+    }
+    updateInfoBar();
     document.getElementById('drop-zone').classList.add('hidden');
     document.getElementById('info-bar').style.display='flex';
     document.getElementById('btn-solid').textContent=texLoaded?'Textured':'Solid';
@@ -1968,12 +2261,14 @@ async function loadOBJ(txt,fname){
 
 // SHADING
 function applyShading(){
-  if(!curObj)return;
-  curObj.traverse(c=>{
-    if(!c.isMesh)return;
-    if(shading==='wire')c.material=new THREE.MeshBasicMaterial({color:0x16a34a,wireframe:true});
-    else if(shading==='flat')c.material=new THREE.MeshLambertMaterial({color:0xd1d5db,flatShading:true});
-    else{const o=origMats.get(c);c.material=o||new THREE.MeshStandardMaterial({color:0xe2e8f0,roughness:0.5,metalness:0.05});}
+  if(!models.length)return;
+  models.forEach(mdl=>{
+    mdl.group.traverse(c=>{
+      if(!c.isMesh)return;
+      if(shading==='wire')c.material=new THREE.MeshBasicMaterial({color:0x16a34a,wireframe:true});
+      else if(shading==='flat')c.material=new THREE.MeshLambertMaterial({color:0xd1d5db,flatShading:true});
+      else{const o=mdl.origMats.get(c);c.material=o||new THREE.MeshStandardMaterial({color:0xe2e8f0,roughness:0.5,metalness:0.05});}
+    });
   });
 }
 function setShading(m){
@@ -1988,7 +2283,7 @@ function setShading(m){
   if(t) t.childNodes[0].textContent=labels[m]+' ';
   applyShading();
 }
-function resetCamera(){orb.tgt.set(0,0,0);orb.sph.set(6,Math.PI/4,Math.PI/4);applyOrb();}
+function resetCamera(){orb.tgt.set(-0.2275,0.0,0.112);orb.sph.set(3.2978,1.2054,-2.2846);applyOrb();}
 
 // ── Camera mode ───────────────────────────────────────────────────────────────
 let cameraMode='perspective';
@@ -2011,11 +2306,843 @@ function setCameraMode(mode){
     activeCamera=camera;
   }
 }
+// ── Camera fly animation ──────────────────────────────────────────────────────
+// ── 3-keyframe Catmull-Rom camera fly (world-space XYZ) ─────────────────────
+// Keyframes: [camX,camY,camZ, tgtX,tgtY,tgtZ]
+const CAM_KF = [
+  [-2.5557, 1.1784, -1.9046,  -0.2275,  0.0000,  0.1120],  // start
+  [-1.9125, 2.4593,  0.1482,  -0.3933, -0.0363, -0.1275],  // mid
+  [-0.2976, 3.6422,  0.1747,  -0.1834, -0.0363,  0.0305],  // top
+];
+
+function catmullRom(p0,p1,p2,p3,t){
+  return 0.5*((2*p1)+(-p0+p2)*t+(2*p0-5*p1+4*p2-p3)*t*t+(-p0+3*p1-3*p2+p3)*t*t*t);
+}
+
+function animateCameraFly(durationMs, onDone){
+  const kf = CAM_KF;
+  // Ghost control points for Catmull-Rom position spline
+  const pre  = kf[0].map((_,i)=>2*kf[0][i]-kf[1][i]);
+  const post = kf[2].map((_,i)=>2*kf[2][i]-kf[1][i]);
+  const pts  = [pre, kf[0], kf[1], kf[2], post];
+
+  function samplePos(u){
+    const nSegs=kf.length-1;
+    const seg=Math.min(Math.floor(u*nSegs),nSegs-1);
+    const lt=u*nSegs-seg;
+    const p0=pts[seg],p1=pts[seg+1],p2=pts[seg+2],p3=pts[seg+3];
+    return p0.map((_,i)=>catmullRom(p0[i],p1[i],p2[i],p3[i],lt));
+  }
+
+  // Pre-compute start and end quaternions for smooth rotation slerp
+  const camTmp = new THREE.PerspectiveCamera();
+  camTmp.up.set(0,1,0);
+
+  const startKF = kf[0];
+  camTmp.position.set(startKF[0],startKF[1],startKF[2]);
+  camTmp.lookAt(startKF[3],startKF[4],startKF[5]);
+  const qStart = camTmp.quaternion.clone();
+
+  const endKF = kf[kf.length-1];
+  camTmp.position.set(endKF[0],endKF[1],endKF[2]);
+  camTmp.lookAt(endKF[3],endKF[4],endKF[5]);
+  const qEnd = camTmp.quaternion.clone();
+
+  const start=performance.now();
+  function easeInOut(t){ return t<0.5?2*t*t:-1+(4-2*t)*t; }
+
+  function step(){
+    const rawT=Math.min((performance.now()-start)/durationMs,1);
+    const t=easeInOut(rawT);
+    const s=samplePos(t);
+    const camPos=new THREE.Vector3(s[0],s[1],s[2]);
+    const tgt   =new THREE.Vector3(s[3],s[4],s[5]);
+
+    // Position follows Catmull-Rom spline
+    camera.position.copy(camPos);
+    // Rotation: simple slerp start→end (no jitter from moving target)
+    camera.up.set(0,1,0);
+    THREE.Quaternion.slerp(qStart, qEnd, camera.quaternion, t);
+
+    // Keep orb in sync
+    orb.tgt.copy(tgt);
+    orb.sph.setFromVector3(camPos.clone().sub(tgt));
+
+    if(rawT<1){
+      requestAnimationFrame(step);
+    } else {
+      camera.position.set(endKF[0],endKF[1],endKF[2]);
+      camera.quaternion.copy(qEnd);
+      orb.tgt.set(endKF[3],endKF[4],endKF[5]);
+      orb.sph.setFromVector3(camera.position.clone().sub(orb.tgt));
+      camera.up.set(0,1,0);
+      if(onDone) onDone();
+    }
+  }
+  requestAnimationFrame(step);
+}
+
+// Legacy wrapper
+function animateCameraTo(toTgt, toSph, durationMs, onDone){
+  animateCameraFly(durationMs, onDone);
+}
+
+// ── Divider sweep animation ──────────────────────────────────────────────────
+function animateDivider(fromX, toX, durationMs, onDone){
+  const start = performance.now();
+  function ease(t){ return t<0.5?2*t*t:-1+(4-2*t)*t; }
+  function step(){
+    const elapsed = performance.now()-start;
+    const rawT = Math.min(elapsed/durationMs, 1);
+    const t = ease(rawT);
+    cmpDividerX = fromX + (toX-fromX)*t;
+    layoutCmpPickers(); // moves the visible divider line
+    renderCompare();    // redraws scissored scene
+    if(rawT<1){ requestAnimationFrame(step); }
+    else { cmpDividerX=toX; layoutCmpPickers(); renderCompare(); if(onDone) onDone(); }
+  }
+  requestAnimationFrame(step);
+}
+
+// ══════════════════════════════ CLIPCUBE ═════════════════════════════════════
+// 10m × 10m × 50m box (50m = height/Y), centred on surface hit, 1m below surface
+// Phase: 'idle' → hover preview → 'placed' (rotate) → 'confirmed' (clip active)
+
+// ═══════════════════════════ CLIPCUBE ═══════════════════════════════════════
+// 50m × 50m × 25m box.  During hover the LOWER-LEFT corner follows the cursor.
+// First click  → places box, mouse now rotates around box centre.
+// Second click → confirms rotation, clip applied, normal navigation resumes.
+// ESC          → deactivates and removes clip at any phase.
+
+const CC = {
+  W: 50, D: 50, H: 25,   // X, Z, Y in world metres
+  Z_OFFSET: -1,           // 1m below surface (lower edge)
+};
+
+let clipcubeActive = false;
+let ccPhase        = 'idle';   // 'idle' | 'hover' | 'placed' | 'confirmed'
+let ccMesh         = null;
+let ccAngle        = 0;
+let ccCenter       = new THREE.Vector3(); // world-space box centre
+let ccCorner       = new THREE.Vector3(); // lower-left corner (surface hit)
+let ccClipPlanes   = [];
+
+// ── helpers ──────────────────────────────────────────────────────────────────
+
+// Compute world-space box centre from the lower-left corner at angle=0.
+// "Lower-left" in local XZ = (-hw, 0, -hd).
+// With no rotation the centre is simply corner + (hw, 0, hd).
+// Sample average surface Y from all visible model geometry vertices
+function ccAvgSurfaceY(){
+  let sum = 0, count = 0;
+  models.forEach(m=>{
+    if(!m.visible) return;
+    m.group.traverse(ch=>{
+      if(!ch.isMesh) return;
+      const pos = ch.geometry.attributes.position;
+      if(!pos) return;
+      const mat4 = ch.matrixWorld;
+      const v = new THREE.Vector3();
+      // Sample every Nth vertex for speed
+      const step = Math.max(1, Math.floor(pos.count / 500));
+      for(let i=0;i<pos.count;i+=step){
+        v.fromBufferAttribute(pos,i).applyMatrix4(mat4);
+        sum += v.y; count++;
+      }
+    });
+  });
+  return count > 0 ? sum/count : 0;
+}
+
+function ccComputeCenter(corner){
+  const s  = unitsPerMeter || 1;
+  const hw = (CC.W * s) / 2;
+  const hd = (CC.D * s) / 2;
+  const yOff = CC.Z_OFFSET * s;
+  return new THREE.Vector3(
+    corner.x + hw,
+    corner.y + yOff + (CC.H * s) / 2,
+    corner.z + hd
+  );
+}
+
+// Position mesh: always rotate around the stored ccCenter.
+// During hover: corner follows mouse, center recalculated fresh each frame.
+// During placed: center is fixed; only angle changes.
+function ccPositionMesh(angle){
+  if(!ccMesh) return;
+  ccMesh.position.copy(ccCenter);
+  ccMesh.rotation.y = angle;
+}
+
+function ccCreatePreview(){
+  ccRemovePreview();
+  const s   = unitsPerMeter || 1;
+  const geo = new THREE.BoxGeometry(CC.W*s, CC.H*s, CC.D*s);
+  // 6 per-face materials so faces can be highlighted individually
+  const mats = Array.from({length:6}, ()=>new THREE.MeshBasicMaterial({
+    color: 0xff69b4, transparent: true, opacity: 0.20,
+    side: THREE.DoubleSide, depthWrite: false,
+  }));
+  ccMesh = new THREE.Mesh(geo, mats);
+  const edgesGeo = new THREE.EdgesGeometry(geo);
+  const edgesMat = new THREE.LineBasicMaterial({color: 0xff8c00, linewidth: 2});
+  ccMesh.add(new THREE.LineSegments(edgesGeo, edgesMat));
+  scene.add(ccMesh);
+}
+
+function ccRemovePreview(){
+  if(ccMesh){ scene.remove(ccMesh); ccMesh.geometry.dispose(); ccMesh = null; }
+}
+
+function ccHitSurface(ex, ey){
+  raycaster.setFromCamera(ndcFromEvent(ex, ey), activeCamera || camera);
+  const allMeshes = [];
+  models.forEach(m=>{ if(m.visible) m.group.traverse(ch=>{ if(ch.isMesh) allMeshes.push(ch); }); });
+  const hits = raycaster.intersectObjects(allMeshes, false);
+  if(hits.length){
+    const camDir = camera.getWorldDirection(new THREE.Vector3());
+    const wn = new THREE.Vector3();
+    for(const h of hits){
+      if(h.face){
+        wn.copy(h.face.normal).applyQuaternion(h.object.getWorldQuaternion(new THREE.Quaternion())).normalize();
+        if(wn.dot(camDir) < 0) return h.point;
+      }
+    }
+    return hits[0].point;
+  }
+  const ray = raycaster.ray;
+  if(Math.abs(ray.direction.y) > 0.0001){
+    const t = -ray.origin.y / ray.direction.y;
+    return ray.origin.clone().addScaledVector(ray.direction, t);
+  }
+  return orb.tgt.clone();
+}
+
+// ── main handlers ─────────────────────────────────────────────────────────────
+function toggleClipcube(){
+  clipcubeActive = !clipcubeActive;
+  const btn = document.getElementById('btn-m-clipcube');
+  if(clipcubeActive){
+    btn.classList.add('active-orange');
+    vp.style.cursor = 'crosshair';
+    ccPhase = 'hover';
+    ccAngle = 0;
+    ccCreatePreview();
+    document.getElementById('cc-hint').style.display = 'block';
+    const _hp = document.getElementById('cc-hint-place');
+    const _he = document.getElementById('cc-hint-edit');
+    if(_hp) _hp.style.display = 'block';
+    if(_he) _he.style.display = 'none';
+    document.addEventListener('mousemove', ccMouseMove, true);
+    document.addEventListener('keydown',   ccKeyDown,   true);
+    document.addEventListener('keyup',     ccKeyUp,     true);
+  } else {
+    ccDeactivate();
+  }
+}
+
+function ccMouseMove(e){
+  if(!clipcubeActive || !ccMesh) return;
+  const rect = vp.getBoundingClientRect();
+
+  if(ccPhase === 'hover'){
+    const pt = ccHitSurface(e.clientX, e.clientY);
+    ccCorner.copy(pt);
+    // Recompute centre each frame while hovering (angle=0)
+    ccCenter.copy(ccComputeCenter(pt));
+    ccPositionMesh(0);
+
+  } else if(ccPhase === 'placed'){
+    // Raycast mouse onto XZ plane at cube centre Y — same method as confirmed rotate
+    const worldPt = ccRaycastXZPlane(e.clientX, e.clientY, ccCenter.y);
+    if(worldPt){
+      const dx = worldPt.x - ccCenter.x;
+      const dz = worldPt.z - ccCenter.z;
+      if(Math.hypot(dx, dz) > 0.01) ccAngle = Math.atan2(dx, dz);
+    }
+    ccPositionMesh(ccAngle);
+  }
+}
+
+let _ccEscTimer = null;
+
+function ccKeyDown(e){
+  if(e.key === 'Escape'){
+    if(_ccEscTimer){
+      // Second ESC within 400ms — deactivate completely
+      clearTimeout(_ccEscTimer);
+      _ccEscTimer = null;
+      ccDeactivate();
+    } else {
+      // First ESC: just start the timer, change nothing visible
+      _ccEscTimer = setTimeout(()=>{ _ccEscTimer = null; }, 400);
+    }
+    return;
+  }
+  if(e.key === 'Control' && ccPhase === 'confirmed'){
+    ccShowForEdit();
+  }
+}
+function ccKeyUp(e){
+  if(e.key === 'Control' && ccPhase === 'confirmed'){
+    ccHideAfterEdit();
+  }
+}
+
+// ── CTRL-show state ───────────────────────────────────────────────────────────
+let ccEditActive  = false;   // true while CTRL held in confirmed phase
+let ccHoverFace   = null;    // 'px'|'nx'|'pz'|'nz'|'py'|'ny'
+let ccDragFace    = null;    // face being dragged (resize)
+let ccDragMove    = false;   // true when CTRL+ALT dragging whole box
+let ccDragRotate  = false;   // true when CTRL+ALT+SHIFT rotating
+let ccDragStart   = null;    // {x,y} screen pos at drag start
+let ccDragOrigin  = null;    // dimension value at drag start
+let ccMoveOrigin  = null;    // {pos: Vector3, corner: Vector3} at move start
+// Separate mutable dimensions (scaled by unitsPerMeter at apply time)
+let ccDims = { W: CC.W, D: CC.D, H: CC.H };
+
+// Face colours
+const CC_FACE_NORMAL   = 0xff69b4;
+const CC_FACE_HOVER    = 0xff0080;
+const CC_FACE_DRAG     = 0xff4500;
+
+function ccShowForEdit(){
+  if(!ccMesh || ccEditActive) return;
+  ccEditActive = true;
+  ccMesh.visible = true;
+  vp.style.cursor = 'crosshair';
+  document.addEventListener('mousemove', ccEditMouseMove, true);
+  document.addEventListener('mousedown', ccEditMouseDown, true);
+  document.addEventListener('mouseup',   ccEditMouseUp,   true);
+  document.addEventListener('mousemove', ccUpdateCursor,  true);
+}
+
+function ccHideAfterEdit(){
+  if(!ccEditActive) return;
+  ccEditActive = false;
+  ccDragFace = null;
+  ccDragMove = false;
+  ccDragRotate = false;
+  if(ccMesh){ ccMesh.visible = false; ccSetFaceColor(CC_FACE_NORMAL); }
+  vp.style.cursor = '';
+  ccHoverFace = null;
+  document.removeEventListener('mousemove', ccEditMouseMove, true);
+  document.removeEventListener('mousedown', ccEditMouseDown, true);
+  document.removeEventListener('mouseup',   ccEditMouseUp,   true);
+  document.removeEventListener('mousemove', ccUpdateCursor,  true);
+}
+
+// Rebuild mesh geometry with current ccDims
+function ccRebuildMesh(){
+  if(!ccMesh) return;
+  const s   = unitsPerMeter || 1;
+  const geo = new THREE.BoxGeometry(ccDims.W*s, ccDims.H*s, ccDims.D*s);
+  ccMesh.geometry.dispose();
+  ccMesh.geometry = geo;
+  // Rebuild edges
+  const old = ccMesh.children[0];
+  if(old){ ccMesh.remove(old); old.geometry.dispose(); }
+  const eg = new THREE.EdgesGeometry(geo);
+  const em = new THREE.LineBasicMaterial({color:0xff8c00,linewidth:2});
+  ccMesh.add(new THREE.LineSegments(eg, em));
+}
+
+// Tint the face material (BoxGeometry groups: +x=0 -x=1 +y=2 -y=3 +z=4 -z=5)
+const CC_FACE_IDX = {px:0,nx:1,py:2,ny:3,pz:4,nz:5};
+function ccSetFaceColor(baseColor, highlightFace){
+  if(!ccMesh) return;
+  const mats = [];
+  for(let i=0;i<6;i++){
+    const col = (highlightFace !== undefined && CC_FACE_IDX[highlightFace]===i)
+      ? CC_FACE_HOVER : baseColor;
+    mats.push(new THREE.MeshBasicMaterial({
+      color:col, transparent:true, opacity:0.20,
+      side:THREE.DoubleSide, depthWrite:false
+    }));
+  }
+  ccMesh.material = mats;
+}
+
+// Raycast against the clipcube mesh itself to find hovered face
+function ccRaycastFace(ex, ey){
+  raycaster.setFromCamera(ndcFromEvent(ex,ey), activeCamera||camera);
+  const hits = raycaster.intersectObject(ccMesh, false);
+  if(!hits.length) return null;
+  const fi = hits[0].face.materialIndex;
+  return ['px','nx','py','ny','pz','nz'][fi] || null;
+}
+
+// Cursor updater: shows 'move' when ALT held, 'rotate' when ALT+SHIFT held
+function ccUpdateCursor(e){
+  if(!ccEditActive) return;
+  if(e.altKey && e.ctrlKey && e.shiftKey){
+    vp.style.cursor = ccDragRotate ? 'grabbing' : 'alias';
+  } else if(e.altKey && e.ctrlKey){
+    vp.style.cursor = ccDragMove ? 'grabbing' : 'grab';
+  } else {
+    const rect = vp.getBoundingClientRect();
+    const face = ccRaycastFace(e.clientX-rect.left, e.clientY-rect.top);
+    vp.style.cursor = face ? 'ew-resize' : 'crosshair';
+  }
+}
+
+function ccPixelToMetres(dx, dy){
+  const s = unitsPerMeter || 1;
+  const vpH = vp.clientHeight;
+  const ppm = vpH / (orb ? orb.sph.radius * 4 : 10);
+  // pick dominant axis
+  return (Math.abs(dx) > Math.abs(dy) ? dx : -dy) / ppm / s;
+}
+
+// Raycast screen pos onto a horizontal plane at given world Y
+function ccRaycastXZPlane(ex, ey, planeY){
+  raycaster.setFromCamera(ndcFromEvent(ex, ey), activeCamera || camera);
+  const ray = raycaster.ray;
+  const denom = ray.direction.y;
+  if(Math.abs(denom) < 0.0001) return null;
+  const t = (planeY - ray.origin.y) / denom;
+  if(t < 0) return null;
+  return ray.origin.clone().addScaledVector(ray.direction, t);
+}
+
+function ccEditMouseMove(e){
+  if(!ccEditActive) return;
+  const rect = vp.getBoundingClientRect();
+  const ex = e.clientX - rect.left;
+  const ey = e.clientY - rect.top;
+
+  // ── ROTATE whole box (CTRL+ALT+SHIFT drag) ──────────────────────────────────
+  if(ccDragRotate){
+    // Project mouse onto XZ plane at cube Y to get cursor world pos
+    const rect2 = vp.getBoundingClientRect();
+    const worldPt = ccRaycastXZPlane(e.clientX, e.clientY, ccMesh.position.y);
+    if(worldPt){
+      // Angle from box centre to cursor on XZ plane
+      const dx = worldPt.x - ccCenter.x;
+      const dz = worldPt.z - ccCenter.z;
+      const cursorAngle = Math.atan2(dx, dz);
+      // New box angle = start angle + delta from drag-start angle
+      ccAngle = ccMoveOrigin.startAngle + (cursorAngle - ccMoveOrigin.grabAngle);
+      ccPositionMesh(ccAngle);
+      ccApplyClip();
+    }
+    return;
+  }
+
+  // ── MOVE whole box (CTRL+ALT drag) — cursor follows mouse on XZ plane ──────
+  if(ccDragMove){
+    // Raycast mouse onto horizontal plane at cube centre Y
+    const rect2 = vp.getBoundingClientRect();
+    const worldPt = ccRaycastXZPlane(e.clientX, e.clientY, ccMesh.position.y);
+    if(worldPt){
+      // Grab point stays under cursor — free XZ movement
+      const offX = worldPt.x - ccMoveOrigin.grab.x;
+      const offZ = worldPt.z - ccMoveOrigin.grab.z;
+      ccMesh.position.set(
+        ccMoveOrigin.pos.x + offX,
+        ccMesh.position.y,
+        ccMoveOrigin.pos.z + offZ
+      );
+      ccCenter.set(ccMesh.position.x, ccMesh.position.y, ccMesh.position.z);
+      ccCorner.set(
+        ccMoveOrigin.corner.x + offX,
+        ccCorner.y,
+        ccMoveOrigin.corner.z + offZ
+      );
+      ccApplyClip();
+    }   // end if(worldPt)
+    return;
+  }   // end if(ccDragMove)
+
+  // ── RESIZE face drag ───────────────────────────────────────────────────────
+  if(ccDragFace){
+    const dx = e.clientX - ccDragStart.x;
+    const dy = e.clientY - ccDragStart.y;
+    const delta = ccPixelToMetres(dx, dy);
+    const MIN = 2;
+    const s2 = unitsPerMeter || 1;
+
+    if(ccDragFace==='px'||ccDragFace==='nx'){
+      ccDims.W = Math.max(MIN, ccDragOrigin + delta);
+      // Keep XZ centre; Y centre stays
+      ccRebuildMesh();
+      ccMesh.position.set(ccCenter.x, ccCenter.y, ccCenter.z);
+
+    } else if(ccDragFace==='pz'||ccDragFace==='nz'){
+      ccDims.D = Math.max(MIN, ccDragOrigin + delta);
+      ccRebuildMesh();
+      ccMesh.position.set(ccCenter.x, ccCenter.y, ccCenter.z);
+
+    } else if(ccDragFace==='py'){
+      // Top face: grow upward — move centre up, bottom stays
+      const newH   = Math.max(MIN, ccDragOrigin + delta);
+      const dH     = (newH - ccDims.H) * s2;
+      ccDims.H     = newH;
+      ccRebuildMesh();
+      ccMesh.position.setY(ccCenter.y + dH / 2);
+      ccCenter.y = ccMesh.position.y;
+
+    } else if(ccDragFace==='ny'){
+      // Bottom face: grow downward — move centre down, top stays
+      const newH   = Math.max(MIN, ccDragOrigin - delta);
+      const dH     = (newH - ccDims.H) * s2;
+      ccDims.H     = newH;
+      ccRebuildMesh();
+      ccMesh.position.setY(ccCenter.y - dH / 2);
+      ccCenter.y = ccMesh.position.y;
+      ccCorner.y = ccMesh.position.y - (ccDims.H * s2) / 2 - (CC.Z_OFFSET * s2);
+    }
+
+    ccApplyClip();
+    ccSetFaceColor(CC_FACE_NORMAL, ccDragFace);
+    return;
+  }
+
+  // ── Hover highlight ────────────────────────────────────────────────────────
+  if(!e.altKey){
+    const face = ccRaycastFace(ex, ey);
+    if(face !== ccHoverFace){
+      ccHoverFace = face;
+      ccSetFaceColor(CC_FACE_NORMAL, face || undefined);
+    }
+  }
+}
+
+function ccEditMouseDown(e){
+  if(!ccEditActive) return;
+  e.stopPropagation();
+
+  // CTRL+ALT+SHIFT → rotate whole box around its centre
+  if(e.altKey && e.ctrlKey && e.shiftKey){
+    const rect4 = vp.getBoundingClientRect();
+    // Temporarily clear clipping so raycast hits full mesh surface
+    renderer.localClippingEnabled = false;
+    const surfPt = ccHitSurface(e.clientX, e.clientY);
+    renderer.localClippingEnabled = true;
+    const dx = surfPt.x - ccCenter.x;
+    const dz = surfPt.z - ccCenter.z;
+    ccDragRotate = true;
+    ccDragStart  = {x: e.clientX, y: e.clientY};
+    ccMoveOrigin = {
+      startAngle: ccAngle,
+      grabAngle:  Math.atan2(dx, dz),
+    };
+    // Prevent orbit controls from also rotating the camera
+    orb.drag = false; orb.pan = false;
+    vp.style.cursor = 'grabbing';
+    return;
+  }
+
+  // CTRL+ALT → move whole box
+  if(e.altKey && e.ctrlKey){
+    const rect3 = vp.getBoundingClientRect();
+    const grabPt = ccRaycastXZPlane(e.clientX, e.clientY, ccMesh.position.y) || ccMesh.position.clone();
+    ccDragMove   = true;
+    ccDragStart  = {x: e.clientX, y: e.clientY};
+    ccMoveOrigin = {
+      pos:    ccMesh.position.clone(),
+      corner: ccCorner.clone(),
+      grab:   grabPt,   // world point under cursor at drag start
+    };
+    // Prevent orbit controls from panning/rotating while we move the box
+    orb.drag = false; orb.pan = false;
+    vp.style.cursor = 'grabbing';
+    return;
+  }
+
+  // CTRL only → resize face
+  if(!ccHoverFace) return;
+  ccDragFace   = ccHoverFace;
+  ccDragStart  = {x: e.clientX, y: e.clientY};
+  const f = ccDragFace;
+  ccDragOrigin = (f==='px'||f==='nx') ? ccDims.W
+               : (f==='pz'||f==='nz') ? ccDims.D : ccDims.H;
+  vp.style.cursor = 'ew-resize';
+}
+
+function ccEditMouseUp(e){
+  if(ccDragMove)   { ccDragMove = false; }
+  if(ccDragFace)   { ccDragFace = null; }
+  if(ccDragRotate) { ccDragRotate = false; }
+  ccDragStart = null;
+}
+
+// ── Rotation grab marker (pink vertical line, 2m tall) ───────────────────────
+
+
+function ccApplyClip(){
+  // Extract axes directly from the mesh world matrix — guaranteed to match rendering.
+  ccMesh.updateMatrixWorld(true);
+  const s  = unitsPerMeter || 1;
+  // Use live ccDims (may have been adjusted by drag) not the const CC defaults
+  const hw = (ccDims.W * s) / 2;
+  const hd = (ccDims.D * s) / 2;
+  const hh = (ccDims.H * s) / 2;
+
+  // World-space local axes (normalised columns of the rotation matrix)
+  const axisX = new THREE.Vector3();
+  const axisY = new THREE.Vector3();
+  const axisZ = new THREE.Vector3();
+  ccMesh.matrixWorld.extractBasis(axisX, axisY, axisZ);
+  axisX.normalize(); axisY.normalize(); axisZ.normalize();
+
+  const ctr = ccMesh.position;
+
+  // A plane with normal N and constant d clips: N·x + d >= 0 (keeps side where N points)
+  // For each axis pair: keep points where |axis·(p - ctr)| <= half-extent
+  //   → two planes:  axis·p >= axis·ctr - h   and  -axis·p >= -(axis·ctr + h)
+  function makePair(axis, half){
+    const d = axis.dot(ctr);
+    return [
+      new THREE.Plane(axis.clone(),          -(d - half)),
+      new THREE.Plane(axis.clone().negate(),   d + half),
+    ];
+  }
+
+  ccClipPlanes = [
+    ...makePair(axisX, hw),
+    ...makePair(axisZ, hd),
+    ...makePair(axisY, hh),
+  ];
+
+  models.forEach(m=>{
+    m.group.traverse(ch=>{
+      if(!ch.isMesh) return;
+      const mats = Array.isArray(ch.material)?ch.material:[ch.material];
+      mats.forEach(mat=>{ mat.clippingPlanes=ccClipPlanes; mat.clipIntersection=false; mat.needsUpdate=true; });
+    });
+  });
+}
+
+function ccClearClip(){
+  ccClipPlanes = [];
+  models.forEach(m=>{
+    m.group.traverse(ch=>{
+      if(!ch.isMesh) return;
+      const mats = Array.isArray(ch.material)?ch.material:[ch.material];
+      mats.forEach(mat=>{ mat.clippingPlanes=[]; mat.needsUpdate=true; });
+    });
+  });
+}
+
+function ccDeactivate(){
+  clipcubeActive = false;
+  ccPhase = 'idle';
+  ccRemovePreview();
+  ccClearClip();
+  vp.style.cursor = '';
+  const btn = document.getElementById('btn-m-clipcube');
+  if(btn) btn.classList.remove('active-orange');
+  const hint = document.getElementById('cc-hint');
+  if(hint) hint.style.display = 'none';
+  document.removeEventListener('mousemove', ccMouseMove, true);
+  document.removeEventListener('keydown',   ccKeyDown,   true);
+  document.removeEventListener('keyup',     ccKeyUp,     true);
+  ccHideAfterEdit();
+}
+
+// Returns true if the click was consumed by clipcube logic
+function ccHandleClick(e){
+  if(!clipcubeActive) return false;
+  const rect = vp.getBoundingClientRect();
+
+  if(ccPhase === 'hover'){
+    // First click: lock corner + compute centre using avg surface Y, switch to rotation phase
+    const pt = ccHitSurface(e.clientX, e.clientY);
+    // Override Y with average surface height minus 2m
+    const s = unitsPerMeter || 1;
+    pt.y = ccAvgSurfaceY() - 2 * s;
+    ccCorner.copy(pt);
+    ccAngle = 0;
+    ccCenter.copy(ccComputeCenter(pt));  // fixed for all subsequent rotation
+    ccPositionMesh(0);
+    ccPhase = 'placed';
+    return true;
+
+  } else if(ccPhase === 'placed'){
+    // Second click: confirm, apply clip, release mouse/cursor
+    ccPhase = 'confirmed';
+    ccDims.W = CC.W; ccDims.D = CC.D; ccDims.H = CC.H;  // reset to base dims
+    ccApplyClip();
+    if(ccMesh) ccMesh.visible = false;   // hide preview, clip stays active
+    vp.style.cursor = '';
+    document.removeEventListener('mousemove', ccMouseMove, true);
+    // Switch hint to edit mode
+    const hPlace = document.getElementById('cc-hint-place');
+    const hEdit  = document.getElementById('cc-hint-edit');
+    if(hPlace) hPlace.style.display = 'none';
+    if(hEdit)  hEdit.style.display  = 'block';
+    // Keep keydown so ESC still works
+    return true;
+  }
+  // 'confirmed' phase: clicks pass through to normal navigation
+  return false;
+}
+
+// ── 1m³ Målekube ─────────────────────────────────────────────────────────────
+let mcActive  = false;
+let mcFrozenMeshes = [];
+let mcPhase   = 'idle';   // 'idle' | 'hover' | 'placed'
+let mcMesh    = null;
+let mcAngle   = 0;
+let mcCenter  = new THREE.Vector3();
+let mcCorner  = new THREE.Vector3();
+
+function mcBuildMesh(){
+  if(mcMesh){ scene.remove(mcMesh); mcMesh.geometry.dispose(); mcMesh = null; }
+  const s   = unitsPerMeter || 1;
+  const geo = new THREE.BoxGeometry(s, s, s);
+  const mat = new THREE.MeshBasicMaterial({ color: 0xf97316, transparent: true, opacity: 0.50, depthWrite: false, side: THREE.DoubleSide });
+  mcMesh = new THREE.Mesh(geo, mat);
+  const eGeo = new THREE.EdgesGeometry(geo);
+  const eMat = new THREE.LineBasicMaterial({ color: 0xffffff, linewidth: 1, transparent: true, opacity: 0.9 });
+  mcMesh.add(new THREE.LineSegments(eGeo, eMat));
+  mcMesh.renderOrder = 100;
+  scene.add(mcMesh);
+}
+
+function mcPosition(angle){
+  if(!mcMesh) return;
+  mcMesh.position.copy(mcCenter);
+  mcMesh.rotation.y = angle;
+}
+
+function mcComputeCenter(corner){
+  const s = unitsPerMeter || 1;
+  // Centre cube on the hit point horizontally, sit on surface vertically
+  return new THREE.Vector3(corner.x, corner.y + s/2, corner.z);
+}
+
+function mcRaycastSurface(clientX, clientY){
+  // ndcFromEvent already subtracts viewport offset — pass raw client coords
+  raycaster.setFromCamera(ndcFromEvent(clientX, clientY), activeCamera || camera);
+  const targets = [];
+  models.forEach(m=>{ if(m.visible) m.group.traverse(ch=>{ if(ch.isMesh) targets.push(ch); }); });
+  mcFrozenMeshes.forEach(m=>{ m.traverse(ch=>{ if(ch.isMesh) targets.push(ch); }); });
+  const hits = raycaster.intersectObjects(targets, false);
+  const camDir = camera.getWorldDirection(new THREE.Vector3());
+  const wn = new THREE.Vector3();
+  for(const h of hits){
+    if(h.face){
+      wn.copy(h.face.normal).applyQuaternion(h.object.getWorldQuaternion(new THREE.Quaternion())).normalize();
+      if(wn.dot(camDir) < 0) return h.point;
+    }
+  }
+  if(hits.length) return hits[0].point;
+  // Fallback to ground plane
+  const ray = raycaster.ray;
+  const fallY = ccAvgSurfaceY();
+  if(Math.abs(ray.direction.y) > 0.0001){
+    const t = (fallY - ray.origin.y) / ray.direction.y;
+    if(t > 0) return ray.origin.clone().addScaledVector(ray.direction, t);
+  }
+  return orb.tgt.clone();
+}
+
+function mcMouseMove(e){
+  if(!mcActive || !mcMesh) return;
+  if(mcPhase === 'hover'){
+    const pt = mcRaycastSurface(e.clientX, e.clientY);
+    mcCorner.copy(pt);
+    mcCenter.copy(mcComputeCenter(pt));
+    mcPosition(mcAngle);
+  } else if(mcPhase === 'placed'){
+    const worldPt = ccRaycastXZPlane(e.clientX, e.clientY, mcCenter.y);
+    if(worldPt){
+      const dx = worldPt.x - mcCenter.x;
+      const dz = worldPt.z - mcCenter.z;
+      if(Math.hypot(dx, dz) > 0.01) mcAngle = Math.atan2(dx, dz);
+    }
+    mcPosition(mcAngle);
+  }
+}
+
+function mcMouseDown(e){
+  if(!mcActive) return;
+  if(e.button !== 0) return;
+  e.stopPropagation();
+  orb.drag = false; orb.pan = false;
+  if(mcPhase === 'hover'){
+    mcPhase = 'placed';
+  } else if(mcPhase === 'placed'){
+    // Confirm current cube — freeze it in scene, create fresh cube for next hover
+    mcMesh.userData.frozen = true;
+    mcFrozenMeshes.push(mcMesh);
+    mcMesh = null;
+    mcAngle = 0;
+    mcPhase = 'hover';
+    mcBuildMesh();
+  }
+}
+
+function mcKeyDown(e){
+  if(e.key === 'Escape') mcDeactivate();
+}
+
+function mcDeactivate(){
+  mcActive = false; mcPhase = 'idle';
+  if(mcMesh){ scene.remove(mcMesh); mcMesh.geometry.dispose(); mcMesh = null; }
+  // Frozen cubes intentionally kept in scene — use mcClearAll() to remove
+  document.removeEventListener('mousemove', mcMouseMove, true);
+  document.removeEventListener('mousedown', mcMouseDown, true);
+  document.removeEventListener('keydown',   mcKeyDown,   true);
+  vp.style.cursor = '';
+  const cb = document.getElementById('tog-mcube');
+  if(cb) cb.checked = false;
+}
+
+function mcClearAll(e){
+  if(e) e.stopPropagation();
+  mcFrozenMeshes.forEach(m=>{ scene.remove(m); m.geometry.dispose(); });
+  mcFrozenMeshes = [];
+}
+
+function toggleMeterCube(e){
+  if(e) e.stopPropagation();
+  const cb = document.getElementById('tog-mcube');
+  cb.checked = !cb.checked;
+  if(cb.checked){
+    mcActive = true; mcPhase = 'hover'; mcAngle = 0;
+    mcBuildMesh();
+    vp.style.cursor = 'crosshair';
+    document.addEventListener('mousemove', mcMouseMove, true);
+    document.addEventListener('mousedown', mcMouseDown, true);
+    document.addEventListener('keydown',   mcKeyDown,   true);
+  } else {
+    mcDeactivate();
+  }
+}
+
+// ── Utviklerverktøy toggles ──────────────────────────────────────────────────
+function toggleDevPoly(e){
+  if(e) e.stopPropagation();
+  const cb=document.getElementById('tog-poly'); cb.checked=!cb.checked;
+  document.getElementById('dev-poly-group').style.display=cb.checked?'flex':'none';
+  updateInfoBarVisibility();
+}
+function toggleDevCam(e){
+  if(e) e.stopPropagation();
+  const cb=document.getElementById('tog-cam'); cb.checked=!cb.checked;
+  document.getElementById('dev-cam-group').style.display=cb.checked?'flex':'none';
+  updateInfoBarVisibility();
+}
+function updateInfoBarVisibility(){
+  const polyOn=document.getElementById('tog-poly').checked;
+  const camOn=document.getElementById('tog-cam').checked;
+  const bar=document.getElementById('info-bar');
+  if(polyOn||camOn){ bar.style.display='flex'; }
+  else { const v=document.getElementById('i-verts'); if(!v||v.textContent.trim()==='—') bar.style.display='none'; }
+}
+
+// snittClearClip alias for compatibility
+function snittClearClip(){ ccClearClip(); }
+
 function setStdView(dir){
-  setCameraMode('orthographic');
+  // Keep current camera mode — user chooses perspective/ortho separately
   const d=8;
   const views={
-    top:   {pos:[0,d,0.001], up:[0,0,-1]},
+    top:   {pos:[0,d,0.001], up:[0,1,0]},
     bottom:{pos:[0,-d,0.001],up:[0,0,1]},
     front: {pos:[0,0,d],     up:[0,1,0]},
     back:  {pos:[0,0,-d],    up:[0,1,0]},
@@ -2089,7 +3216,7 @@ document.addEventListener('click',()=>document.getElementById('tex-dropdown').cl
 
 function updateTexDropdown(mtlMap,texLoaded){
   const inner=document.getElementById('tex-wrap-inner');
-  const badge=document.getElementById('tex-badge');
+  const badge=document.getElementById('tex-badge'); if(!badge) return;
   const list=document.getElementById('dd-tex-list');
 
   if(!pendingMtllibs.length&&!mtlMap.size){if(inner)inner.style.display='none';return;}
@@ -2112,7 +3239,7 @@ function updateTexDropdown(mtlMap,texLoaded){
   }
 }
 async function reapplyMaterials(){
-  if(!curObj)return;setLoader(true,'Reloading materials…');await tick();
+  if(!curObj)return;setLoader(true,'Laster materialer på nytt…');await tick();
   try{
     const mtlMap=new Map();
     for(const mlib of pendingMtllibs){const f=findFile(mlib);if(f)parseMTL(await readText(f)).forEach((v,k)=>mtlMap.set(k,v));}
@@ -2134,6 +3261,7 @@ async function reapplyMaterials(){
 // ── Compare mode ─────────────────────────────────────────────────────────────
 let compareActive=false;
 let cmpModelIds=[null,null]; // [left, right]
+let _hiddenUntilCompare=null; // model id to keep hidden until compare activates
 let cmpDividerX=0.5;        // fraction 0..1
 let cmpDraggingDiv=false;
 let cmpDragStartX=0;
@@ -2141,11 +3269,26 @@ let cmpDragStartX=0;
 const cmpOverlay=document.getElementById('compare-overlay');
 const cmpDiv=document.getElementById('cmp-div');
 
+function cmpShowWait(){
+  const fog = document.getElementById('cmp-wait-fog');
+  fog.classList.remove('fade-out');
+  fog.classList.add('visible');
+}
+function cmpHideWait(){
+  const fog = document.getElementById('cmp-wait-fog');
+  fog.classList.add('fade-out');
+  setTimeout(()=>{ fog.classList.remove('visible','fade-out'); }, 380);
+}
+
 function toggleCompare(){
   compareActive=!compareActive;
   const btn=document.getElementById('btn-compare');
   if(compareActive){
     btn.classList.add('active');
+    // Release any pending hide guard immediately
+    _hiddenUntilCompare = null;
+    // Make all loaded models logically visible so compare can use them
+    models.forEach(m=>{ m.visible=true; m.group.visible=true; });
     if(models.length>=2){
       const sorted=[...models].sort((a,b)=>(a.folderName||a.name).localeCompare(b.folderName||b.name));
       cmpModelIds=[sorted[0].id, sorted[sorted.length-1].id];
@@ -2154,7 +3297,12 @@ function toggleCompare(){
     }
     refreshCompareSelectors();
     cmpOverlay.classList.add('active');
-    renderCompare();
+    cmpShowWait();
+    // Small delay to let the fog render before heavy compare work
+    setTimeout(()=>{
+      renderCompare();
+      cmpHideWait();
+    }, 80);
   } else {
     btn.classList.remove('active');
     cmpOverlay.classList.remove('active');
@@ -2169,7 +3317,14 @@ function refreshCompareSelectors(){
     const sel=document.getElementById('cmp-sel-'+side);
     if(!sel) return;
     const cur=cmpModelIds[idx];
-    sel.innerHTML=models.map(m=>`<option value="${m.id}" ${m.id===cur?'selected':''}>${m.folderName||m.name}</option>`).join('');
+    sel.innerHTML=models.map(m=>{
+      // Find matching ghModel for meta
+      const gm = ghModels.find(g=>g.obj_path===m.objPath);
+      const label = gm
+        ? 'Uke '+(gm.meta?gm.meta.week+' · '+gm.meta.year:gm.display) + (gm.meta?' · '+gm.meta.dayName:'')
+        : (m.folderName||m.name);
+      return `<option value="${m.id}" ${m.id===cur?'selected':''}>${label}</option>`;
+    }).join('');
   });
   // update pickers position based on divider
   layoutCmpPickers();
@@ -2239,8 +3394,124 @@ window.addEventListener('mouseup',e=>{
 const MODEL_COLOURS = ['#3b82f6','#f97316','#a855f7','#ec4899','#14b8a6','#eab308','#ef4444','#84cc16'];
 
 let ghModels = [];
+
+// Weekday rainbow colors — fixed per day (0=Sun … 6=Sat)
+const DAY_COLORS = ['#f87171','#fb923c','#facc15','#4ade80','#38bdf8','#818cf8','#e879f9'];
+const DAY_NAMES  = ['Søndag','Mandag','Tirsdag','Onsdag','Torsdag','Fredag','Lørdag'];
+
+// Given a folder name like "uke10_2026" or "uke10_2026_2026-03-05",
+// returns {week, year, dayName, dayColor} or null
+function parseFolderMeta(folderName){
+  const mDate = folderName.match(/(\d{4}-\d{2}-\d{2})/);
+  const mUke  = folderName.match(/uke(\d+)[_-](\d{4})/i);
+  if(!mUke) return null;
+  const week = parseInt(mUke[1],10);
+  const year = parseInt(mUke[2],10);
+  let dayIndex = null;
+  if(mDate){
+    dayIndex = new Date(mDate[1]).getUTCDay();
+  } else {
+    // Calculate Monday of ISO week
+    const jan4 = new Date(Date.UTC(year,0,4));
+    const startOfWeek = new Date(jan4);
+    startOfWeek.setUTCDate(jan4.getUTCDate() - ((jan4.getUTCDay()+6)%7));
+    startOfWeek.setUTCDate(startOfWeek.getUTCDate() + (week-1)*7);
+    dayIndex = startOfWeek.getUTCDay(); // Monday = 1
+  }
+  return { week, year, dayIndex, dayName: DAY_NAMES[dayIndex], dayColor: DAY_COLORS[dayIndex] };
+}
 let ghLoadedPaths = new Set();
 let ghCurrentFolder = null;
+
+// ── Model file cache (Cache API) ─────────────────────────────────────────────
+const MODEL_CACHE_NAME = 'tamburparken-models-v1';
+
+async function cachedFetch(url){
+  // Return cached response if present, otherwise fetch + cache
+  try {
+    const cache = await caches.open(MODEL_CACHE_NAME);
+    const hit   = await cache.match(url);
+    if(hit) return hit;
+    const resp  = await fetch(url);
+    if(resp.ok) await cache.put(url, resp.clone());
+    return resp;
+  } catch(e){
+    // Cache API unavailable (e.g. private browsing on some browsers) — fall back
+    return fetch(url);
+  }
+}
+
+async function getCachedFolderList(){
+  // Returns previously stored folder-name array, or null
+  try {
+    const cache = await caches.open(MODEL_CACHE_NAME);
+    const hit   = await cache.match('__folder-list__');
+    if(!hit) return null;
+    return await hit.json();
+  } catch(e){ return null; }
+}
+
+async function setCachedFolderList(names){
+  try {
+    const cache = await caches.open(MODEL_CACHE_NAME);
+    await cache.put('__folder-list__', new Response(JSON.stringify(names), {headers:{'Content-Type':'application/json'}}));
+  } catch(e){}
+}
+
+// ── Geometry cache (IndexedDB) ───────────────────────────────────────────────
+const GEO_DB_NAME    = 'tamburparken-geo-v1';
+const GEO_STORE_NAME = 'models';
+
+function openGeoDB(){
+  return new Promise((res,rej)=>{
+    const req = indexedDB.open(GEO_DB_NAME, 1);
+    req.onupgradeneeded = e => e.target.result.createObjectStore(GEO_STORE_NAME);
+    req.onsuccess = e => res(e.target.result);
+    req.onerror   = e => rej(e.target.error);
+  });
+}
+
+async function geoCacheGet(key){
+  try{
+    const db = await openGeoDB();
+    const result = await new Promise((res,rej)=>{
+      const tx  = db.transaction(GEO_STORE_NAME,'readonly');
+      const req = tx.objectStore(GEO_STORE_NAME).get(key);
+      req.onsuccess = e => res(e.target.result ?? null);
+      req.onerror   = e => rej(e.target.error);
+    });
+    if(!result || !result.meshData || result.meshData.length === 0) return null;
+    return result;
+  }catch(e){ return null; }
+}
+
+async function geoCacheSet(key, value){
+  try{
+    const db = await openGeoDB();
+    await new Promise((res,rej)=>{
+      const tx = db.transaction(GEO_STORE_NAME,'readwrite');
+      if(value === null){
+        tx.objectStore(GEO_STORE_NAME).delete(key);
+      } else {
+        tx.objectStore(GEO_STORE_NAME).put(value, key);
+      }
+      tx.oncomplete = () => res();
+      tx.onerror    = e => rej(e.target.error);
+    });
+  }catch(e){ console.warn('geoCacheSet feilet:',e); }
+}
+
+async function geoCacheDelete(key){
+  try{
+    const db = await openGeoDB();
+    await new Promise((res,rej)=>{
+      const tx  = db.transaction(GEO_STORE_NAME,'readwrite');
+      tx.objectStore(GEO_STORE_NAME).delete(key);
+      tx.oncomplete = () => res();
+      tx.onerror    = e => rej(e.target.error);
+    });
+  }catch(e){}
+}
 
 async function ghFetchModels(){
   const listEl = document.getElementById('gh-model-list');
@@ -2253,7 +3524,25 @@ async function ghFetchModels(){
 
     // Filter to subfolders only (ignore placeholder.txt etc)
     const folders = entries.filter(e=>e.type==='dir');
-    folders.sort((a,b)=>b.name.localeCompare(a.name)); // newest first
+    // Sort newest first: year DESC, then week DESC
+    folders.sort((a,b)=>{
+      const pa=a.name.match(/uke(\d+)[_-](\d{4})/i), pb=b.name.match(/uke(\d+)[_-](\d{4})/i);
+      const ya=pa?+pa[2]:0, yb=pb?+pb[2]:0;
+      if(ya!==yb) return yb-ya;
+      const wa=pa?+pa[1]:0, wb=pb?+pb[1]:0;
+      return wb-wa;
+    });
+
+    // Check if folder list matches cache — if so, mark cached models
+    const folderNames = folders.map(f=>f.name);
+    const cachedNames = await getCachedFolderList();
+    const cacheValid  = cachedNames && JSON.stringify(folderNames)===JSON.stringify(cachedNames);
+    if(cacheValid){
+      console.log('[Cache] Mappe-liste uendret — bruker cache for filer');
+    } else {
+      await setCachedFolderList(folderNames);
+    }
+    window._cacheValid = cacheValid; // flag for ghLoadModel
 
     // Step 2: for each folder, fetch its contents to find the .obj + related files
     ghModels = [];
@@ -2267,9 +3556,15 @@ async function ghFetchModels(){
       ghModels.push({
         name: obj.name,
         folder: folder.name,
-        display: folder.name.replace(/[-_]/g,' '),
+        display: (()=>{
+          const meta = parseFolderMeta(folder.name);
+          if(meta) return 'Uke '+meta.week+' · '+meta.year;
+          const m2=folder.name.match(/uke(\d+)/i);
+          return m2?'Uke '+m2[1]:folder.name.replace(/[-_]/g,' ');
+        })(),
+        meta: parseFolderMeta(folder.name),
         obj_path: GH.folder+'/'+folder.name+'/'+obj.name,
-        related: related.map(f=>({name:f.name, path:GH.folder+'/'+folder.name+'/'+f.name})),
+        related: related.map(f=>({name:f.name, path:GH.folder+'/'+folder.name+'/'+f.name, size:f.size||0})),
         size: obj.size,
         loaded: false
       });
@@ -2277,14 +3572,168 @@ async function ghFetchModels(){
 
     ghRenderList();
 
-    // Auto-load 2 newest on first visit
+    // Auto-load on first visit:
+    // 1. Load newest model immediately (user can navigate right away)
+    // 2. Load 2nd newest silently in background — no loader overlay shown
+    // 3. When background load done, activate compare + flash Modeller button green
     if(models.length===0 && ghModels.length>0){
-      const toLoad = ghModels.slice(0, Math.min(2, ghModels.length));
-      for(const m of toLoad) await ghLoadModel(m);
+      const newest = ghModels[0];
+      const second = ghModels.length>1 ? ghModels[1] : null;
+
+      // Show waiting message only during first (foreground) load
+      const waitMsg=document.getElementById('loader-wait-msg');
+      if(waitMsg) waitMsg.style.display='';
+
+      // Load newest with full loader UI
+      await ghLoadModel(newest);
+
+      // Hide loader — user can now navigate freely
+      setLoader(false);
+      if(waitMsg) waitMsg.style.display='none';
+
+      // Set pivot to model center by raycasting from screen center
+      // Uses a brief visual cue (pivot dot) so user sees what is being targeted
+      (()=>{
+        const cx = vp.clientWidth  / 2;
+        const cy = vp.clientHeight / 2;
+        const ndc = new THREE.Vector2(0, 0); // screen center in NDC
+        raycaster.setFromCamera(ndc, activeCamera || camera);
+        const allMeshes = [];
+        models.forEach(m=>{ if(m.visible) m.group.traverse(ch=>{ if(ch.isMesh) allMeshes.push(ch); }); });
+        const hits = raycaster.intersectObjects(allMeshes, false);
+        if(hits.length){
+          const camDir = camera.getWorldDirection(new THREE.Vector3());
+          const wn = new THREE.Vector3();
+          let chosen = hits[0];
+          for(const h of hits){
+            if(h.face){
+              wn.copy(h.face.normal).applyQuaternion(h.object.getWorldQuaternion(new THREE.Quaternion())).normalize();
+              if(wn.dot(camDir) < 0){ chosen = h; break; }
+            }
+          }
+          // Smoothly set pivot to center-screen hit point
+          const camPos = camera.position.clone();
+          orb.tgt.copy(chosen.point);
+          orb.sph.setFromVector3(camPos.clone().sub(orb.tgt));
+          // Show green pivot dot at screen center
+          showPivotDot(cx, cy);
+        }
+      })();
+
+      if(second){
+        // Background load: suppress loader overlay using a flag
+        window._bgLoading = true;
+        if(!_userHasNavigated) _navLocked = true;
+
+        ghLoadModel(second).then(()=>{
+          window._bgLoading = false;
+          setLoader(false);
+
+          // Hide the older model — it will only appear through the compare divider
+          // 'second' (ghModels[1]) is the older model; find it by objPath
+          const olderMdl = models.find(m=>m.objPath===second.obj_path);
+          if(olderMdl){
+            olderMdl.group.visible=false;
+            olderMdl.visible=false;
+            _hiddenUntilCompare=olderMdl.id; // enforced every frame in render loop
+          }
+
+          // Flash "Modeller" button green for 10 seconds
+          const modBtn=document.querySelector('[data-drop="drop-file"]');
+          if(modBtn){
+            modBtn.style.transition='color 0.4s,background 0.4s,border-color 0.4s';
+            modBtn.style.color='#22c55e';
+            modBtn.style.background='rgba(34,197,94,0.18)';
+            modBtn.style.borderColor='#22c55e';
+            setTimeout(()=>{
+              modBtn.style.color='';
+              modBtn.style.background='';
+              modBtn.style.borderColor='';
+            }, 10000);
+          }
+
+          if(_userHasNavigated){
+            // User already explored — skip auto-compare, just notify
+            _navLocked = false;
+            return;
+          }
+
+          // User hasn't moved — fly camera along 3-keyframe path then compare
+          // Fly to top immediately (5s), then animate divider
+          if(_userHasNavigated) return;
+          animateCameraFly(5000, ()=>{
+              if(_userHasNavigated) return;
+              if(models.length>=2){
+                // left=older(second), right=newest — divider starts right so newest fills screen
+                const newestMdl = models.find(m=>m.objPath===newest.obj_path);
+                const olderMdl2 = models.find(m=>m.objPath===second.obj_path);
+                compareActive=true;
+                cmpModelIds=[(olderMdl2||models[0]).id, (newestMdl||models[models.length-1]).id];
+                document.getElementById('btn-compare').classList.add('active');
+                refreshCompareSelectors();
+                // Restore group.visible on both models before compare takes over
+                models.forEach(m=>{ m.group.visible=true; });
+                // Start divider fully left (0.0) = oldest fills whole screen
+                cmpDividerX=0.0;
+                cmpOverlay.classList.add('active');
+                layoutCmpPickers();
+                // Show fog while compare initialises
+                cmpShowWait();
+                setTimeout(()=>{
+                  renderCompare();
+                  cmpHideWait();
+                  // Sweep left→right over 5s (newest is revealed)
+                  animateDivider(0.0, 1.0, 5000, ()=>{
+                  // Settle to centre over 2s, then flash measure button
+                  animateDivider(1.0, 0.5, 2000, ()=>{
+                    _navLocked = false;
+                    const mBtn=document.getElementById('measure-trigger');
+                    if(mBtn){
+                      let on=true;
+                      mBtn.style.transition='color 0.25s,background 0.25s,border-color 0.25s';
+                      const iv=setInterval(()=>{
+                        on=!on;
+                        mBtn.style.color=on?'#f97316':'';
+                        mBtn.style.background=on?'rgba(249,115,22,0.15)':'';
+                        mBtn.style.borderColor=on?'#f97316':'';
+                      },400);
+                      setTimeout(()=>{
+                        clearInterval(iv);
+                        mBtn.style.color='';
+                        mBtn.style.background='';
+                        mBtn.style.borderColor='';
+                      },3000);
+                    }
+                  });
+                });
+                }, 80); // end setTimeout fog
+              }
+          });
+        }).catch(()=>{
+          window._bgLoading = false;
+        });
+      }
     }
   } catch(err){
     listEl.innerHTML = '<div style="padding:0.4rem 0.8rem;font-size:0.75rem;color:#ef4444">⚠ '+err.message+'</div>';
   }
+}
+
+function updateNoModelMsg(){
+  const anyVisible = models.some(m=>m.visible);
+  document.getElementById('no-model-msg').classList.toggle('visible', models.length>0 && !anyVisible);
+}
+
+function ghToggleVis(objPath, visible){
+  const mdl = models.find(x=>x.objPath===objPath);
+  if(mdl){
+    mdl.visible = visible;
+    mdl.group.visible = visible;
+    // If user manually toggles this model, release the compare-pending hide guard
+    if(_hiddenUntilCompare===mdl.id) _hiddenUntilCompare=null;
+  }
+  updateInfoBar();
+  updateNoModelMsg();
 }
 
 function ghRenderList(){
@@ -2302,9 +3751,19 @@ function ghRenderList(){
     row.title = m.name+'  ('+ghFmtSize(m.size)+')'+(m.related.length?' · '+m.related.length+' relaterte filer':'');
     row.innerHTML =
       '<span class="gh-dot" style="background:'+colour+';'+(isLoaded?'':'opacity:0.3')+'"></span>'+
-      '<span class="gh-name">'+m.display+'</span>'+
-      '<span class="'+(isLoaded?'gh-loaded':'gh-size')+'">'+(isLoaded?'✓ lastet':ghFmtSize(m.size))+'</span>';
-    row.onclick = ()=>{ ghLoadModel(m); };
+      '<span class="gh-name">'+m.display+
+        (m.meta ? ' <span style="color:'+m.meta.dayColor+';font-weight:600">'+m.meta.dayName+'</span>' : '')+
+        '</span>'+
+      (isLoaded
+        ? '<label style="display:flex;align-items:center;gap:3px;cursor:pointer;color:var(--muted);font-size:0.72rem;flex-shrink:0">'+
+          '<input type="checkbox" checked data-objpath="'+m.obj_path+'" onchange="ghToggleVis(this.dataset.objpath,this.checked)" style="cursor:pointer"> vis</label>'
+        : '<span class="gh-size">'+ghFmtSize(m.size)+'</span>');
+    row.onclick = (e)=>{
+      // If click was on the vis checkbox/label, don't trigger load
+      if(e.target.closest('label')||e.target.type==='checkbox') return;
+      // Only load if not already loaded
+      if(!ghLoadedPaths.has(m.obj_path)) ghLoadModel(m);
+    };
     listEl.appendChild(row);
   });
 }
@@ -2316,48 +3775,297 @@ function ghFmtSize(b){
   return (b/1048576).toFixed(1)+'MB';
 }
 
-async function ghLoadModel(m){
-  setLoader(true,'Henter '+m.display+'…'); await tick();
-  try{
-    // Last ned relaterte filer én etter én med fremdriftsvisning
-    const total = m.related.length;
-    for(let i=0; i<total; i++){
-      const rel = m.related[i];
-      const ext = rel.name.split('.').pop().toLowerCase();
-      setLoader(true, `Henter filer… (${i+1}/${total}) ${rel.name}`); await tick();
+// ── Serialise a loaded model's meshes into a plain object for IndexedDB ──
+async function saveModelToCache(key, mdl, fname){
+  const meshData=[];
+  mdl.group.traverse(async c=>{
+    if(!c.isMesh) return;
+    const geo=c.geometry;
+    const pos=geo.attributes.position?.array;
+    const nor=geo.attributes.normal?.array;
+    const uv =geo.attributes.uv?.array;
+    const mat=c.material;
+    // Serialise texture as data-URL if present
+    let mapDataURL=null, bumpDataURL=null, alphaDataURL=null;
+    const texToDataURL=tex=>{
+      if(!tex||!tex.image) return null;
       try{
-        const resp = await fetch(GH.raw(rel.path));
-        if(!resp.ok){ console.warn('Kunne ikke laste', rel.name, resp.status); continue; }
-        const blob = await resp.blob();
-        const pf = new File([blob], rel.name, {type: blob.type});
-        fileReg.set(rel.name.toLowerCase(), pf);
-        fileReg.set(rel.name.toLowerCase().replace(/\.[^.]+$/,''), pf);
-      } catch(e){
-        console.warn('Feil ved lasting av', rel.name, e);
+        const cv=document.createElement('canvas');
+        cv.width=tex.image.width; cv.height=tex.image.height;
+        cv.getContext('2d').drawImage(tex.image,0,0);
+        return cv.toDataURL('image/jpeg',0.85);
+      }catch(e){return null;}
+    };
+    if(mat.map)      mapDataURL  =texToDataURL(mat.map);
+    if(mat.bumpMap)  bumpDataURL =texToDataURL(mat.bumpMap);
+    if(mat.alphaMap) alphaDataURL=texToDataURL(mat.alphaMap);
+    meshData.push({
+      pos: pos?Array.from(pos):null,
+      nor: nor?Array.from(nor):null,
+      uv:  uv ?Array.from(uv) :null,
+      scale: c.scale.x,
+      matName: c.userData.matName||null,
+      mat:{
+        color:mat.color?.getHex(),
+        roughness:mat.roughness, metalness:mat.metalness,
+        transparent:mat.transparent, opacity:mat.opacity,
+        side:mat.side,
+        emissive:mat.emissive?.getHex()||0,
+        mapDataURL, bumpDataURL, alphaDataURL,
+        bumpScale:mat.bumpScale||1,
       }
-    }
+    });
+  });
+  // Wait one frame so traverse can finish (it's sync but texToDataURL is sync too)
+  await tick();
+  await geoCacheSet(key,{fname, meshData});
+}
 
-    // Last ned OBJ-filen
-    setLoader(true, 'Henter modell…'); await tick();
-    const objResp = await fetch(GH.raw(m.obj_path));
-    if(!objResp.ok) throw new Error('Kunne ikke laste '+m.name+': '+objResp.status);
-    const txt = await objResp.text();
+// ── Rebuild Three.js model from cached data ──
+async function loadOBJFromCache(cached, fname){
+  origMats.clear(); pendingMtllibs=[]; allTexNames=[];
+  curObj=new THREE.Group();
+  let totalFaces=0, texLoaded=0;
+  const mtlMap=new Map();
 
-    setLoader(true, 'Bygger 3D-modell…'); await tick();
-    ghCurrentFolder = m.folder || m.display;
-    await loadOBJ(txt, m.name);
+  const loadTexFromDataURL=url=>new Promise(res=>{
+    if(!url){res(null);return;}
+    const tex=new THREE.TextureLoader().load(url,()=>res(tex),undefined,()=>res(null));
+    tex.encoding=THREE.sRGBEncoding; tex.wrapS=tex.wrapT=THREE.RepeatWrapping;
+  });
 
-    const mdl = models[models.length-1];
-    if(mdl){
-      const col = MODEL_COLOURS[ghModels.indexOf(m) % MODEL_COLOURS.length];
-      applyModelTint(mdl, col);
-    }
-    ghLoadedPaths.add(m.obj_path);
-    m.loaded = true;
-    ghRenderList();
-  } catch(err){
-    alert('Feil ved lasting: '+err.message);
+  for(const d of cached.meshData){
+    const geo=new THREE.BufferGeometry();
+    if(d.pos) geo.setAttribute('position',new THREE.Float32BufferAttribute(d.pos,3));
+    if(d.nor) geo.setAttribute('normal',  new THREE.Float32BufferAttribute(d.nor,3));
+    else      geo.computeVertexNormals();
+    if(d.uv)  geo.setAttribute('uv',      new THREE.Float32BufferAttribute(d.uv,2));
+
+    const md=d.mat;
+    const map      =await loadTexFromDataURL(md.mapDataURL);
+    const bumpMap  =await loadTexFromDataURL(md.bumpDataURL);
+    const alphaMap =await loadTexFromDataURL(md.alphaDataURL);
+    if(map||bumpMap||alphaMap) texLoaded++;
+
+    const mat=new THREE.MeshStandardMaterial({
+      color:     map?0xffffff:md.color,
+      roughness: md.roughness, metalness: md.metalness,
+      transparent:md.transparent, opacity:md.opacity, side:md.side,
+    });
+    if(map)      {mat.map=map;}
+    if(bumpMap)  {mat.bumpMap=bumpMap; mat.bumpScale=md.bumpScale||1;}
+    if(alphaMap) {mat.alphaMap=alphaMap;}
+    if(md.emissive) mat.emissive=new THREE.Color(md.emissive);
+    mat.needsUpdate=true;
+
+    const mesh=new THREE.Mesh(geo,mat);
+    mesh.scale.setScalar(d.scale);
+    mesh.userData.matName=d.matName;
+    origMats.set(mesh,mat);
+    curObj.add(mesh);
+    if(d.pos) totalFaces+=(d.pos.length/9)|0;
   }
+
+  const _omats=new Map(origMats);
+  registerModel(curObj,fname,_omats,[],[],ghCurrentFolder||fname);
+  ghCurrentFolder=null;
+  scene.add(curObj);
+
+  document.getElementById('i-fname').textContent=fname;
+  const _lastMdl=models[models.length-1];
+  if(_lastMdl){
+    _lastMdl.stats={
+      verts: cached.meshData.reduce((s,d)=>s+(d.pos?d.pos.length/3:0),0)|0,
+      faces: totalFaces, mats: mtlMap.size||0, texs: texLoaded
+    };
+  }
+  updateInfoBar();
+  document.getElementById('drop-zone').classList.add('hidden');
+  document.getElementById('info-bar').style.display='flex';
+  document.getElementById('btn-solid').textContent=texLoaded?'Textured':'Solid';
+  updateTexDropdown(mtlMap,texLoaded);
+  applyShading();
+}
+
+// Progress helpers
+function setProgress(pct, label){
+  // pct 0-100, label optional
+  if(window._bgLoading){
+    // background load — show in top-left overlay
+    const el=document.getElementById('bg-progress');
+    const lbl=document.getElementById('bg-progress-label');
+    const pctEl=document.getElementById('bg-progress-pct');
+    if(el){ el.style.display='block'; }
+    if(lbl && label) lbl.textContent=label;
+    if(pctEl) pctEl.textContent=Math.round(pct)+'%';
+  } else {
+    // foreground load — show in centre loader
+    const bar=document.getElementById('loader-progress-bar');
+    const pctEl=document.getElementById('loader-progress-pct');
+    const wrap=document.getElementById('loader-progress');
+    if(wrap) wrap.style.display='block';
+    if(bar)  bar.style.width=Math.round(pct)+'%';
+    if(pctEl) pctEl.textContent=Math.round(pct)+'%';
+    if(label) document.getElementById('loader-label').textContent=label;
+  }
+}
+function clearProgress(){
+  const wrap=document.getElementById('loader-progress');
+  const bar=document.getElementById('loader-progress-bar');
+  if(wrap) wrap.style.display='none';
+  if(bar)  bar.style.width='0%';
+  const bg=document.getElementById('bg-progress');
+  if(bg) bg.style.display='none';
+}
+
+// Fetch a URL and report progress based on known total bytes
+async function fetchWithProgress(url, knownSize, onProgress){
+  const resp = await fetch(url);
+  if(!resp.ok) return resp;
+  // Stream the body to track progress
+  const reader = resp.body.getReader();
+  const chunks = [];
+  let received = 0;
+  const total = knownSize || 0;
+  while(true){
+    const {done, value} = await reader.read();
+    if(done) break;
+    chunks.push(value);
+    received += value.length;
+    if(onProgress && total>0) onProgress(received/total);
+  }
+  const allChunks = new Uint8Array(received);
+  let pos=0;
+  for(const chunk of chunks){ allChunks.set(chunk,pos); pos+=chunk.length; }
+  // Return a Response-like object
+  const blob = new Blob([allChunks]);
+  return new Response(blob, {status:200, headers:resp.headers});
+}
+
+async function ghLoadModel(m){
+  // ── Try geometry cache first ──
+  const cacheKey='geo:'+m.obj_path;
+  const cached=await geoCacheGet(cacheKey);
+
+  if(cached){
+    setLoader(true,'Laster fra cache…'); await tick();
+    try{
+      ghCurrentFolder=m.folder||m.display;
+      await loadOBJFromCache(cached,m.name);
+      const mdl=models[models.length-1];
+      if(mdl){
+        mdl.objPath=m.obj_path;
+        const col=MODEL_COLOURS[ghModels.indexOf(m)%MODEL_COLOURS.length];
+        applyModelTint(mdl,col);
+        // Hide immediately if background load
+        if(window._bgLoading){
+          mdl.group.visible=false;
+          mdl.visible=false;
+          _hiddenUntilCompare=mdl.id;
+        }
+      }
+      ghLoadedPaths.add(m.obj_path);
+      m.loaded=true;
+      ghRenderList();
+    }catch(err){ console.warn('Cache rebuild feilet, laster på nytt:',err); await geoCacheDelete(cacheKey); }
+    clearProgress();
+    setLoader(false);
+    return;
+  }
+
+  // ── Fetch from GitHub with progress ──
+  // Total bytes = obj + all related
+  const totalBytes = (m.size||0) + m.related.reduce((s,r)=>s+(r.size||0),0);
+  let loadedBytes = 0;
+
+  const reportProgress = (label) => {
+    const pct = totalBytes>0 ? Math.min(99, (loadedBytes/totalBytes)*100) : 0;
+    setProgress(pct, label);
+  };
+
+  const _loadLabel = window._bgLoading ? 'Henter forrige uke til sammenligning…' : 'Henter '+m.display+'…';
+  setLoader(true, _loadLabel);
+  reportProgress(_loadLabel);
+  await tick();
+
+  try{
+    const total=m.related.length;
+    for(let i=0;i<total;i++){
+      const rel=m.related[i];
+      const relLabel = window._bgLoading ? `Henter forrige uke til sammenligning… (${i+1}/${total})` : `Henter filer… (${i+1}/${total})`;
+      try{
+        // Check Cache API first (no progress needed if cached)
+        const cache=await caches.open(MODEL_CACHE_NAME);
+        const hit=await cache.match(GH.raw(rel.path));
+        let blob;
+        if(hit){
+          blob=await hit.blob();
+          loadedBytes+=rel.size||blob.size;
+        } else {
+          const resp=await fetchWithProgress(GH.raw(rel.path), rel.size, frac=>{
+            const partial=(rel.size||0)*frac;
+            setProgress(((loadedBytes+partial)/totalBytes)*100, relLabel);
+          });
+          if(!resp.ok){console.warn('Kunne ikke laste',rel.name,resp.status);continue;}
+          blob=await resp.blob();
+          loadedBytes+=blob.size;
+          await cache.put(GH.raw(rel.path), new Response(blob.slice(), {status:200}));
+        }
+        const pf=new File([blob],rel.name,{type:blob.type});
+        fileReg.set(rel.name.toLowerCase(),pf);
+        fileReg.set(rel.name.toLowerCase().replace(/\.[^.]+$/,''),pf);
+        reportProgress(relLabel);
+        await tick();
+      }catch(e){console.warn('Feil ved lasting av',rel.name,e);}
+    }
+
+    setProgress(90,'Henter modell…');
+    if(!window._bgLoading) setLoader(true,'Henter modell…');
+    await tick();
+
+    const cache=await caches.open(MODEL_CACHE_NAME);
+    const objHit=await cache.match(GH.raw(m.obj_path));
+    let txt;
+    if(objHit){
+      txt=await objHit.text();
+      loadedBytes+=m.size||0;
+    } else {
+      const objResp=await fetchWithProgress(GH.raw(m.obj_path), m.size, frac=>{
+        setProgress(90+frac*5,'Henter modell…');
+      });
+      if(!objResp.ok) throw new Error('Kunne ikke laste '+m.name+': '+objResp.status);
+      txt=await objResp.text();
+      await cache.put(GH.raw(m.obj_path), new Response(txt,{status:200,headers:{'Content-Type':'text/plain'}}));
+    }
+
+    setProgress(96,'Bygger 3D-modell…');
+    if(!window._bgLoading) setLoader(true,'Bygger 3D-modell…');
+    await tick();
+    ghCurrentFolder=m.folder||m.display;
+    await loadOBJ(txt,m.name);
+
+    const mdl=models[models.length-1];
+    if(mdl){
+      mdl.objPath=m.obj_path;
+      const col=MODEL_COLOURS[ghModels.indexOf(m)%MODEL_COLOURS.length];
+      applyModelTint(mdl,col);
+      // If this is a background load, hide immediately — stays hidden until compare
+      if(window._bgLoading){
+        mdl.group.visible=false;
+        mdl.visible=false;
+        _hiddenUntilCompare=mdl.id;
+      }
+      setProgress(99,'Lagrer til cache…');
+      await tick();
+      try{ await saveModelToCache(cacheKey,mdl,m.name); }
+      catch(e){ console.warn('Cache-lagring feilet:',e); }
+    }
+    setProgress(100,'Ferdig');
+    ghLoadedPaths.add(m.obj_path);
+    m.loaded=true;
+    ghRenderList();
+  }catch(err){ alert('Feil ved lasting: '+err.message); }
+  clearProgress();
   setLoader(false);
 }
 
@@ -2655,6 +4363,17 @@ function alignApplyAndClose(){
 
 document.addEventListener('keydown',e=>{
   if(e.key==='Escape' && alignOpen) closeAlignModal();
+  if(e.key==='Escape' && compareActive){
+    // Winner = model with most screen real estate
+    // Left gets cmpDividerX fraction, right gets 1-cmpDividerX
+    const winnerIdx = cmpDividerX >= 0.5 ? 0 : 1;
+    const winnerId  = cmpModelIds[winnerIdx];
+    compareActive = false;
+    document.getElementById('btn-compare').classList.remove('active');
+    cmpOverlay.classList.remove('active');
+    renderer.setScissorTest(false);
+    models.forEach(m=>{ m.visible=(m.id===winnerId); m.group.visible=m.visible; });
+  }
 });const clk=new THREE.Clock();
 (function loop(){
   requestAnimationFrame(loop);
@@ -2663,10 +4382,17 @@ document.addEventListener('keydown',e=>{
   if(autoRotLine&&autoRotLine.visible) autoRotLine.position.copy(orb.tgt);
   syncActiveCamera();
   if(compareActive){
+    _hiddenUntilCompare=null; // compare is active, no longer needed
     renderCompare();
   } else {
+    // Keep older model hidden until compare takes over
+    if(_hiddenUntilCompare){
+      const hm=models.find(m=>m.id===_hiddenUntilCompare);
+      if(hm) hm.group.visible=false;
+    }
     renderer.render(scene,activeCamera);
   }
+  updateCamPosBar();
   redrawSVG();
   drawMeasureOverlay();
   redrawAlignMarkers();
