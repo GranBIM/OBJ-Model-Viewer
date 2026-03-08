@@ -605,9 +605,9 @@ body.ec-active #eyecomfort-overlay{ pointer-events:none; }
 
 <!-- ══════════════ VIEWPORT ══════════════ -->
 <div id="viewport" class="m-nav dragging" style="">
-  <canvas id="three-canvas" width="2169" height="1060"></canvas>
+  <canvas id="three-canvas" width="2301" height="1108"></canvas>
   <svg id="measure-svg" xmlns="http://www.w3.org/2000/svg"></svg>
-  <canvas id="measure-canvas" width="1808" height="884"></canvas>
+  <canvas id="measure-canvas" width="1918" height="924"></canvas>
   <div id="pivot-dot" style="left: 959px; top: 443px; display: none; opacity: 0;"></div>
   <div id="measure-hint" class="">Move mouse closer/further from shape to taper the top. Click or Enter to finish. ESC to cancel.</div>
   <div id="vol-height-label" style="background: rgba(249, 115, 22, 0.9); top: 498.438px; left: 935.829px; transform: translateX(-50%);" class="">↕ 3.587 m  ·  taper 30%</div>
@@ -631,7 +631,7 @@ body.ec-active #eyecomfort-overlay{ pointer-events:none; }
   <div id="loader" class="">
     <div id="loader-wait-msg" style="font-size: 0.8rem; color: var(--muted); margin-bottom: 0.5rem; display: none;">Laster inn den siste modellen, vennligst vent</div>
     <div class="spinner"></div>
-    <div class="loader-label" id="loader-label">Laster fra cache…</div>
+    <div class="loader-label" id="loader-label">Ferdig</div>
     <div id="loader-progress" style="display: none; width: 220px; margin-top: 0.6rem;">
       <div style="height:4px;background:var(--border);border-radius:2px;overflow:hidden">
         <div id="loader-progress-bar" style="height: 100%; width: 0%; background: var(--dot-green); transition: width 0.2s; border-radius: 2px;"></div>
@@ -656,12 +656,12 @@ body.ec-active #eyecomfort-overlay{ pointer-events:none; }
 
   <!-- Compare split view -->
   <div id="compare-overlay" class="">
-    <div id="cmp-div" style="left: 904px;"></div>
+    <div id="cmp-div" style="left: 803px;"></div>
     <div class="cmp-picker" id="cmp-picker-L" style="left: 12px; right: auto;">
-      <select id="cmp-sel-L" onchange="cmpSelectModel(0,this.value)"><option value="mdl_1772999130916_ytio">Uke 10 · 2026 · Torsdag</option><option value="mdl_1772999135175_0je8" selected="selected">Uke 37 · 2025 · Mandag</option></select>
+      <select id="cmp-sel-L" onchange="cmpSelectModel(0,this.value)"><option value="mdl_1772928382236_qmcb" selected="selected">Uke 10 · 2026 · Torsdag</option><option value="mdl_1772928406952_ujow">Uke 37 · 2025 · Mandag</option></select>
     </div>
     <div class="cmp-picker" id="cmp-picker-R" style="right: 12px; left: auto;">
-      <select id="cmp-sel-R" onchange="cmpSelectModel(1,this.value)"><option value="mdl_1772999130916_ytio" selected="selected">Uke 10 · 2026 · Torsdag</option><option value="mdl_1772999135175_0je8">Uke 37 · 2025 · Mandag</option></select>
+      <select id="cmp-sel-R" onchange="cmpSelectModel(1,this.value)"><option value="mdl_1772928382236_qmcb">Uke 10 · 2026 · Torsdag</option><option value="mdl_1772928406952_ujow" selected="selected">Uke 37 · 2025 · Mandag</option></select>
     </div>
   </div>
 
@@ -732,17 +732,17 @@ body.ec-active #eyecomfort-overlay{ pointer-events:none; }
   <span class="info-chip" id="ic-file" style="display:none"><strong id="i-fname">texturedMesh.obj</strong></span>
   <span class="ib-sep" id="ib-s1" style="display:none"></span>
   <span id="dev-poly-group" style="display:none;align-items:center;gap:0.75rem">
-    <span class="info-chip">V <strong id="i-verts">850,728</strong></span>
+    <span class="info-chip">V <strong id="i-verts">212,897</strong></span>
     <span class="ib-sep"></span>
     <span class="info-chip">F <strong id="i-faces">283,576</strong></span>
     <span class="ib-sep"></span>
-    <span class="info-chip">Mat <strong id="i-mats">—</strong></span>
+    <span class="info-chip">Mat <strong id="i-mats">33</strong></span>
     <span class="ib-sep"></span>
     <span class="info-chip">Tex <strong id="i-texs">33</strong></span>
   </span>
   <span style="flex:1"></span>
   <span id="dev-cam-group" style="display:none;align-items:center;gap:0.5rem">
-    <span class="info-chip" id="cam-pos-text" style="font-family:monospace;letter-spacing:0.02em">X: <b>-1.12</b> &nbsp; Y: <b>1.53</b> &nbsp; Z: <b>3.21</b> &nbsp;&nbsp; Retning: <b>340.2°</b> &nbsp; Helning: <b>+23.8°</b> &nbsp;&nbsp; Avstand: <b>3.57</b></span>
+    <span class="info-chip" id="cam-pos-text" style="font-family:monospace;letter-spacing:0.02em">X: <b>-0.17</b> &nbsp; Y: <b>3.80</b> &nbsp; Z: <b>2.17</b> &nbsp;&nbsp; Retning: <b>330.8°</b> &nbsp; Helning: <b>+65.6°</b> &nbsp;&nbsp; Avstand: <b>4.06</b></span>
     <span class="ib-sep"></span>
     <button id="cam-pos-copy" onclick="copyCamPos()" title="Kopier posisjonsdata" style="border:1px solid var(--border-soft);background:var(--btn-bg);color:var(--muted);font-size:0.72rem;padding:0.1rem 0.4rem;border-radius:0.3rem;cursor:pointer;font-family:inherit;transition:background 0.15s,color 0.15s">⎘ Kopier</button>
   </span>
@@ -758,7 +758,7 @@ body.ec-active #eyecomfort-overlay{ pointer-events:none; }
       <span>📡 Tamburparken</span>
       <button id="gh-refresh-btn" onclick="ghFetchModels()" title="Oppdater liste" style="border:none;background:none;color:var(--muted);cursor:pointer;font-size:0.85rem;padding:0 2px">⟳</button>
     </div>
-    <div id="gh-model-list" style="max-height:260px;overflow-y:auto"><div class="gh-row gh-active" title="texturedMesh.obj  (179.4MB totalt) · 12 relaterte filer"><span class="gh-dot" style="background:#3b82f6;"></span><span class="gh-name">Uke 10 · 2026 <span style="color:#38bdf8;font-weight:600">Torsdag</span></span><label style="display:flex;align-items:center;gap:3px;cursor:pointer;color:var(--muted);font-size:0.72rem;flex-shrink:0"><input type="checkbox" checked="checked" data-objpath="Tamburparken/Uke10_2026-03-05/texturedMesh.obj" onchange="ghToggleVis(this.dataset.objpath,this.checked)" style="cursor:pointer"> vis</label></div><div class="gh-row gh-active" title="texturedMesh.obj  (389.3MB totalt) · 23 relaterte filer"><span class="gh-dot" style="background:#f97316;"></span><span class="gh-name">Uke 37 · 2025 <span style="color:#fb923c;font-weight:600">Mandag</span></span><label style="display:flex;align-items:center;gap:3px;cursor:pointer;color:var(--muted);font-size:0.72rem;flex-shrink:0"><input type="checkbox" checked="checked" data-objpath="Tamburparken/Uke37_2025-09-08/texturedMesh.obj" onchange="ghToggleVis(this.dataset.objpath,this.checked)" style="cursor:pointer"> vis</label></div></div>
+    <div id="gh-model-list" style="max-height:260px;overflow-y:auto"><div class="gh-row gh-active" title="texturedMesh.obj  (18.0MB) · 12 relaterte filer"><span class="gh-dot" style="background:#3b82f6;"></span><span class="gh-name">Uke 10 · 2026 <span style="color:#38bdf8;font-weight:600">Torsdag</span></span><label style="display:flex;align-items:center;gap:3px;cursor:pointer;color:var(--muted);font-size:0.72rem;flex-shrink:0"><input type="checkbox" checked="checked" data-objpath="Tamburparken/Uke10_2026-03-05/texturedMesh.obj" onchange="ghToggleVis(this.dataset.objpath,this.checked)" style="cursor:pointer"> vis</label></div><div class="gh-row gh-active" title="texturedMesh.obj  (18.3MB) · 23 relaterte filer"><span class="gh-dot" style="background:#f97316;"></span><span class="gh-name">Uke 37 · 2025 <span style="color:#fb923c;font-weight:600">Mandag</span></span><label style="display:flex;align-items:center;gap:3px;cursor:pointer;color:var(--muted);font-size:0.72rem;flex-shrink:0"><input type="checkbox" checked="checked" data-objpath="Tamburparken/Uke37_2025-09-08/texturedMesh.obj" onchange="ghToggleVis(this.dataset.objpath,this.checked)" style="cursor:pointer"> vis</label></div></div>
 
     <div class="tb-hdrop-sep"></div>
     <button class="tb-hdrop-btn" onclick="document.getElementById('file-input').click()">📂 Legg til lokal .obj…</button>
@@ -778,18 +778,18 @@ body.ec-active #eyecomfort-overlay{ pointer-events:none; }
     <button class="tb-hdrop-btn" id="btn-wire" onclick="setShading('wire')">Trådramme</button>
   </div>
 
-  <div class="tb-hdrop" id="drop-nav" style="left: 447.85px; top: 44.4px;">
+  <div class="tb-hdrop" id="drop-nav" style="left: 409.3px; top: 44.4px;">
     <button class="tb-hdrop-btn" onclick="resetCamera()">⌂ Tilbakestill visning</button>
     <div class="tb-hdrop-sep"></div>
-    <button class="tb-hdrop-btn active" id="btn-autorot" onclick="toggleAutoRotate()">↻ Autoroter</button>
+    <button class="tb-hdrop-btn" id="btn-autorot" onclick="toggleAutoRotate()">↻ Autoroter</button>
     <div class="tb-hdrop-slider">
-      <label><span>Rotasjonshastighet</span><span id="rs-val">0.4×</span></label>
-      <input type="range" id="rs-slider" min="0.1" max="5" step="0.1" value="0.4" oninput="rotSpeed=+this.value;document.getElementById('rs-val').textContent=rotSpeed.toFixed(1)+'×'">
+      <label><span>Rotasjonshastighet</span><span id="rs-val">0.1×</span></label>
+      <input type="range" id="rs-slider" min="0.1" max="5" step="0.1" value="0.1" oninput="rotSpeed=+this.value;document.getElementById('rs-val').textContent=rotSpeed.toFixed(1)+'×'">
     </div>
     <div class="tb-hdrop-sep"></div>
   </div>
 
-  <div class="tb-hdrop" id="drop-measure" style="left: 571.767px; top: 44.4px;">
+  <div class="tb-hdrop" id="drop-measure" style="left: 533.217px; top: 44.4px;">
     <button class="tb-hdrop-btn" id="btn-m-length" onclick="setMode('length')">📏 Lengde</button>
     <button class="tb-hdrop-btn" id="btn-m-area" onclick="setMode('area')">⬡ Areal</button>
     <div style="display:flex;align-items:center;gap:4px">
@@ -879,7 +879,7 @@ body.ec-active #eyecomfort-overlay{ pointer-events:none; }
 </div>
 
 
-<script src="index_files/three.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
 // ═══════════════════════════════ PORTAL DROPDOWNS ═════════════════════════════
 // Dropdown panels live in #drop-portal (fixed, body-level) so they always
