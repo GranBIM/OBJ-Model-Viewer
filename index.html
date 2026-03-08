@@ -28,6 +28,10 @@ body.theme-black{
   --border:#333;--border-soft:#1f2937;--hover:#111;--btn-bg:#111;--shadow:none;--shadow-md:none;
 }
 body.theme-black .toolbar,body.theme-black .info-bar{border-color:#333;}
+body.theme-light{
+  --bg:#FFDF20;--text:#111827;--muted:#4b5563;--card:#ffffff;
+  --border:#d1d5db;--border-soft:#e5e7eb;--hover:#fff8c5;--btn-bg:#fffde0;
+}
 
 html,body{height:100%;overflow:hidden;}
 body{
@@ -511,11 +515,17 @@ body.ec-active #eyecomfort-overlay{ pointer-events:none; }
 /* ── Camera position (inside info-bar) ── */
 #cam-pos-copy:hover{background:var(--hover);color:var(--text);}
 #cam-pos-copy.copied{background:rgba(34,197,94,0.15);color:#22c55e;border-color:#22c55e;}
-#toolbar-title{
-  font-size:1.6rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;
-  color:var(--dot-green);pointer-events:none;user-select:none;line-height:1;
-  position:relative;
+#toolbar-title-wrap{
+  flex:1;display:flex;align-items:center;justify-content:center;
+  min-width:0;overflow:hidden;
 }
+#toolbar-title{
+  font-size:0.8rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;
+  color:var(--dot-green);user-select:none;line-height:1;
+  white-space:nowrap;text-decoration:none;
+  opacity:0.55;transition:opacity 0.2s;
+}
+#toolbar-title:hover{opacity:1;}
 #site-title{
   position:absolute;top:0.75rem;left:50%;transform:translateX(-50%);
   font-size:0.8rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;
@@ -567,7 +577,7 @@ body.ec-active #eyecomfort-overlay{ pointer-events:none; }
   </div>
   <div class="tb-sep"></div>
   <div class="tb-hgroup">
-    <div class="tb-hgroup-trigger" id="shading-trigger" data-drop="drop-shading">Visning <span class="tb-caret">▾</span></div>
+    <div class="tb-hgroup-trigger" id="shading-trigger" data-drop="drop-shading">Modellvisning <span class="tb-caret">▾</span></div>
   </div>
 
   <div class="tb-sep"></div>
@@ -577,11 +587,11 @@ body.ec-active #eyecomfort-overlay{ pointer-events:none; }
 
   <div class="tb-sep"></div>
   <div class="tb-hgroup">
-    <div class="tb-hgroup-trigger" id="measure-trigger" data-drop="drop-measure" style="transition: color 0.25s, background 0.25s, border-color 0.25s;">Measure <span class="tb-caret">▾</span></div>
+    <div class="tb-hgroup-trigger" id="measure-trigger" data-drop="drop-measure" style="transition: color 0.25s, background 0.25s, border-color 0.25s;">Måleverktøy <span class="tb-caret">▾</span></div>
   </div>
 
   <div class="tb-sep"></div>
-  <span id="toolbar-title" style="position:absolute;left:50%;transform:translateX(-50%);pointer-events:none">Tamburparken - byggeprosjekt<a href="https://docs.google.com/document/d/1tPO3OWbDURfltkx1HpdPPMc2vRHSRyuOXk0wX9kkiWk/edit?usp=sharing" target="_blank" rel="noopener" style="position:absolute;inset:0;display:block;pointer-events:all;cursor:pointer;opacity:0;"></a></span>
+  <div id="toolbar-title-wrap"><a id="toolbar-title" href="https://docs.google.com/document/d/1tPO3OWbDURfltkx1HpdPPMc2vRHSRyuOXk0wX9kkiWk/edit?usp=sharing" target="_blank" rel="noopener">Tamburparken - byggeprosjekt</a></div>
   <div style="margin-left:auto;display:flex;align-items:stretch">
     <div class="tb-hgroup">
       <div class="tb-hgroup-trigger" id="eyecomfort-trigger" onclick="toggleEyecomfortPanel(event)">Tema <span class="tb-caret" id="ec-caret">▾</span></div>
@@ -595,9 +605,9 @@ body.ec-active #eyecomfort-overlay{ pointer-events:none; }
 
 <!-- ══════════════ VIEWPORT ══════════════ -->
 <div id="viewport" class="m-nav dragging" style="">
-  <canvas id="three-canvas" width="2301" height="1108"></canvas>
+  <canvas id="three-canvas" width="2169" height="1060"></canvas>
   <svg id="measure-svg" xmlns="http://www.w3.org/2000/svg"></svg>
-  <canvas id="measure-canvas" width="1918" height="924"></canvas>
+  <canvas id="measure-canvas" width="1808" height="884"></canvas>
   <div id="pivot-dot" style="left: 959px; top: 443px; display: none; opacity: 0;"></div>
   <div id="measure-hint" class="">Move mouse closer/further from shape to taper the top. Click or Enter to finish. ESC to cancel.</div>
   <div id="vol-height-label" style="background: rgba(249, 115, 22, 0.9); top: 498.438px; left: 935.829px; transform: translateX(-50%);" class="">↕ 3.587 m  ·  taper 30%</div>
@@ -621,7 +631,7 @@ body.ec-active #eyecomfort-overlay{ pointer-events:none; }
   <div id="loader" class="">
     <div id="loader-wait-msg" style="font-size: 0.8rem; color: var(--muted); margin-bottom: 0.5rem; display: none;">Laster inn den siste modellen, vennligst vent</div>
     <div class="spinner"></div>
-    <div class="loader-label" id="loader-label">Ferdig</div>
+    <div class="loader-label" id="loader-label">Laster fra cache…</div>
     <div id="loader-progress" style="display: none; width: 220px; margin-top: 0.6rem;">
       <div style="height:4px;background:var(--border);border-radius:2px;overflow:hidden">
         <div id="loader-progress-bar" style="height: 100%; width: 0%; background: var(--dot-green); transition: width 0.2s; border-radius: 2px;"></div>
@@ -646,12 +656,12 @@ body.ec-active #eyecomfort-overlay{ pointer-events:none; }
 
   <!-- Compare split view -->
   <div id="compare-overlay" class="">
-    <div id="cmp-div" style="left: 803px;"></div>
+    <div id="cmp-div" style="left: 904px;"></div>
     <div class="cmp-picker" id="cmp-picker-L" style="left: 12px; right: auto;">
-      <select id="cmp-sel-L" onchange="cmpSelectModel(0,this.value)"><option value="mdl_1772928382236_qmcb" selected="selected">Uke 10 · 2026 · Torsdag</option><option value="mdl_1772928406952_ujow">Uke 37 · 2025 · Mandag</option></select>
+      <select id="cmp-sel-L" onchange="cmpSelectModel(0,this.value)"><option value="mdl_1772999130916_ytio">Uke 10 · 2026 · Torsdag</option><option value="mdl_1772999135175_0je8" selected="selected">Uke 37 · 2025 · Mandag</option></select>
     </div>
     <div class="cmp-picker" id="cmp-picker-R" style="right: 12px; left: auto;">
-      <select id="cmp-sel-R" onchange="cmpSelectModel(1,this.value)"><option value="mdl_1772928382236_qmcb">Uke 10 · 2026 · Torsdag</option><option value="mdl_1772928406952_ujow" selected="selected">Uke 37 · 2025 · Mandag</option></select>
+      <select id="cmp-sel-R" onchange="cmpSelectModel(1,this.value)"><option value="mdl_1772999130916_ytio" selected="selected">Uke 10 · 2026 · Torsdag</option><option value="mdl_1772999135175_0je8">Uke 37 · 2025 · Mandag</option></select>
     </div>
   </div>
 
@@ -722,17 +732,17 @@ body.ec-active #eyecomfort-overlay{ pointer-events:none; }
   <span class="info-chip" id="ic-file" style="display:none"><strong id="i-fname">texturedMesh.obj</strong></span>
   <span class="ib-sep" id="ib-s1" style="display:none"></span>
   <span id="dev-poly-group" style="display:none;align-items:center;gap:0.75rem">
-    <span class="info-chip">V <strong id="i-verts">212,897</strong></span>
+    <span class="info-chip">V <strong id="i-verts">850,728</strong></span>
     <span class="ib-sep"></span>
     <span class="info-chip">F <strong id="i-faces">283,576</strong></span>
     <span class="ib-sep"></span>
-    <span class="info-chip">Mat <strong id="i-mats">33</strong></span>
+    <span class="info-chip">Mat <strong id="i-mats">—</strong></span>
     <span class="ib-sep"></span>
     <span class="info-chip">Tex <strong id="i-texs">33</strong></span>
   </span>
   <span style="flex:1"></span>
   <span id="dev-cam-group" style="display:none;align-items:center;gap:0.5rem">
-    <span class="info-chip" id="cam-pos-text" style="font-family:monospace;letter-spacing:0.02em">X: <b>-0.17</b> &nbsp; Y: <b>3.80</b> &nbsp; Z: <b>2.17</b> &nbsp;&nbsp; Retning: <b>330.8°</b> &nbsp; Helning: <b>+65.6°</b> &nbsp;&nbsp; Avstand: <b>4.06</b></span>
+    <span class="info-chip" id="cam-pos-text" style="font-family:monospace;letter-spacing:0.02em">X: <b>-1.12</b> &nbsp; Y: <b>1.53</b> &nbsp; Z: <b>3.21</b> &nbsp;&nbsp; Retning: <b>340.2°</b> &nbsp; Helning: <b>+23.8°</b> &nbsp;&nbsp; Avstand: <b>3.57</b></span>
     <span class="ib-sep"></span>
     <button id="cam-pos-copy" onclick="copyCamPos()" title="Kopier posisjonsdata" style="border:1px solid var(--border-soft);background:var(--btn-bg);color:var(--muted);font-size:0.72rem;padding:0.1rem 0.4rem;border-radius:0.3rem;cursor:pointer;font-family:inherit;transition:background 0.15s,color 0.15s">⎘ Kopier</button>
   </span>
@@ -748,7 +758,7 @@ body.ec-active #eyecomfort-overlay{ pointer-events:none; }
       <span>📡 Tamburparken</span>
       <button id="gh-refresh-btn" onclick="ghFetchModels()" title="Oppdater liste" style="border:none;background:none;color:var(--muted);cursor:pointer;font-size:0.85rem;padding:0 2px">⟳</button>
     </div>
-    <div id="gh-model-list" style="max-height:260px;overflow-y:auto"><div class="gh-row gh-active" title="texturedMesh.obj  (18.0MB) · 12 relaterte filer"><span class="gh-dot" style="background:#3b82f6;"></span><span class="gh-name">Uke 10 · 2026 <span style="color:#38bdf8;font-weight:600">Torsdag</span></span><label style="display:flex;align-items:center;gap:3px;cursor:pointer;color:var(--muted);font-size:0.72rem;flex-shrink:0"><input type="checkbox" checked="checked" data-objpath="Tamburparken/Uke10_2026-03-05/texturedMesh.obj" onchange="ghToggleVis(this.dataset.objpath,this.checked)" style="cursor:pointer"> vis</label></div><div class="gh-row gh-active" title="texturedMesh.obj  (18.3MB) · 23 relaterte filer"><span class="gh-dot" style="background:#f97316;"></span><span class="gh-name">Uke 37 · 2025 <span style="color:#fb923c;font-weight:600">Mandag</span></span><label style="display:flex;align-items:center;gap:3px;cursor:pointer;color:var(--muted);font-size:0.72rem;flex-shrink:0"><input type="checkbox" checked="checked" data-objpath="Tamburparken/Uke37_2025-09-08/texturedMesh.obj" onchange="ghToggleVis(this.dataset.objpath,this.checked)" style="cursor:pointer"> vis</label></div></div>
+    <div id="gh-model-list" style="max-height:260px;overflow-y:auto"><div class="gh-row gh-active" title="texturedMesh.obj  (179.4MB totalt) · 12 relaterte filer"><span class="gh-dot" style="background:#3b82f6;"></span><span class="gh-name">Uke 10 · 2026 <span style="color:#38bdf8;font-weight:600">Torsdag</span></span><label style="display:flex;align-items:center;gap:3px;cursor:pointer;color:var(--muted);font-size:0.72rem;flex-shrink:0"><input type="checkbox" checked="checked" data-objpath="Tamburparken/Uke10_2026-03-05/texturedMesh.obj" onchange="ghToggleVis(this.dataset.objpath,this.checked)" style="cursor:pointer"> vis</label></div><div class="gh-row gh-active" title="texturedMesh.obj  (389.3MB totalt) · 23 relaterte filer"><span class="gh-dot" style="background:#f97316;"></span><span class="gh-name">Uke 37 · 2025 <span style="color:#fb923c;font-weight:600">Mandag</span></span><label style="display:flex;align-items:center;gap:3px;cursor:pointer;color:var(--muted);font-size:0.72rem;flex-shrink:0"><input type="checkbox" checked="checked" data-objpath="Tamburparken/Uke37_2025-09-08/texturedMesh.obj" onchange="ghToggleVis(this.dataset.objpath,this.checked)" style="cursor:pointer"> vis</label></div></div>
 
     <div class="tb-hdrop-sep"></div>
     <button class="tb-hdrop-btn" onclick="document.getElementById('file-input').click()">📂 Legg til lokal .obj…</button>
@@ -764,23 +774,22 @@ body.ec-active #eyecomfort-overlay{ pointer-events:none; }
   </div>
 
   <div class="tb-hdrop" id="drop-shading" style="left: 306.933px; top: 44.4px;">
-    <button class="tb-hdrop-btn active" id="btn-solid" onclick="setShading('solid')">Textured</button>
+    <button class="tb-hdrop-btn active" id="btn-solid" onclick="setShading('solid')">Teksturert</button>
     <button class="tb-hdrop-btn" id="btn-wire" onclick="setShading('wire')">Trådramme</button>
-    <button class="tb-hdrop-btn" id="btn-flat" onclick="setShading('flat')">Flat</button>
   </div>
 
-  <div class="tb-hdrop" id="drop-nav" style="left: 409.3px; top: 44.4px;">
+  <div class="tb-hdrop" id="drop-nav" style="left: 447.85px; top: 44.4px;">
     <button class="tb-hdrop-btn" onclick="resetCamera()">⌂ Tilbakestill visning</button>
     <div class="tb-hdrop-sep"></div>
-    <button class="tb-hdrop-btn" id="btn-autorot" onclick="toggleAutoRotate()">↻ Autoroter</button>
+    <button class="tb-hdrop-btn active" id="btn-autorot" onclick="toggleAutoRotate()">↻ Autoroter</button>
     <div class="tb-hdrop-slider">
-      <label><span>Rotasjonshastighet</span><span id="rs-val">0.1×</span></label>
-      <input type="range" id="rs-slider" min="0.1" max="5" step="0.1" value="0.1" oninput="rotSpeed=+this.value;document.getElementById('rs-val').textContent=rotSpeed.toFixed(1)+'×'">
+      <label><span>Rotasjonshastighet</span><span id="rs-val">0.4×</span></label>
+      <input type="range" id="rs-slider" min="0.1" max="5" step="0.1" value="0.4" oninput="rotSpeed=+this.value;document.getElementById('rs-val').textContent=rotSpeed.toFixed(1)+'×'">
     </div>
     <div class="tb-hdrop-sep"></div>
   </div>
 
-  <div class="tb-hdrop" id="drop-measure" style="left: 533.217px; top: 44.4px;">
+  <div class="tb-hdrop" id="drop-measure" style="left: 571.767px; top: 44.4px;">
     <button class="tb-hdrop-btn" id="btn-m-length" onclick="setMode('length')">📏 Lengde</button>
     <button class="tb-hdrop-btn" id="btn-m-area" onclick="setMode('area')">⬡ Areal</button>
     <div style="display:flex;align-items:center;gap:4px">
@@ -790,7 +799,7 @@ body.ec-active #eyecomfort-overlay{ pointer-events:none; }
       </button>
     </div>
     <div class="tb-hdrop-sep"></div>
-    <button class="tb-hdrop-btn" id="btn-m-clipcube" onclick="toggleClipcube()">⬡ Clipcube</button>
+    <button class="tb-hdrop-btn" id="btn-m-clipcube" onclick="toggleClipcube()">⬡ Snittkube</button>
     <div class="tb-hdrop-sep"></div>
     <button class="tb-hdrop-btn" id="btn-compare" onclick="toggleCompare()">⧉ Sammenlign modeller</button>
     <div class="tb-hdrop-sep"></div>
@@ -957,7 +966,7 @@ const EC_PRESETS = {
   warm:    {hue:30,  sat:30, bri:95},
   cool:    {hue:200, sat:20, bri:95},
   night:   {hue:20,  sat:40, bri:40},
-  light:   {hue:0,   sat:0,  bri:100, theme:''},
+  light:   {hue:0,   sat:0,  bri:100, theme:'theme-light'},
   dark:    {hue:0,   sat:0,  bri:100, theme:'theme-dark'},
   black:   {hue:0,   sat:0,  bri:100, theme:'theme-black'},
   sunset:  {hue:28,  sat:55, bri:82,  theme:'theme-sunset'},
@@ -1011,25 +1020,15 @@ function applyEyecomfort(){
   const bri = +document.getElementById('ec-bri').value;
   ecState = {hue,sat,bri};
 
-  // Update readouts
   document.getElementById('ec-bri-val').textContent = bri + '%';
 
-  // Apply filter only to visual elements — NOT body or html, as that
-  // breaks position:fixed, file inputs, and WebGL compositing.
-  // Only apply filter string when something is actually adjusted.
-  const filterStr = bri===100 ? '' : `brightness(${(bri/100).toFixed(2)})`;
-
-  // Apply only to UI chrome — never to #viewport (would tint 3D model colours)
+  // Brightness only affects the 3D canvas background
   ['.toolbar', '.info-bar', '#drop-portal'].forEach(sel => {
-    document.querySelectorAll(sel).forEach(el => {
-      el.style.filter = filterStr;
-    });
+    document.querySelectorAll(sel).forEach(el => { el.style.filter = ''; });
   });
-  // Clear any stale filter on viewport / body
   document.getElementById('viewport').style.filter = '';
   document.body.style.filter = '';
 
-  // Tint overlay for warm/cool colour wash
   document.getElementById('eyecomfort-overlay').style.background='transparent';
 
   updateRendererBg();
@@ -1037,7 +1036,7 @@ function applyEyecomfort(){
 
 function updateRendererBg(){
   if(!window.renderer) return; // guard: renderer may not exist yet
-  const bases = {'':0xf3f4f6, 'theme-dark':0x0b1220, 'theme-black':0x000000, 'theme-sunset':0x1a0f00};
+  const bases = {'':0xf3f4f6, 'theme-light':0xFFDF20, 'theme-dark':0x0b1220, 'theme-black':0x000000, 'theme-sunset':0x1a0f00};
   const baseHex = bases[document.body.className.match(/theme-[a-z]+/)?.[0]||''] ?? 0xf3f4f6;
   // Extract RGB
   const r = ((baseHex>>16)&0xff)/255;
@@ -1504,7 +1503,7 @@ function cancelMeasure(){
   vp.className='m-nav';
   ['length','area','volume'].forEach(k=>document.getElementById('btn-m-'+k).classList.remove('active','active-green','active-orange'));
   const trigger=document.getElementById('measure-trigger');
-  if(trigger){trigger.childNodes[0].textContent='Measure ';trigger.classList.remove('active','active-green','active-orange');}
+  if(trigger){trigger.childNodes[0].textContent='Måleverktøy ';trigger.classList.remove('active','active-green','active-orange');}
   document.removeEventListener('keydown',keyHandler);
   // Restore clip box visibility
 }
@@ -2257,7 +2256,7 @@ async function loadOBJ(txt,fname){
     updateInfoBar();
     document.getElementById('drop-zone').classList.add('hidden');
     document.getElementById('info-bar').style.display='flex';
-    document.getElementById('btn-solid').textContent=texLoaded?'Textured':'Solid';
+    document.getElementById('btn-solid').textContent='Teksturert';
     updateTexDropdown(mtlMap,texLoaded);
     applyShading();
   }catch(err){alert('Error: '+err.message);}
@@ -2283,7 +2282,7 @@ function setShading(m){
     if(el) el.classList.toggle('active',k===m);
   });
   // Update shading trigger label
-  const labels={'solid':'Solid','wire':'Wire','flat':'Flat'};
+  const labels={'solid':'Modellvisning','wire':'Modellvisning'};
   const t=document.getElementById('shading-trigger');
   if(t) t.childNodes[0].textContent=labels[m]+' ';
   applyShading();
@@ -3176,8 +3175,11 @@ function snittClearClip(){ ccClearClip(); }
 function setStdView(dir){
   // Keep current camera mode — user chooses perspective/ortho separately
   const d=8;
+  // Top view: slight XZ offset to give 321° compass direction
+  const topAng=321.0*Math.PI/180;
+  const topTiny=0.001;
   const views={
-    top:   {pos:[0,d,0.001], up:[0,1,0]},
+    top:   {pos:[Math.sin(topAng)*topTiny,d,Math.cos(topAng)*topTiny], up:[0,1,0]},
     bottom:{pos:[0,-d,0.001],up:[0,0,1]},
     front: {pos:[0,0,d],     up:[0,1,0]},
     back:  {pos:[0,0,-d],    up:[0,1,0]},
@@ -3287,7 +3289,7 @@ async function reapplyMaterials(){
       origMats.set(mesh,mat);if(mat.map||mat.bumpMap||mat.alphaMap)texLoaded++;
     }
     document.getElementById('i-texs').textContent=texLoaded||'none';
-    document.getElementById('btn-solid').textContent=texLoaded?'Textured':'Solid';
+    document.getElementById('btn-solid').textContent='Teksturert';
     updateTexDropdown(mtlMap,texLoaded);applyShading();
   }catch(e){alert('Error: '+e.message);}
   setLoader(false);
@@ -3607,146 +3609,107 @@ async function ghFetchModels(){
 
     ghRenderList();
 
-    // Auto-load on first visit:
-    // 1. Load newest model immediately (user can navigate right away)
-    // 2. Load 2nd newest silently in background — no loader overlay shown
-    // 3. When background load done, activate compare + flash Modeller button green
+    // Auto-load: Modeller button blinks orange/green; clicking cancels 2nd model
     if(models.length===0 && ghModels.length>0){
       const newest = ghModels[0];
       const second = ghModels.length>1 ? ghModels[1] : null;
 
-      // Show waiting message only during first (foreground) load
+      window._bgLoadCancelled = false;
+      let _blinkPhase = 0;
+      const modBtn = document.querySelector('[data-drop="drop-file"]');
+      const _blinkIv = setInterval(()=>{
+        if(!modBtn) return;
+        _blinkPhase = 1 - _blinkPhase;
+        if(_blinkPhase){
+          modBtn.style.color='#f97316'; modBtn.style.background='rgba(249,115,22,0.18)'; modBtn.style.borderColor='#f97316';
+        } else {
+          modBtn.style.color='#22c55e'; modBtn.style.background='rgba(34,197,94,0.18)'; modBtn.style.borderColor='#22c55e';
+        }
+      }, 2000);
+      if(modBtn){ modBtn.style.transition='color 0.4s,background 0.4s,border-color 0.4s'; modBtn.style.color='#22c55e'; modBtn.style.background='rgba(34,197,94,0.18)'; modBtn.style.borderColor='#22c55e'; }
+
+      function stopBlink(){
+        clearInterval(_blinkIv);
+        if(modBtn){ modBtn.style.color=''; modBtn.style.background=''; modBtn.style.borderColor=''; }
+      }
+      function onModBtnClick(e){
+        if(window._bgLoadCancelled) return;
+        window._bgLoadCancelled = true;
+        stopBlink();
+        modBtn.removeEventListener('click', onModBtnClick, true);
+      }
+      if(modBtn) modBtn.addEventListener('click', onModBtnClick, true);
+
       const waitMsg=document.getElementById('loader-wait-msg');
       if(waitMsg) waitMsg.style.display='';
-
-      // Load newest with full loader UI
       await ghLoadModel(newest);
-
-      // Hide loader — user can now navigate freely
       setLoader(false);
       if(waitMsg) waitMsg.style.display='none';
 
-      // Set pivot to model center by raycasting from screen center
-      // Uses a brief visual cue (pivot dot) so user sees what is being targeted
       (()=>{
-        const cx = vp.clientWidth  / 2;
-        const cy = vp.clientHeight / 2;
-        const ndc = new THREE.Vector2(0, 0); // screen center in NDC
-        raycaster.setFromCamera(ndc, activeCamera || camera);
+        const cx = vp.clientWidth/2, cy = vp.clientHeight/2;
+        raycaster.setFromCamera(new THREE.Vector2(0,0), activeCamera||camera);
         const allMeshes = [];
         models.forEach(m=>{ if(m.visible) m.group.traverse(ch=>{ if(ch.isMesh) allMeshes.push(ch); }); });
         const hits = raycaster.intersectObjects(allMeshes, false);
         if(hits.length){
-          const camDir = camera.getWorldDirection(new THREE.Vector3());
-          const wn = new THREE.Vector3();
-          let chosen = hits[0];
-          for(const h of hits){
-            if(h.face){
-              wn.copy(h.face.normal).applyQuaternion(h.object.getWorldQuaternion(new THREE.Quaternion())).normalize();
-              if(wn.dot(camDir) < 0){ chosen = h; break; }
-            }
-          }
-          // Smoothly set pivot to center-screen hit point
-          const camPos = camera.position.clone();
-          orb.tgt.copy(chosen.point);
-          orb.sph.setFromVector3(camPos.clone().sub(orb.tgt));
-          // Show green pivot dot at screen center
-          showPivotDot(cx, cy);
+          const camDir=camera.getWorldDirection(new THREE.Vector3()); const wn=new THREE.Vector3(); let chosen=hits[0];
+          for(const h of hits){ if(h.face){ wn.copy(h.face.normal).applyQuaternion(h.object.getWorldQuaternion(new THREE.Quaternion())).normalize(); if(wn.dot(camDir)<0){chosen=h;break;} } }
+          const camPos=camera.position.clone(); orb.tgt.copy(chosen.point); orb.sph.setFromVector3(camPos.clone().sub(orb.tgt)); showPivotDot(cx,cy);
         }
       })();
 
-      if(second){
-        // Background load: suppress loader overlay using a flag
+      if(second && !window._bgLoadCancelled){
         window._bgLoading = true;
         if(!_userHasNavigated) _navLocked = true;
-
         ghLoadModel(second).then(()=>{
-          window._bgLoading = false;
-          setLoader(false);
-
-          // Hide the older model — it will only appear through the compare divider
-          // 'second' (ghModels[1]) is the older model; find it by objPath
-          const olderMdl = models.find(m=>m.objPath===second.obj_path);
-          if(olderMdl){
-            olderMdl.group.visible=false;
-            olderMdl.visible=false;
-            _hiddenUntilCompare=olderMdl.id; // enforced every frame in render loop
-          }
-
-          // Flash "Modeller" button green for 10 seconds
-          const modBtn=document.querySelector('[data-drop="drop-file"]');
-          if(modBtn){
-            modBtn.style.transition='color 0.4s,background 0.4s,border-color 0.4s';
-            modBtn.style.color='#22c55e';
-            modBtn.style.background='rgba(34,197,94,0.18)';
-            modBtn.style.borderColor='#22c55e';
-            setTimeout(()=>{
-              modBtn.style.color='';
-              modBtn.style.background='';
-              modBtn.style.borderColor='';
-            }, 10000);
-          }
-
-          if(_userHasNavigated){
-            // User already explored — skip auto-compare, just notify
-            _navLocked = false;
-            return;
-          }
-
-          // User hasn't moved — fly camera along 3-keyframe path then compare
-          // Fly to top immediately (5s), then animate divider
+          window._bgLoading = false; setLoader(false); stopBlink();
+          if(modBtn) modBtn.removeEventListener('click', onModBtnClick, true);
+          if(window._bgLoadCancelled){ const loaded=models.find(m=>m.objPath===second.obj_path); if(loaded) removeModel(loaded.id); ghLoadedPaths.delete(second.obj_path); second.loaded=false; ghRenderList(); _navLocked=false; return; }
+          const olderMdl=models.find(m=>m.objPath===second.obj_path);
+          if(olderMdl){ olderMdl.group.visible=false; olderMdl.visible=false; _hiddenUntilCompare=olderMdl.id; }
+          if(_userHasNavigated){ _navLocked=false; return; }
           if(_userHasNavigated) return;
           animateCameraFly(5000, ()=>{
-              if(_userHasNavigated) return;
-              if(models.length>=2){
-                // left=older(second), right=newest — divider starts right so newest fills screen
-                const newestMdl = models.find(m=>m.objPath===newest.obj_path);
-                const olderMdl2 = models.find(m=>m.objPath===second.obj_path);
-                compareActive=true;
-                cmpModelIds=[(olderMdl2||models[0]).id, (newestMdl||models[models.length-1]).id];
-                document.getElementById('btn-compare').classList.add('active');
-                refreshCompareSelectors();
-                // Restore group.visible on both models before compare takes over
-                models.forEach(m=>{ m.group.visible=true; });
-                // Start divider fully left (0.0) = oldest fills whole screen
-                cmpDividerX=0.0;
-                cmpOverlay.classList.add('active');
-                layoutCmpPickers();
-                // Show fog while compare initialises
-                cmpShowWait();
-                setTimeout(()=>{
-                  renderCompare();
-                  cmpHideWait();
-                  // Sweep left→right over 5s (newest is revealed)
-                  animateDivider(0.0, 1.0, 5000, ()=>{
-                  // Settle to centre over 2s, then flash measure button
-                  animateDivider(1.0, 0.5, 2000, ()=>{
-                    _navLocked = false;
-                    const mBtn=document.getElementById('measure-trigger');
-                    if(mBtn){
-                      let on=true;
-                      mBtn.style.transition='color 0.25s,background 0.25s,border-color 0.25s';
-                      const iv=setInterval(()=>{
-                        on=!on;
-                        mBtn.style.color=on?'#f97316':'';
-                        mBtn.style.background=on?'rgba(249,115,22,0.15)':'';
-                        mBtn.style.borderColor=on?'#f97316':'';
-                      },400);
-                      setTimeout(()=>{
-                        clearInterval(iv);
-                        mBtn.style.color='';
-                        mBtn.style.background='';
-                        mBtn.style.borderColor='';
-                      },3000);
-                    }
-                  });
+            if(_userHasNavigated) return;
+            if(models.length>=2){
+              const newestMdl=models.find(m=>m.objPath===newest.obj_path); const olderMdl2=models.find(m=>m.objPath===second.obj_path);
+              compareActive=true; cmpModelIds=[(olderMdl2||models[0]).id,(newestMdl||models[models.length-1]).id];
+              document.getElementById('btn-compare').classList.add('active'); refreshCompareSelectors();
+              models.forEach(m=>{ m.group.visible=true; }); cmpDividerX=0.0; cmpOverlay.classList.add('active'); layoutCmpPickers();
+              cmpShowWait();
+              setTimeout(()=>{
+                renderCompare(); cmpHideWait();
+                animateDivider(0.0, 1.0, 5000, ()=>{
+                animateDivider(1.0, 0.5, 2000, ()=>{
+                  _navLocked=false;
+                  const mBtn=document.getElementById('measure-trigger');
+                  if(mBtn){
+                    let on=true;
+                    mBtn.style.transition='color 0.25s,background 0.25s,border-color 0.25s';
+                    const iv=setInterval(()=>{
+                      on=!on;
+                      mBtn.style.color=on?'#f97316':'';
+                      mBtn.style.background=on?'rgba(249,115,22,0.15)':'';
+                      mBtn.style.borderColor=on?'#f97316':'';
+                    },400);
+                    setTimeout(()=>{
+                      clearInterval(iv);
+                      mBtn.style.color='';
+                      mBtn.style.background='';
+                      mBtn.style.borderColor='';
+                    },3000);
+                  }
                 });
-                }, 80); // end setTimeout fog
-              }
+              });
+              }, 80);
+            }
           });
-        }).catch(()=>{
-          window._bgLoading = false;
-        });
+        }).catch(()=>{ window._bgLoading=false; stopBlink(); if(modBtn) modBtn.removeEventListener('click',onModBtnClick,true); });
+      } else {
+        stopBlink();
+        if(modBtn) modBtn.removeEventListener('click', onModBtnClick, true);
+        ghRenderList();
       }
     }
   } catch(err){
@@ -3783,7 +3746,8 @@ function ghRenderList(){
     const isLoaded = ghLoadedPaths.has(m.obj_path);
     const row = document.createElement('div');
     row.className = 'gh-row'+(isLoaded?' gh-active':'');
-    row.title = m.name+'  ('+ghFmtSize(m.size)+')'+(m.related.length?' · '+m.related.length+' relaterte filer':'');
+    const totalSize = (m.size||0) + m.related.reduce((s,r)=>s+(r.size||0),0);
+    row.title = m.name+'  ('+ghFmtSize(totalSize)+' totalt)'+(m.related.length?' · '+m.related.length+' relaterte filer':'');
     row.innerHTML =
       '<span class="gh-dot" style="background:'+colour+';'+(isLoaded?'':'opacity:0.3')+'"></span>'+
       '<span class="gh-name">'+m.display+
@@ -3792,7 +3756,7 @@ function ghRenderList(){
       (isLoaded
         ? '<label style="display:flex;align-items:center;gap:3px;cursor:pointer;color:var(--muted);font-size:0.72rem;flex-shrink:0">'+
           '<input type="checkbox" checked data-objpath="'+m.obj_path+'" onchange="ghToggleVis(this.dataset.objpath,this.checked)" style="cursor:pointer"> vis</label>'
-        : '<span class="gh-size">'+ghFmtSize(m.size)+'</span>');
+        : '<span class="gh-size">'+ghFmtSize(totalSize)+'</span>');
     row.onclick = (e)=>{
       // If click was on the vis checkbox/label, don't trigger load
       if(e.target.closest('label')||e.target.type==='checkbox') return;
@@ -3917,7 +3881,7 @@ async function loadOBJFromCache(cached, fname){
   updateInfoBar();
   document.getElementById('drop-zone').classList.add('hidden');
   document.getElementById('info-bar').style.display='flex';
-  document.getElementById('btn-solid').textContent=texLoaded?'Textured':'Solid';
+  document.getElementById('btn-solid').textContent='Teksturert';
   updateTexDropdown(mtlMap,texLoaded);
   applyShading();
 }
