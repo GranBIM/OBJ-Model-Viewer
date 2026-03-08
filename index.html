@@ -567,7 +567,7 @@ body.ec-active #eyecomfort-overlay{ pointer-events:none; }
   </div>
   <div class="tb-sep"></div>
   <div class="tb-hgroup">
-    <div class="tb-hgroup-trigger" id="shading-trigger" data-drop="drop-shading">Solid <span class="tb-caret">▾</span></div>
+    <div class="tb-hgroup-trigger" id="shading-trigger" data-drop="drop-shading">Visning <span class="tb-caret">▾</span></div>
   </div>
 
   <div class="tb-sep"></div>
@@ -600,7 +600,7 @@ body.ec-active #eyecomfort-overlay{ pointer-events:none; }
   <canvas id="measure-canvas" width="1918" height="924"></canvas>
   <div id="pivot-dot" style="left: 959px; top: 443px; display: none; opacity: 0;"></div>
   <div id="measure-hint" class="">Move mouse closer/further from shape to taper the top. Click or Enter to finish. ESC to cancel.</div>
-  <div id="vol-height-label" style="background: rgba(249, 115, 22, 0.9); top: 614.859px; left: 784.442px; transform: translateX(-50%);" class="">↕ 2.985 m  ·  taper 0%</div>
+  <div id="vol-height-label" style="background: rgba(249, 115, 22, 0.9); top: 498.438px; left: 935.829px; transform: translateX(-50%);" class="">↕ 3.587 m  ·  taper 30%</div>
 
 
   <div id="drop-zone" onclick="document.getElementById('file-input').click()" style="display:none" class="hidden">
@@ -646,12 +646,12 @@ body.ec-active #eyecomfort-overlay{ pointer-events:none; }
 
   <!-- Compare split view -->
   <div id="compare-overlay" class="">
-    <div id="cmp-div" style="left: 959px;"></div>
+    <div id="cmp-div" style="left: 803px;"></div>
     <div class="cmp-picker" id="cmp-picker-L" style="left: 12px; right: auto;">
-      <select id="cmp-sel-L" onchange="cmpSelectModel(0,this.value)"><option value="mdl_1772925092436_ucej">Uke 10 · 2026 · Torsdag</option><option value="mdl_1772925121830_96qk" selected="selected">Uke 37 · 2025 · Mandag</option></select>
+      <select id="cmp-sel-L" onchange="cmpSelectModel(0,this.value)"><option value="mdl_1772928382236_qmcb" selected="selected">Uke 10 · 2026 · Torsdag</option><option value="mdl_1772928406952_ujow">Uke 37 · 2025 · Mandag</option></select>
     </div>
     <div class="cmp-picker" id="cmp-picker-R" style="right: 12px; left: auto;">
-      <select id="cmp-sel-R" onchange="cmpSelectModel(1,this.value)"><option value="mdl_1772925092436_ucej" selected="selected">Uke 10 · 2026 · Torsdag</option><option value="mdl_1772925121830_96qk">Uke 37 · 2025 · Mandag</option></select>
+      <select id="cmp-sel-R" onchange="cmpSelectModel(1,this.value)"><option value="mdl_1772928382236_qmcb">Uke 10 · 2026 · Torsdag</option><option value="mdl_1772928406952_ujow" selected="selected">Uke 37 · 2025 · Mandag</option></select>
     </div>
   </div>
 
@@ -721,18 +721,18 @@ body.ec-active #eyecomfort-overlay{ pointer-events:none; }
 <div class="info-bar" id="info-bar" style="display: flex;">
   <span class="info-chip" id="ic-file" style="display:none"><strong id="i-fname">texturedMesh.obj</strong></span>
   <span class="ib-sep" id="ib-s1" style="display:none"></span>
-  <span id="dev-poly-group" style="display: none; align-items: center; gap: 0.75rem;">
-    <span class="info-chip">V <strong id="i-verts">107,540</strong></span>
+  <span id="dev-poly-group" style="display:none;align-items:center;gap:0.75rem">
+    <span class="info-chip">V <strong id="i-verts">212,897</strong></span>
     <span class="ib-sep"></span>
-    <span class="info-chip">F <strong id="i-faces">139,463</strong></span>
+    <span class="info-chip">F <strong id="i-faces">283,576</strong></span>
     <span class="ib-sep"></span>
-    <span class="info-chip">Mat <strong id="i-mats">11</strong></span>
+    <span class="info-chip">Mat <strong id="i-mats">33</strong></span>
     <span class="ib-sep"></span>
-    <span class="info-chip">Tex <strong id="i-texs">11</strong></span>
+    <span class="info-chip">Tex <strong id="i-texs">33</strong></span>
   </span>
   <span style="flex:1"></span>
-  <span id="dev-cam-group" style="display: none; align-items: center; gap: 0.5rem;">
-    <span class="info-chip" id="cam-pos-text" style="font-family:monospace;letter-spacing:0.02em">X: <b>-0.43</b> &nbsp; Y: <b>3.28</b> &nbsp; Z: <b>0.39</b> &nbsp;&nbsp; Retning: <b>323.6°</b> &nbsp; Helning: <b>+84.0°</b> &nbsp;&nbsp; Avstand: <b>3.30</b></span>
+  <span id="dev-cam-group" style="display:none;align-items:center;gap:0.5rem">
+    <span class="info-chip" id="cam-pos-text" style="font-family:monospace;letter-spacing:0.02em">X: <b>-0.17</b> &nbsp; Y: <b>3.80</b> &nbsp; Z: <b>2.17</b> &nbsp;&nbsp; Retning: <b>330.8°</b> &nbsp; Helning: <b>+65.6°</b> &nbsp;&nbsp; Avstand: <b>4.06</b></span>
     <span class="ib-sep"></span>
     <button id="cam-pos-copy" onclick="copyCamPos()" title="Kopier posisjonsdata" style="border:1px solid var(--border-soft);background:var(--btn-bg);color:var(--muted);font-size:0.72rem;padding:0.1rem 0.4rem;border-radius:0.3rem;cursor:pointer;font-family:inherit;transition:background 0.15s,color 0.15s">⎘ Kopier</button>
   </span>
@@ -748,7 +748,7 @@ body.ec-active #eyecomfort-overlay{ pointer-events:none; }
       <span>📡 Tamburparken</span>
       <button id="gh-refresh-btn" onclick="ghFetchModels()" title="Oppdater liste" style="border:none;background:none;color:var(--muted);cursor:pointer;font-size:0.85rem;padding:0 2px">⟳</button>
     </div>
-    <div id="gh-model-list" style="max-height:260px;overflow-y:auto"><div class="gh-row gh-active" title="texturedMesh.obj  (18.1MB) · 12 relaterte filer"><span class="gh-dot" style="background:#3b82f6;"></span><span class="gh-name">Uke 10 · 2026 <span style="color:#38bdf8;font-weight:600">Torsdag</span></span><label style="display:flex;align-items:center;gap:3px;cursor:pointer;color:var(--muted);font-size:0.72rem;flex-shrink:0"><input type="checkbox" checked="checked" data-objpath="Tamburparken/Uke10_2026-03-05/texturedMesh.obj" onchange="ghToggleVis(this.dataset.objpath,this.checked)" style="cursor:pointer"> vis</label></div><div class="gh-row gh-active" title="texturedMesh.obj  (18.3MB) · 23 relaterte filer"><span class="gh-dot" style="background:#f97316;"></span><span class="gh-name">Uke 37 · 2025 <span style="color:#fb923c;font-weight:600">Mandag</span></span><label style="display:flex;align-items:center;gap:3px;cursor:pointer;color:var(--muted);font-size:0.72rem;flex-shrink:0"><input type="checkbox" data-objpath="Tamburparken/Uke37_2025-09-08/texturedMesh.obj" onchange="ghToggleVis(this.dataset.objpath,this.checked)" style="cursor:pointer"> vis</label></div></div>
+    <div id="gh-model-list" style="max-height:260px;overflow-y:auto"><div class="gh-row gh-active" title="texturedMesh.obj  (18.0MB) · 12 relaterte filer"><span class="gh-dot" style="background:#3b82f6;"></span><span class="gh-name">Uke 10 · 2026 <span style="color:#38bdf8;font-weight:600">Torsdag</span></span><label style="display:flex;align-items:center;gap:3px;cursor:pointer;color:var(--muted);font-size:0.72rem;flex-shrink:0"><input type="checkbox" checked="checked" data-objpath="Tamburparken/Uke10_2026-03-05/texturedMesh.obj" onchange="ghToggleVis(this.dataset.objpath,this.checked)" style="cursor:pointer"> vis</label></div><div class="gh-row gh-active" title="texturedMesh.obj  (18.3MB) · 23 relaterte filer"><span class="gh-dot" style="background:#f97316;"></span><span class="gh-name">Uke 37 · 2025 <span style="color:#fb923c;font-weight:600">Mandag</span></span><label style="display:flex;align-items:center;gap:3px;cursor:pointer;color:var(--muted);font-size:0.72rem;flex-shrink:0"><input type="checkbox" checked="checked" data-objpath="Tamburparken/Uke37_2025-09-08/texturedMesh.obj" onchange="ghToggleVis(this.dataset.objpath,this.checked)" style="cursor:pointer"> vis</label></div></div>
 
     <div class="tb-hdrop-sep"></div>
     <button class="tb-hdrop-btn" onclick="document.getElementById('file-input').click()">📂 Legg til lokal .obj…</button>
@@ -769,18 +769,18 @@ body.ec-active #eyecomfort-overlay{ pointer-events:none; }
     <button class="tb-hdrop-btn" id="btn-flat" onclick="setShading('flat')">Flat</button>
   </div>
 
-  <div class="tb-hdrop" id="drop-nav" style="left: 393.533px; top: 44.4px;">
+  <div class="tb-hdrop" id="drop-nav" style="left: 409.3px; top: 44.4px;">
     <button class="tb-hdrop-btn" onclick="resetCamera()">⌂ Tilbakestill visning</button>
     <div class="tb-hdrop-sep"></div>
     <button class="tb-hdrop-btn" id="btn-autorot" onclick="toggleAutoRotate()">↻ Autoroter</button>
     <div class="tb-hdrop-slider">
-      <label><span>Rotasjonshastighet</span><span id="rs-val">0.5×</span></label>
-      <input type="range" id="rs-slider" min="0.1" max="5" step="0.1" value="0.5" oninput="rotSpeed=+this.value;document.getElementById('rs-val').textContent=rotSpeed.toFixed(1)+'×'">
+      <label><span>Rotasjonshastighet</span><span id="rs-val">0.1×</span></label>
+      <input type="range" id="rs-slider" min="0.1" max="5" step="0.1" value="0.1" oninput="rotSpeed=+this.value;document.getElementById('rs-val').textContent=rotSpeed.toFixed(1)+'×'">
     </div>
     <div class="tb-hdrop-sep"></div>
   </div>
 
-  <div class="tb-hdrop" id="drop-measure" style="left: 517.45px; top: 44.4px;">
+  <div class="tb-hdrop" id="drop-measure" style="left: 533.217px; top: 44.4px;">
     <button class="tb-hdrop-btn" id="btn-m-length" onclick="setMode('length')">📏 Lengde</button>
     <button class="tb-hdrop-btn" id="btn-m-area" onclick="setMode('area')">⬡ Areal</button>
     <div style="display:flex;align-items:center;gap:4px">
@@ -797,7 +797,7 @@ body.ec-active #eyecomfort-overlay{ pointer-events:none; }
     <button class="tb-hdrop-btn danger" id="btn-m-clear" onclick="clearMeasurements()" style="display: none;">✕ Fjern alle</button>
   </div>
 
-  <div class="tb-hdrop" id="drop-devtools" style="min-width: 240px; padding: 0.5rem 0.4rem; left: 1670px; top: 44.4px;">
+  <div class="tb-hdrop" id="drop-devtools" style="min-width:240px;padding:0.5rem 0.4rem;">
     <div style="font-size:0.7rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;padding:0 0.3rem 0.4rem">Utviklerverktøy</div>
     <div class="tb-hdrop-sep"></div>
     <div style="height:0.3rem"></div>
@@ -1859,6 +1859,7 @@ function drawMeasureOverlay(){
 // ═══════════════════════════════ MEASUREMENTS ═════════════════════════════════
 let measurements=[],measId=0;
 let unitsPerMeter=1;
+let _anchorSc=null; // scale set by first model, reused by all for consistent unit size
 
 function dist3(a,b){return a.distanceTo(b);}
 function computePolyArea(pts){
@@ -2144,7 +2145,7 @@ function removeModel(id){
   m.group.traverse(c=>{if(c.geometry)c.geometry.dispose();if(c.material)(Array.isArray(c.material)?c.material:[c.material]).forEach(x=>x.dispose());});
   models.splice(idx,1);
   if(models.length>0) setActiveModel(models[models.length-1].id);
-  else { curObj=null; activeModelId=null; }
+  else { curObj=null; activeModelId=null; _anchorSc=null; }
   refreshModelList();
   refreshCompareSelectors();
   maybeShowAlignBtn();
@@ -2196,14 +2197,17 @@ async function loadOBJ(txt,fname){
       mtlMap.forEach(v=>[v.map_Kd,v.map_bump,v.map_d].forEach(n=>{if(n)allTexNames.push(n);}));
     }
 
-    let minX=Infinity,minY=Infinity,minZ=Infinity,maxX=-Infinity,maxY=-Infinity,maxZ=-Infinity;
-    for(const g of parsed.groups)for(const v of g.verts){
-      const x=parsed.pos[v.vi*3]||0,y=parsed.pos[v.vi*3+1]||0,z=parsed.pos[v.vi*3+2]||0;
-      if(x<minX)minX=x;if(x>maxX)maxX=x;if(y<minY)minY=y;if(y>maxY)maxY=y;if(z<minZ)minZ=z;if(z>maxZ)maxZ=z;
+    // Compute scale from first model only — preserve original OBJ coordinates (no centering)
+    if(_anchorSc===null){
+      let minX=Infinity,maxX=-Infinity,minY=Infinity,maxY=-Infinity,minZ=Infinity,maxZ=-Infinity;
+      for(const g of parsed.groups)for(const v of g.verts){
+        const x=parsed.pos[v.vi*3]||0,y=parsed.pos[v.vi*3+1]||0,z=parsed.pos[v.vi*3+2]||0;
+        if(x<minX)minX=x;if(x>maxX)maxX=x;if(y<minY)minY=y;if(y>maxY)maxY=y;if(z<minZ)minZ=z;if(z>maxZ)maxZ=z;
+      }
+      const maxDim=Math.max(maxX-minX,maxY-minY,maxZ-minZ)||1;
+      _anchorSc=4/maxDim;
     }
-    const cx=(minX+maxX)/2,cy=(minY+maxY)/2,cz=(minZ+maxZ)/2;
-    const maxDim=Math.max(maxX-minX,maxY-minY,maxZ-minZ)||1;
-    const sc=4/maxDim;
+    const sc=_anchorSc;
     unitsPerMeter=sc;
 
     setLoader(true,'Bygger 3D-modell…');await tick();
@@ -2214,7 +2218,7 @@ async function loadOBJ(txt,fname){
       if(!g.verts.length)continue;
       const ap=[],an=[],au=[];
       for(const v of g.verts){
-        ap.push((parsed.pos[v.vi*3]||0)-cx,(parsed.pos[v.vi*3+1]||0)-cy,(parsed.pos[v.vi*3+2]||0)-cz);
+        ap.push(parsed.pos[v.vi*3]||0, parsed.pos[v.vi*3+1]||0, parsed.pos[v.vi*3+2]||0);
         if(v.ni>=0&&parsed.nor.length)an.push(parsed.nor[v.ni*3]||0,parsed.nor[v.ni*3+1]||0,parsed.nor[v.ni*3+2]||0);
         if(v.ti>=0&&parsed.uvs.length)au.push(parsed.uvs[v.ti*2]||0,parsed.uvs[v.ti*2+1]||0);
       }
@@ -2236,7 +2240,8 @@ async function loadOBJ(txt,fname){
     registerModel(curObj,fname,_omats,[...pendingMtllibs],[...allTexNames], ghCurrentFolder||fname);
     ghCurrentFolder=null;
     scene.add(curObj);
-    // Camera stays at default/user position — models use their saved world coords
+    // Fit camera to model on first load; subsequent loads keep user's view
+    if(models.length===0) setTimeout(fitCameraToModel, 50);
 
     document.getElementById('i-fname').textContent=fname;
     // Store stats on the last registered model
@@ -2283,7 +2288,37 @@ function setShading(m){
   if(t) t.childNodes[0].textContent=labels[m]+' ';
   applyShading();
 }
-function resetCamera(){orb.tgt.set(-0.2275,0.0,0.112);orb.sph.set(3.2978,1.2054,-2.2846);applyOrb();}
+function fitCameraToModel(){
+  // Compute bounding box of all visible models in scene
+  const box = new THREE.Box3();
+  let found = false;
+  scene.traverse(obj=>{
+    if(obj.isMesh && obj.visible){
+      obj.geometry.computeBoundingBox();
+      const b = obj.geometry.boundingBox.clone().applyMatrix4(obj.matrixWorld);
+      box.union(b);
+      found = true;
+    }
+  });
+  if(!found) return;
+  const center = new THREE.Vector3();
+  const size   = new THREE.Vector3();
+  box.getCenter(center);
+  box.getSize(size);
+  const maxDim = Math.max(size.x, size.y, size.z);
+  // Orbit target = center of model, slightly above base
+  orb.tgt.copy(center);
+  // Distance: enough to see whole model with some margin
+  orb.sph.radius = maxDim * 1.4;
+  orb.sph.phi    = 1.2;   // ~70° elevation
+  orb.sph.theta  = -2.28;
+  applyOrb();
+}
+
+function resetCamera(){
+  if(models.length > 0) fitCameraToModel();
+  else { orb.tgt.set(-0.2275,0.0,0.112); orb.sph.set(3.2978,1.2054,-2.2846); applyOrb(); }
+}
 
 // ── Camera mode ───────────────────────────────────────────────────────────────
 let cameraMode='perspective';
