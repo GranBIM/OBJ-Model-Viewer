@@ -1022,7 +1022,6 @@ function applyEyecomfort(){
 
   document.getElementById('ec-bri-val').textContent = bri + '%';
 
-  // Brightness only affects the 3D canvas background
   ['.toolbar', '.info-bar', '#drop-portal'].forEach(sel => {
     document.querySelectorAll(sel).forEach(el => { el.style.filter = ''; });
   });
@@ -3175,7 +3174,6 @@ function snittClearClip(){ ccClearClip(); }
 function setStdView(dir){
   // Keep current camera mode — user chooses perspective/ortho separately
   const d=8;
-  // Top view: slight XZ offset to give 321° compass direction
   const topAng=321.0*Math.PI/180;
   const topTiny=0.001;
   const views={
@@ -3567,7 +3565,11 @@ async function ghFetchModels(){
       const ya=pa?+pa[2]:0, yb=pb?+pb[2]:0;
       if(ya!==yb) return yb-ya;
       const wa=pa?+pa[1]:0, wb=pb?+pb[1]:0;
-      return wb-wa;
+      if(wa!==wb) return wb-wa;
+      // Same week+year: sort by embedded date (YYYY-MM-DD) descending
+      const da=a.name.match(/(\d{4}-\d{2}-\d{2})/), db=b.name.match(/(\d{4}-\d{2}-\d{2})/);
+      if(da&&db) return db[1].localeCompare(da[1]);
+      return 0;
     });
 
     // Check if folder list matches cache — if so, mark cached models
